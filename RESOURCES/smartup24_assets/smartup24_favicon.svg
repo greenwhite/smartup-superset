@@ -1,22 +1,22 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Smartup Favicon - Circle divided into 4 quarters -->
+  <!-- Smartup Favicon - Squircle with diagonal quarters -->
 
-  <!-- Circle clipping -->
-  <clipPath id="faviconClip">
-    <circle cx="16" cy="16" r="16"/>
+  <!-- Rounded square (squircle) clipping -->
+  <clipPath id="squircleClip">
+    <rect width="32" height="32" rx="8" ry="8"/>
   </clipPath>
 
-  <g clip-path="url(#faviconClip)">
-    <!-- Top-left quarter: Black -->
-    <rect x="0" y="0" width="16" height="16" fill="#1A1A1A"/>
+  <g clip-path="url(#squircleClip)">
+    <!-- Top sector: Black -->
+    <polygon points="16,16 0,0 32,0" fill="#1A1A1A"/>
 
-    <!-- Top-right quarter: Green -->
-    <rect x="16" y="0" width="16" height="16" fill="#2ECC71"/>
+    <!-- Right sector: Green -->
+    <polygon points="16,16 32,0 32,32" fill="#2ECC71"/>
 
-    <!-- Bottom-left quarter: Blue -->
-    <rect x="0" y="16" width="16" height="16" fill="#009EE0"/>
+    <!-- Bottom sector: Black -->
+    <polygon points="16,16 32,32 0,32" fill="#1A1A1A"/>
 
-    <!-- Bottom-right quarter: Black -->
-    <rect x="16" y="16" width="16" height="16" fill="#1A1A1A"/>
+    <!-- Left sector: Blue -->
+    <polygon points="16,16 0,32 0,0" fill="#009EE0"/>
   </g>
 </svg>

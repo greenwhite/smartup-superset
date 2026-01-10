@@ -1,29 +1,26 @@
 <svg width="220" height="48" viewBox="0 0 220 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Smartup Logo - Official design -->
+  <!-- Smartup Logo - Official design with diagonal quarters -->
 
-  <!-- Graphic Mark - Circle divided into 4 quarters -->
+  <!-- Graphic Mark - Squircle with diagonal sectors -->
   <g transform="translate(4, 4)">
-    <!-- Circle base clipping -->
-    <clipPath id="circleClip">
-      <circle cx="20" cy="20" r="20"/>
+    <!-- Rounded square clipping -->
+    <clipPath id="logoSquircle">
+      <rect width="40" height="40" rx="10" ry="10"/>
     </clipPath>
 
-    <g clip-path="url(#circleClip)">
-      <!-- Top-left quarter: Black -->
-      <path d="M0 0H20V20H0V0Z" fill="#1A1A1A"/>
+    <g clip-path="url(#logoSquircle)">
+      <!-- Top sector: Black -->
+      <polygon points="20,20 0,0 40,0" fill="#1A1A1A"/>
 
-      <!-- Top-right quarter: Green -->
-      <path d="M20 0H40V20H20V0Z" fill="#2ECC71"/>
+      <!-- Right sector: Green -->
+      <polygon points="20,20 40,0 40,40" fill="#2ECC71"/>
 
-      <!-- Bottom-left quarter: Blue -->
-      <path d="M0 20H20V40H0V20Z" fill="#009EE0"/>
+      <!-- Bottom sector: Black -->
+      <polygon points="20,20 40,40 0,40" fill="#1A1A1A"/>
 
-      <!-- Bottom-right quarter: Black -->
-      <path d="M20 20H40V40H20V20Z" fill="#1A1A1A"/>
+      <!-- Left sector: Blue -->
+      <polygon points="20,20 0,40 0,0" fill="#009EE0"/>
     </g>
-
-    <!-- Circle outline (optional, for crisp edges) -->
-    <circle cx="20" cy="20" r="20" fill="none"/>
   </g>
 
   <!-- Text badge: "smartup" on black rounded rectangle -->
