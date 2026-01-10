@@ -227,12 +227,16 @@ EXTRA_CUSTOM_CSS = """
   background: var(--smartup24-bg-base);
 }
 
-/* Query Editor */
-.ace_editor,
-.sql-editor {
-  font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
-  font-size: 13px !important;
-  line-height: 1.6 !important;
+/* Query Editor - higher specificity for Ace editor */
+.SqlLab .ace_editor,
+.sql-lab .ace_editor,
+.SqlLab .sql-editor,
+.sql-lab .sql-editor,
+.ace_editor.ace-tm,
+.ace_editor.ace-github {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 /* Results Table */
@@ -287,14 +291,17 @@ EXTRA_CUSTOM_CSS = """
   font-size: 13px;
 }
 
-.ant-table-thead > tr > th {
+/* Using higher specificity instead of !important */
+.ant-table-wrapper .ant-table .ant-table-thead > tr > th,
+.ant-table-wrapper .ant-table .ant-table-thead > tr > th.ant-table-cell {
   font-weight: 600;
-  background: var(--smartup24-bg-elevated) !important;
+  background: var(--smartup24-bg-elevated);
   border-bottom: 2px solid var(--smartup24-border);
 }
 
-.ant-table-tbody > tr:hover > td {
-  background: var(--smartup24-bg-elevated) !important;
+.ant-table-wrapper .ant-table .ant-table-tbody > tr:hover > td,
+.ant-table-wrapper .ant-table .ant-table-tbody > tr.ant-table-row:hover > td.ant-table-cell {
+  background: var(--smartup24-bg-elevated);
 }
 
 /* Striped Rows */
@@ -310,19 +317,29 @@ EXTRA_CUSTOM_CSS = """
    Forms & Inputs
    -------------------------------------------------------------------------- */
 
-/* Input Fields */
-.ant-input,
-.ant-select-selector,
-.ant-picker {
-  border-radius: 6px !important;
+/* Input Fields - using higher specificity */
+.ant-form .ant-input,
+.ant-form .ant-select .ant-select-selector,
+.ant-form .ant-picker,
+.ant-form-item .ant-input,
+.ant-form-item .ant-select .ant-select-selector,
+.ant-form-item .ant-picker,
+body .ant-input,
+body .ant-select .ant-select-selector,
+body .ant-picker {
+  border-radius: 6px;
 }
 
-.ant-input:focus,
-.ant-input-focused,
-.ant-select-focused .ant-select-selector,
-.ant-picker-focused {
-  border-color: var(--smartup24-primary) !important;
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1) !important;
+.ant-form .ant-input:focus,
+.ant-form .ant-input.ant-input-focused,
+.ant-form .ant-select.ant-select-focused .ant-select-selector,
+.ant-form .ant-picker.ant-picker-focused,
+body .ant-input:focus,
+body .ant-input.ant-input-focused,
+body .ant-select.ant-select-focused .ant-select-selector,
+body .ant-picker.ant-picker-focused {
+  border-color: var(--smartup24-primary);
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.15);
 }
 
 /* Labels */
@@ -555,25 +572,495 @@ EXTRA_CUSTOM_CSS = """
 }
 
 /* --------------------------------------------------------------------------
-   Responsive Adjustments
+   Resizable Sidebar (SQL Lab, Filter Bar)
    -------------------------------------------------------------------------- */
 
-@media (max-width: 768px) {
+/* Resizable Container */
+.resizable-container,
+.ResizableSidebar {
+  background: var(--smartup24-bg-elevated);
+  border-right: 1px solid var(--smartup24-border);
+  transition: width var(--smartup24-transition-normal);
+}
+
+/* Resize Handle */
+.resizable-container .resize-handle,
+.ResizableSidebar__resize-handle {
+  width: 4px;
+  background: transparent;
+  cursor: col-resize;
+  transition: background var(--smartup24-transition-fast);
+}
+
+.resizable-container .resize-handle:hover,
+.ResizableSidebar__resize-handle:hover {
+  background: var(--smartup24-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Navigation
+   -------------------------------------------------------------------------- */
+
+/* Mobile Menu Drawer */
+.ant-drawer.mobile-nav-drawer .ant-drawer-body {
+  padding: 0;
+  background: var(--smartup24-bg-container);
+}
+
+.mobile-nav-drawer .ant-menu {
+  border-right: none;
+}
+
+.mobile-nav-drawer .ant-menu-item {
+  height: 48px;
+  line-height: 48px;
+  margin: 0;
+  padding: 0 24px;
+  border-radius: 0;
+}
+
+.mobile-nav-drawer .ant-menu-item:active {
+  background: var(--smartup24-bg-elevated);
+}
+
+/* Mobile Header */
+.navbar-mobile,
+.mobile-header {
+  display: none;
+  height: 56px;
+  padding: 0 16px;
+  background: var(--smartup24-bg-container);
+  border-bottom: 1px solid var(--smartup24-border);
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Hamburger Menu Button */
+.mobile-menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--smartup24-border-radius, 6px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background var(--smartup24-transition-fast);
+}
+
+.mobile-menu-trigger:hover {
+  background: var(--smartup24-bg-elevated);
+}
+
+/* --------------------------------------------------------------------------
+   Filter Bar Mobile Adaptations
+   -------------------------------------------------------------------------- */
+
+/* Filter Bar Wrapper */
+.filter-bar-wrapper {
+  transition: transform var(--smartup24-transition-normal);
+}
+
+/* Collapsible Filter Bar */
+.filter-bar--collapsed {
+  transform: translateX(-100%);
+}
+
+/* Filter Bar Toggle Button (Mobile) */
+.filter-bar__toggle-mobile {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--smartup24-primary);
+  color: white;
+  box-shadow: var(--smartup24-shadow-lg);
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: transform var(--smartup24-transition-fast),
+              box-shadow var(--smartup24-transition-fast);
+}
+
+.filter-bar__toggle-mobile:hover {
+  transform: scale(1.05);
+  box-shadow: var(--smartup24-shadow-lg), 0 0 0 4px rgba(46, 204, 113, 0.2);
+}
+
+.filter-bar__toggle-mobile:active {
+  transform: scale(0.95);
+}
+
+/* Filter Bar Overlay (Mobile) */
+.filter-bar__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--smartup24-transition-normal),
+              visibility var(--smartup24-transition-normal);
+  z-index: 99;
+}
+
+.filter-bar__overlay--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adjustments - Complete Breakpoint System
+   -------------------------------------------------------------------------- */
+
+/* Extra Large Screens (1600px+) */
+@media (min-width: 1600px) {
+  .dashboard-grid {
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .sql-editor-container {
+    max-width: 1400px;
+  }
+}
+
+/* Large Desktop (1200px - 1599px) */
+@media (max-width: 1599px) {
+  .dashboard-header {
+    padding: 16px 20px;
+  }
+}
+
+/* Desktop (992px - 1199px) */
+@media (max-width: 1199px) {
+  /* Reduce sidebar widths */
+  .filter-bar,
+  .nativeFilter {
+    width: 280px;
+    min-width: 280px;
+  }
+
+  .schema-browser {
+    width: 240px;
+    min-width: 240px;
+  }
+
+  /* Compact control panel */
+  .explore-controls,
+  .control-panel {
+    width: 300px;
+  }
+
+  /* Adjust grid spacing */
+  .grid-container {
+    padding: 12px;
+    gap: 12px;
+  }
+}
+
+/* Tablet Landscape (768px - 991px) */
+@media (max-width: 991px) {
+  /* Stack layout for Explore view */
+  .explore-container {
+    flex-direction: column;
+  }
+
+  .explore-controls,
+  .control-panel {
+    width: 100%;
+    max-height: 40vh;
+    overflow-y: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--smartup24-border);
+  }
+
+  /* Collapsible filter bar */
+  .filter-bar,
+  .nativeFilter {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform var(--smartup24-transition-normal);
+  }
+
+  .filter-bar--open,
+  .nativeFilter--open {
+    transform: translateX(0);
+  }
+
+  /* Show filter toggle button */
+  .filter-bar__toggle-mobile {
+    display: flex;
+  }
+
+  /* SQL Lab adjustments */
+  .SqlLab .resizable-container {
+    position: fixed;
+    left: 0;
+    top: 56px;
+    bottom: 0;
+    width: 280px;
+    z-index: 50;
+    transform: translateX(-100%);
+  }
+
+  .SqlLab .resizable-container--open {
+    transform: translateX(0);
+  }
+
+  /* Dashboard header compact */
   .dashboard-header {
     padding: 12px 16px;
   }
 
+  .dashboard-title,
+  .header-title {
+    font-size: 18px;
+  }
+}
+
+/* Tablet Portrait (576px - 767px) */
+@media (max-width: 767px) {
+  /* Show mobile navigation */
+  .navbar-mobile,
+  .mobile-header {
+    display: flex;
+  }
+
+  /* Hide desktop navigation */
+  .navbar-desktop,
+  .ant-layout-header .navbar {
+    display: none;
+  }
+
+  /* Full-width charts */
   .grid-container {
     padding: 8px;
     gap: 8px;
   }
 
-  .chart-header {
+  .chart-container,
+  .slice-container {
+    border-radius: 6px;
+  }
+
+  /* Compact chart headers */
+  .chart-header,
+  .slice-header {
     padding: 8px 12px;
   }
 
-  .chart-body {
+  .chart-header-title,
+  .slice-name {
+    font-size: 13px;
+  }
+
+  /* Chart body padding */
+  .chart-body,
+  .slice-cell {
     padding: 12px;
+  }
+
+  /* Modal full-screen on tablet */
+  .ant-modal {
+    max-width: calc(100vw - 32px);
+    margin: 16px;
+  }
+
+  .ant-modal-content {
+    border-radius: 8px;
+  }
+
+  /* Drawer adjustments */
+  .ant-drawer-content-wrapper {
+    max-width: 100vw;
+  }
+
+  /* Table horizontal scroll */
+  .ant-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ant-table {
+    min-width: 600px;
+  }
+
+  /* SQL Lab mobile layout */
+  .SqlLab,
+  .sql-lab {
+    flex-direction: column;
+  }
+
+  .sql-editor {
+    min-height: 200px;
+  }
+
+  .sql-results-table {
+    font-size: 12px;
+  }
+}
+
+/* Mobile (max 575px) */
+@media (max-width: 575px) {
+  /* Minimal padding */
+  .dashboard-header {
+    padding: 8px 12px;
+  }
+
+  .dashboard-title,
+  .header-title {
+    font-size: 16px;
+  }
+
+  .grid-container {
+    padding: 4px;
+    gap: 4px;
+  }
+
+  /* Very compact chart cards */
+  .chart-header,
+  .slice-header {
+    padding: 6px 10px;
+  }
+
+  .chart-header-title,
+  .slice-name {
+    font-size: 12px;
+  }
+
+  .chart-body,
+  .slice-cell {
+    padding: 8px;
+  }
+
+  /* Full-screen modals on mobile */
+  .ant-modal {
+    max-width: 100%;
+    margin: 0;
+    top: 0;
+    padding: 0;
+  }
+
+  .ant-modal-content {
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  .ant-modal-body {
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+
+  /* Touch-friendly controls */
+  .ant-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .ant-input,
+  .ant-select-selector,
+  .ant-picker {
+    min-height: 44px;
+  }
+
+  /* Larger touch targets for dropdowns */
+  .ant-dropdown-menu-item {
+    padding: 12px 16px;
+    min-height: 44px;
+  }
+
+  /* Stack button groups vertically */
+  .ant-btn-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-btn-group .ant-btn {
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+
+  .ant-btn-group .ant-btn:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Filter bar full-screen */
+  .filter-bar,
+  .nativeFilter {
+    width: 100%;
+  }
+
+  /* Tabs scrollable */
+  .ant-tabs-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ant-tabs-nav::before {
+    display: none;
+  }
+
+  /* Hide non-essential elements */
+  .dashboard-header .secondary-actions,
+  .chart-header .chart-actions:not(.essential) {
+    display: none;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .ant-btn,
+  .ant-menu-item,
+  .ant-dropdown-menu-item {
+    min-height: 44px;
+  }
+
+  /* Remove hover effects that don't work on touch */
+  .chart-container:hover,
+  .slice-container:hover {
+    box-shadow: var(--smartup24-shadow-sm);
+  }
+
+  /* Disable hover states for better touch experience */
+  .ant-btn:hover {
+    opacity: 1;
+  }
+}
+
+/* Landscape Mobile Specific */
+@media (max-height: 500px) and (orientation: landscape) {
+  .dashboard-header {
+    padding: 6px 12px;
+  }
+
+  .chart-header {
+    padding: 4px 8px;
+  }
+
+  /* Reduce modal height */
+  .ant-modal-body {
+    max-height: 60vh;
+  }
+}
+
+/* High DPI / Retina Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp borders */
+  .chart-container,
+  .slice-container,
+  .ant-card {
+    border-width: 0.5px;
   }
 }
 
