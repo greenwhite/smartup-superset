@@ -21,7 +21,7 @@ import { styled } from '@superset-ui/core';
 import * as echarts from 'echarts';
 import type { EChartsOption, SeriesOption } from 'echarts';
 import {
-  SM24ARRWaterfallVizProps,
+  SM24MetricWaterfallVizProps,
   WaterfallDataPoint,
   WATERFALL_COLORS,
   getQuickRatioColor,
@@ -32,7 +32,7 @@ import {
 // ECHARTS VISUALIZATION COMPONENT
 // =============================================================================
 
-function SM24ARRWaterfallViz({
+function SM24MetricWaterfallViz({
   className = '',
   width,
   height,
@@ -57,7 +57,7 @@ function SM24ARRWaterfallViz({
   showLegend,
   legendPosition,
   refs,
-}: SM24ARRWaterfallVizProps) {
+}: SM24MetricWaterfallVizProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
 
@@ -575,7 +575,7 @@ function SM24ARRWaterfallViz({
 // STYLED COMPONENT
 // =============================================================================
 
-const StyledSM24ARRWaterfallViz = styled(SM24ARRWaterfallViz)`
+const StyledSM24MetricWaterfallViz = styled(SM24MetricWaterfallViz)`
   ${({ theme }) => `
     font-family: ${theme.typography?.families?.sansSerif || 'Inter, Helvetica, Arial, sans-serif'};
     position: relative;
@@ -583,4 +583,4 @@ const StyledSM24ARRWaterfallViz = styled(SM24ARRWaterfallViz)`
   `}
 `;
 
-export default StyledSM24ARRWaterfallViz;
+export default StyledSM24MetricWaterfallViz;

@@ -16,44 +16,48 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { t, Behavior } from '@superset-ui/core';
+import { t, Behavior, ChartPlugin } from '@superset-ui/core';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import buildQuery from './buildQuery';
-import { SM24BigNumberChartProps, SM24BigNumberFormData } from './types';
-import { EchartsChartPlugin } from '../types';
+import {
+  SM24StatusCardFlowChartProps,
+  SM24StatusCardFlowFormData,
+} from './types';
 
-// Placeholder thumbnails - will use BigNumber images temporarily
-import thumbnail from '../BigNumber/BigNumberTotal/images/thumbnail.png';
-import thumbnailDark from '../BigNumber/BigNumberTotal/images/thumbnail-dark.png';
+// Reuse Funnel thumbnail
+import thumbnail from '../Funnel/images/thumbnail.png';
 
 const metadata = {
   category: t('KPI'),
   description: t(
-    'SM24-BigNumber: Smartup24 KPI component for displaying key metrics with advanced formatting options. ' +
-    'Supports multiple number formats (millions, billions, percentages), ' +
-    'locale-aware formatting (EN/RU/UZ), time comparison, and conditional color thresholds.',
+    'SM24-StatusCardFlow: Universal entity status flow displaying status cards ' +
+    'in a horizontal layout. Supports any entity type with configurable ' +
+    'status mapping, counts, amounts, and percentages. ' +
+    'Features drilldown, entity type switching, configurable currency/locale, and real-time filtering.',
   ),
-  name: t('SM24-BigNumber'),
+  name: t('SM24-StatusCardFlow'),
   tags: [
     t('Business'),
-    t('KPI'),
+    t('Operations'),
+    t('Status'),
     t('Featured'),
-    t('Report'),
+    t('Flow'),
+    t('Cards'),
+    t('Universal'),
     t('Smartup24'),
   ],
   thumbnail,
-  thumbnailDark,
-  behaviors: [Behavior.DrillToDetail],
+  behaviors: [Behavior.DrillToDetail, Behavior.DrillBy],
 };
 
-export default class SM24BigNumberChartPlugin extends EchartsChartPlugin<
-  SM24BigNumberFormData,
-  SM24BigNumberChartProps
+export default class SM24StatusCardFlowChartPlugin extends ChartPlugin<
+  SM24StatusCardFlowFormData,
+  SM24StatusCardFlowChartProps
 > {
   constructor() {
     super({
-      loadChart: () => import('./SM24BigNumberViz'),
+      loadChart: () => import('./SM24StatusCardFlowViz'),
       metadata,
       buildQuery,
       transformProps,

@@ -230,10 +230,45 @@ const config: ControlPanelConfig = {
               description: t('Fixed unit for amounts or auto-detect'),
               default: 'auto',
               choices: [
-                ['auto', 'Auto (тыс./млн./млрд.)'],
-                ['thousands', 'Thousands (тыс.)'],
-                ['millions', 'Millions (млн.)'],
-                ['billions', 'Billions (млрд.)'],
+                ['auto', t('Auto')],
+                ['thousands', t('Thousands')],
+                ['millions', t('Millions')],
+                ['billions', t('Billions')],
+              ],
+              renderTrigger: true,
+            },
+          },
+        ],
+        [
+          {
+            name: 'currencyCode',
+            config: {
+              type: 'SelectControl',
+              label: t('Currency'),
+              description: t('Currency for amount display'),
+              default: 'UZS',
+              choices: [
+                ['UZS', 'UZS (сум)'],
+                ['USD', 'USD ($)'],
+                ['EUR', 'EUR (€)'],
+                ['RUB', 'RUB (₽)'],
+                ['', t('None')],
+              ],
+              renderTrigger: true,
+            },
+          },
+        ],
+        [
+          {
+            name: 'currencyPosition',
+            config: {
+              type: 'SelectControl',
+              label: t('Currency Position'),
+              description: t('Position of currency symbol'),
+              default: 'after',
+              choices: [
+                ['before', t('Before amount ($100)')],
+                ['after', t('After amount (100 сум)')],
               ],
               renderTrigger: true,
             },

@@ -18,7 +18,7 @@
  */
 import { buildQueryContext, QueryFormData } from '@superset-ui/core';
 import {
-  SM24BigNumberFormData,
+  SM24BigNumberProFormData,
   TIME_COMPARISON_SHIFTS,
   TimeComparisonPeriod,
 } from './types';
@@ -28,7 +28,7 @@ import {
  * Handles time comparison queries when enabled.
  */
 export default function buildQuery(formData: QueryFormData) {
-  const sm24FormData = formData as SM24BigNumberFormData;
+  const sm24FormData = formData as SM24BigNumberProFormData;
   const {
     timeComparisonEnabled,
     timeComparisonPeriod = 'none',

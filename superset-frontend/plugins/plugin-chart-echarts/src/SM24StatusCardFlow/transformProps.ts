@@ -18,8 +18,8 @@
  */
 import { ChartProps } from '@superset-ui/core';
 import {
-  SM24StatusFunnelFormData,
-  SM24StatusFunnelVizProps,
+  SM24StatusCardFlowFormData,
+  SM24StatusCardFlowVizProps,
   StatusData,
   EntityType,
   ENTITY_TYPE_DEFINITIONS,
@@ -36,7 +36,7 @@ import {
  */
 export default function transformProps(
   chartProps: ChartProps,
-): SM24StatusFunnelVizProps {
+): SM24StatusCardFlowVizProps {
   const { width, height, formData, queriesData } = chartProps;
   const data = queriesData[0]?.data || [];
 
@@ -51,7 +51,7 @@ export default function transformProps(
     enableDrilldown = true,
     enableEntityTypeSwitch = true,
     locale = 'ru-RU',
-  } = formData as SM24StatusFunnelFormData;
+  } = formData as SM24StatusCardFlowFormData;
 
   // Get entity type definition
   const entityTypeDef = ENTITY_TYPE_DEFINITIONS[entityType as EntityType] ||

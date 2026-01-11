@@ -16,48 +16,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { t, Behavior, ChartPlugin } from '@superset-ui/core';
+import { t, Behavior } from '@superset-ui/core';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import buildQuery from './buildQuery';
-import {
-  SM24StatusFunnelChartProps,
-  SM24StatusFunnelFormData,
-} from './types';
+import { SM24MetricWaterfallChartProps, SM24MetricWaterfallFormData } from './types';
+import { EchartsChartPlugin } from '../types';
 
-// Reuse Funnel thumbnail
-import thumbnail from '../Funnel/images/thumbnail.png';
+// Reuse Waterfall thumbnails
+import thumbnail from '../Waterfall/images/thumbnail.png';
 
 const metadata = {
-  category: t('KPI'),
+  category: t('Evolution'),
   description: t(
-    'SM24-StatusFunnel: Universal entity status funnel displaying status cards ' +
-    'in a horizontal flow. Supports multiple entity types (orders, visits, leads, tasks) ' +
-    'with dynamic status loading, counts, amounts, and percentages. ' +
-    'Features drilldown, entity type switching, and real-time filtering.',
+    'SM24-MetricWaterfall: Universal waterfall chart visualizing metric changes over a period. ' +
+    'Configurable steps for any business scenario: ARR breakdown, budget analysis, inventory flow. ' +
+    'Includes calculated metrics (Quick Ratio, etc.), growth indicators, ' +
+    'configurable currency/locale, and drilldown capabilities.',
   ),
-  name: t('SM24-StatusFunnel'),
+  name: t('SM24-MetricWaterfall'),
   tags: [
     t('Business'),
-    t('Operations'),
-    t('Status'),
-    t('Featured'),
-    t('Funnel'),
-    t('Cards'),
     t('Universal'),
+    t('Metrics'),
+    t('Featured'),
+    t('Waterfall'),
+    t('Breakdown'),
     t('Smartup24'),
   ],
   thumbnail,
   behaviors: [Behavior.DrillToDetail, Behavior.DrillBy],
 };
 
-export default class SM24StatusFunnelChartPlugin extends ChartPlugin<
-  SM24StatusFunnelFormData,
-  SM24StatusFunnelChartProps
+export default class SM24MetricWaterfallChartPlugin extends EchartsChartPlugin<
+  SM24MetricWaterfallFormData,
+  SM24MetricWaterfallChartProps
 > {
   constructor() {
     super({
-      loadChart: () => import('./SM24StatusFunnelViz'),
+      loadChart: () => import('./SM24MetricWaterfallViz'),
       metadata,
       buildQuery,
       transformProps,

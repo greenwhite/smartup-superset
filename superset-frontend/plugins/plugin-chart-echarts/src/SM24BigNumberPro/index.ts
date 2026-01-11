@@ -20,41 +20,42 @@ import { t, Behavior } from '@superset-ui/core';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import buildQuery from './buildQuery';
-import { SM24ARRWaterfallChartProps, SM24ARRWaterfallFormData } from './types';
+import { SM24BigNumberProChartProps, SM24BigNumberProFormData } from './types';
 import { EchartsChartPlugin } from '../types';
 
-// Reuse Waterfall thumbnails
-import thumbnail from '../Waterfall/images/thumbnail.png';
+// Placeholder thumbnails - will use BigNumber images temporarily
+import thumbnail from '../BigNumber/BigNumberTotal/images/thumbnail.png';
+import thumbnailDark from '../BigNumber/BigNumberTotal/images/thumbnail-dark.png';
 
 const metadata = {
-  category: t('Evolution'),
+  category: t('KPI'),
   description: t(
-    'SM24-ARRWaterfall: Waterfall chart visualizing ARR changes over a period. ' +
-    'Shows the breakdown from Beginning ARR through New Business, Expansion, ' +
-    'Contraction, and Churn to Ending ARR. Includes Quick Ratio badge, ' +
-    'growth rate indicators, and drilldown to customer lists.',
+    'SM24-BigNumberPro: Advanced KPI component for displaying key metrics with comprehensive formatting options. ' +
+    'Supports multiple number formats (millions, billions, percentages), ' +
+    'configurable locale formatting (EN/RU/UZ), time comparison, sparkline trends, ' +
+    'progress bars, and conditional color thresholds.',
   ),
-  name: t('SM24-ARRWaterfall'),
+  name: t('SM24-BigNumberPro'),
   tags: [
     t('Business'),
-    t('SaaS'),
-    t('ARR'),
+    t('KPI'),
     t('Featured'),
-    t('Waterfall'),
-    t('Breakdown'),
+    t('Report'),
     t('Smartup24'),
+    t('Universal'),
   ],
   thumbnail,
-  behaviors: [Behavior.DrillToDetail, Behavior.DrillBy],
+  thumbnailDark,
+  behaviors: [Behavior.DrillToDetail],
 };
 
-export default class SM24ARRWaterfallChartPlugin extends EchartsChartPlugin<
-  SM24ARRWaterfallFormData,
-  SM24ARRWaterfallChartProps
+export default class SM24BigNumberProChartPlugin extends EchartsChartPlugin<
+  SM24BigNumberProFormData,
+  SM24BigNumberProChartProps
 > {
   constructor() {
     super({
-      loadChart: () => import('./SM24ARRWaterfallViz'),
+      loadChart: () => import('./SM24BigNumberProViz'),
       metadata,
       buildQuery,
       transformProps,

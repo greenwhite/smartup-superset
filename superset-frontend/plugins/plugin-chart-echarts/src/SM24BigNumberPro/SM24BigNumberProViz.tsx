@@ -20,7 +20,7 @@ import { useState, useEffect, useRef, MouseEvent, useMemo } from 'react';
 import { t, computeMaxFontSize } from '@superset-ui/core';
 import { styled, useTheme } from '@apache-superset/core/ui';
 import {
-  SM24BigNumberVizProps,
+  SM24BigNumberProVizProps,
   ComparisonColorScheme,
   getTrendColor,
 } from './types';
@@ -45,7 +45,7 @@ const defaultFormatter = (value: number) => String(value);
 // =============================================================================
 
 interface ComparisonDisplayProps {
-  comparisonData: SM24BigNumberVizProps['comparisonData'];
+  comparisonData: SM24BigNumberProVizProps['comparisonData'];
   comparisonLabel?: string;
   showPreviousValue?: boolean;
   showAbsoluteDifference?: boolean;
@@ -136,7 +136,7 @@ function ComparisonDisplay({
 }
 
 interface ProgressBarProps {
-  config: SM24BigNumberVizProps['progressBarConfig'];
+  config: SM24BigNumberProVizProps['progressBarConfig'];
   progress?: number;
   formatter: (value: number) => string;
   currentValue?: number | null;
@@ -190,7 +190,7 @@ function ProgressBar({ config, progress, formatter, currentValue }: ProgressBarP
 // MAIN COMPONENT
 // =============================================================================
 
-function SM24BigNumberViz({
+function SM24BigNumberProViz({
   className = '',
   width,
   height,
@@ -215,7 +215,7 @@ function SM24BigNumberViz({
   currentProgress,
   animationEnabled = true,
   onContextMenu,
-}: SM24BigNumberVizProps) {
+}: SM24BigNumberProVizProps) {
   const theme = useTheme();
 
   // Animation state
@@ -448,7 +448,7 @@ function SM24BigNumberViz({
 // STYLED COMPONENT
 // =============================================================================
 
-const StyledSM24BigNumberViz = styled(SM24BigNumberViz)`
+const StyledSM24BigNumberProViz = styled(SM24BigNumberProViz)`
   ${({ theme }) => `
     font-family: ${theme.fontFamily};
     position: relative;
@@ -599,4 +599,4 @@ const StyledSM24BigNumberViz = styled(SM24BigNumberViz)`
   `}
 `;
 
-export default StyledSM24BigNumberViz;
+export default StyledSM24BigNumberProViz;

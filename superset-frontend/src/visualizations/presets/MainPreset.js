@@ -70,12 +70,12 @@ import {
   EchartsHeatmapChartPlugin,
   EchartsGanttChartPlugin,
   SM24ARRTrendChartPlugin,
-  SM24ARRWaterfallChartPlugin,
-  SM24BigNumberChartPlugin,
+  SM24BigNumberProChartPlugin,
+  SM24MetricWaterfallChartPlugin,
   SM24MonthlyARRBreakdownChartPlugin,
+  SM24StatusCardFlowChartPlugin,
   SM24TopBigNumberChartPlugin,
   SM24TopCustomersChartPlugin,
-  SM24StatusFunnelChartPlugin,
 } from '@superset-ui/plugin-chart-echarts';
 import {
   SelectFilterPlugin,
@@ -117,23 +117,23 @@ export default class MainPreset extends Preset {
         new SM24ARRTrendChartPlugin().configure({
           key: VizType.SM24ARRTrend,
         }),
-        new SM24ARRWaterfallChartPlugin().configure({
-          key: VizType.SM24ARRWaterfall,
+        new SM24BigNumberProChartPlugin().configure({
+          key: VizType.SM24BigNumberPro,
         }),
-        new SM24BigNumberChartPlugin().configure({
-          key: VizType.SM24BigNumber,
+        new SM24MetricWaterfallChartPlugin().configure({
+          key: VizType.SM24MetricWaterfall,
         }),
         new SM24MonthlyARRBreakdownChartPlugin().configure({
           key: VizType.SM24MonthlyARRBreakdown,
+        }),
+        new SM24StatusCardFlowChartPlugin().configure({
+          key: VizType.SM24StatusCardFlow,
         }),
         new SM24TopBigNumberChartPlugin().configure({
           key: VizType.SM24TopBigNumber,
         }),
         new SM24TopCustomersChartPlugin().configure({
           key: VizType.SM24TopCustomers,
-        }),
-        new SM24StatusFunnelChartPlugin().configure({
-          key: VizType.SM24StatusFunnel,
         }),
         new EchartsBoxPlotChartPlugin().configure({ key: VizType.BoxPlot }),
         new BubbleChartPlugin().configure({ key: VizType.LegacyBubble }),

@@ -19,7 +19,7 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { styled } from '@superset-ui/core';
 import {
-  SM24StatusFunnelVizProps,
+  SM24StatusCardFlowVizProps,
   StatusData,
   EntityType,
   ENTITY_TYPE_DEFINITIONS,
@@ -230,7 +230,7 @@ const EmptyState = styled.div`
 // MAIN COMPONENT
 // =============================================================================
 
-function SM24StatusFunnelViz({
+function SM24StatusCardFlowViz({
   className = '',
   width,
   height,
@@ -249,7 +249,7 @@ function SM24StatusFunnelViz({
   onDrilldown,
   onEntityTypeChange,
   onRefresh,
-}: SM24StatusFunnelVizProps) {
+}: SM24StatusCardFlowVizProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Handle card click
@@ -392,4 +392,4 @@ function SM24StatusFunnelViz({
   );
 }
 
-export default SM24StatusFunnelViz;
+export default SM24StatusCardFlowViz;

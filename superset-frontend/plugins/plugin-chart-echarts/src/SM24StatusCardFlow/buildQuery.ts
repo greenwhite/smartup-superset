@@ -17,7 +17,7 @@
  * under the License.
  */
 import { buildQueryContext, QueryFormData } from '@superset-ui/core';
-import { SM24StatusFunnelFormData } from './types';
+import { SM24StatusCardFlowFormData } from './types';
 
 /**
  * Build query for SM24-StatusFunnel chart
@@ -31,7 +31,7 @@ import { SM24StatusFunnelFormData } from './types';
  * - total_amount
  */
 export default function buildQuery(formData: QueryFormData) {
-  const funnelFormData = formData as SM24StatusFunnelFormData;
+  const funnelFormData = formData as SM24StatusCardFlowFormData;
 
   const {
     statusIdColumn,

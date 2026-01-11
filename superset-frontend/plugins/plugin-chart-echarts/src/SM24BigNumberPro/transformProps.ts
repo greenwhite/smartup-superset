@@ -26,8 +26,8 @@ import {
   getNumberFormatter,
 } from '@superset-ui/core';
 import {
-  SM24BigNumberChartProps,
-  SM24BigNumberVizProps,
+  SM24BigNumberProChartProps,
+  SM24BigNumberProVizProps,
   SM24NumberFormatType,
   SM24_LOCALES,
   ComparisonData,
@@ -296,8 +296,8 @@ function colorPickerToString(
  * Transform chart props to visualization props
  */
 export default function transformProps(
-  chartProps: SM24BigNumberChartProps,
-): SM24BigNumberVizProps {
+  chartProps: SM24BigNumberProChartProps,
+): SM24BigNumberProVizProps {
   const {
     width,
     height,

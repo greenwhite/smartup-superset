@@ -16,7 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { QueryFormData, ChartProps } from '@superset-ui/core';
+import { QueryFormData, ChartProps, t } from '@superset-ui/core';
+
+// =============================================================================
+// CURRENCY & LOCALE CONFIGURATION
+// =============================================================================
+
+export interface CurrencyConfig {
+  code: string;        // ISO 4217 code: 'USD', 'EUR', 'UZS', 'RUB'
+  symbol: string;      // Display symbol: '$', '€', 'сум', '₽'
+  position: 'before' | 'after';
+  decimals: number;
+}
+
+export interface ScaleLabels {
+  thousands: string;   // 'K' or 'тыс.' or 'тис.'
+  millions: string;    // 'M' or 'млн.' or 'млн'
+  billions: string;    // 'B' or 'млрд.' or 'млрд'
+}
+
+export const DEFAULT_CURRENCY_CONFIGS: Record<string, CurrencyConfig> = {
+  UZS: { code: 'UZS', symbol: 'сум', position: 'after', decimals: 0 },
+  USD: { code: 'USD', symbol: '$', position: 'before', decimals: 2 },
+  EUR: { code: 'EUR', symbol: '€', position: 'before', decimals: 2 },
+  RUB: { code: 'RUB', symbol: '₽', position: 'after', decimals: 0 },
+};
+
+export const DEFAULT_SCALE_LABELS: Record<string, ScaleLabels> = {
+  'ru-RU': { thousands: 'тыс.', millions: 'млн.', billions: 'млрд.' },
+  'en-US': { thousands: 'K', millions: 'M', billions: 'B' },
+  'uz-UZ': { thousands: 'минг', millions: 'млн', billions: 'млрд' },
+};
 
 // =============================================================================
 // ENTITY TYPES
@@ -28,57 +58,53 @@ export interface EntityTypeDefinition {
   id: EntityType;
   labelSingular: string;
   labelPlural: string;
-  labelGenitive: string; // "заказов", "визитов", etc.
+  labelGenitive: string;
   icon: string;
   hasAmount: boolean;
-  amountLabel?: string;
 }
 
-export const ENTITY_TYPE_DEFINITIONS: Record<EntityType, EntityTypeDefinition> = {
-  orders: {
-    id: 'orders',
-    labelSingular: 'Заказ',
-    labelPlural: 'Заказы',
-    labelGenitive: 'заказов',
-    icon: '📦',
-    hasAmount: true,
-    amountLabel: 'сум',
+// Entity labels by locale
+export const ENTITY_LABELS: Record<string, Record<EntityType, Omit<EntityTypeDefinition, 'id' | 'hasAmount'>>> = {
+  'ru-RU': {
+    orders: { labelSingular: 'Заказ', labelPlural: 'Заказы', labelGenitive: 'заказов', icon: '📦' },
+    visits: { labelSingular: 'Визит', labelPlural: 'Визиты', labelGenitive: 'визитов', icon: '📍' },
+    leads: { labelSingular: 'Лид', labelPlural: 'Лиды', labelGenitive: 'лидов', icon: '🎯' },
+    tasks: { labelSingular: 'Задача', labelPlural: 'Задачи', labelGenitive: 'задач', icon: '✅' },
+    custom: { labelSingular: 'Элемент', labelPlural: 'Элементы', labelGenitive: 'элементов', icon: '📋' },
   },
-  visits: {
-    id: 'visits',
-    labelSingular: 'Визит',
-    labelPlural: 'Визиты',
-    labelGenitive: 'визитов',
-    icon: '📍',
-    hasAmount: false,
+  'en-US': {
+    orders: { labelSingular: 'Order', labelPlural: 'Orders', labelGenitive: 'orders', icon: '📦' },
+    visits: { labelSingular: 'Visit', labelPlural: 'Visits', labelGenitive: 'visits', icon: '📍' },
+    leads: { labelSingular: 'Lead', labelPlural: 'Leads', labelGenitive: 'leads', icon: '🎯' },
+    tasks: { labelSingular: 'Task', labelPlural: 'Tasks', labelGenitive: 'tasks', icon: '✅' },
+    custom: { labelSingular: 'Item', labelPlural: 'Items', labelGenitive: 'items', icon: '📋' },
   },
-  leads: {
-    id: 'leads',
-    labelSingular: 'Лид',
-    labelPlural: 'Лиды',
-    labelGenitive: 'лидов',
-    icon: '🎯',
-    hasAmount: true,
-    amountLabel: 'сум',
-  },
-  tasks: {
-    id: 'tasks',
-    labelSingular: 'Задача',
-    labelPlural: 'Задачи',
-    labelGenitive: 'задач',
-    icon: '✅',
-    hasAmount: false,
-  },
-  custom: {
-    id: 'custom',
-    labelSingular: 'Элемент',
-    labelPlural: 'Элементы',
-    labelGenitive: 'элементов',
-    icon: '📋',
-    hasAmount: true,
-    amountLabel: 'сум',
+  'uz-UZ': {
+    orders: { labelSingular: 'Buyurtma', labelPlural: 'Buyurtmalar', labelGenitive: 'buyurtmalar', icon: '📦' },
+    visits: { labelSingular: 'Tashrif', labelPlural: 'Tashriflar', labelGenitive: 'tashriflar', icon: '📍' },
+    leads: { labelSingular: 'Lid', labelPlural: 'Lidlar', labelGenitive: 'lidlar', icon: '🎯' },
+    tasks: { labelSingular: 'Vazifa', labelPlural: 'Vazifalar', labelGenitive: 'vazifalar', icon: '✅' },
+    custom: { labelSingular: 'Element', labelPlural: 'Elementlar', labelGenitive: 'elementlar', icon: '📋' },
   },
 };
+
+export const ENTITY_HAS_AMOUNT: Record<EntityType, boolean> = {
+  orders: true,
+  visits: false,
+  leads: true,
+  tasks: false,
+  custom: true,
+};
+
+export function getEntityTypeDefinition(entityType: EntityType, locale: string = 'ru-RU'): EntityTypeDefinition {
+  const labels = ENTITY_LABELS[locale] || ENTITY_LABELS['ru-RU'];
+  const entityLabels = labels[entityType] || labels.custom;
+  return {
+    id: entityType,
+    ...entityLabels,
+    hasAmount: ENTITY_HAS_AMOUNT[entityType],
+  };
+}
 
 // =============================================================================
 // STATUS DATA
@@ -129,7 +155,7 @@ export const FALLBACK_COLORS = [
 // FORM DATA
 // =============================================================================
 
-export interface SM24StatusFunnelFormData extends QueryFormData {
+export interface SM24StatusCardFlowFormData extends QueryFormData {
   // Entity type
   entityType?: EntityType;
 
@@ -152,6 +178,11 @@ export interface SM24StatusFunnelFormData extends QueryFormData {
   amountPrecision?: number;
   amountUnit?: 'auto' | 'thousands' | 'millions' | 'billions';
 
+  // Currency configuration (new)
+  currencyCode?: string;        // 'UZS', 'USD', 'EUR', 'RUB'
+  currencySymbol?: string;      // Override symbol if needed
+  currencyPosition?: 'before' | 'after';
+
   // Interactivity
   enableDrilldown?: boolean;
   enableEntityTypeSwitch?: boolean;
@@ -161,7 +192,7 @@ export interface SM24StatusFunnelFormData extends QueryFormData {
   showStatusBadge?: boolean;
 
   // Localization
-  locale?: string;
+  locale?: string;              // 'ru-RU', 'en-US', 'uz-UZ'
 
   // Refresh
   autoRefreshInterval?: number; // minutes, 0 = disabled
@@ -171,11 +202,11 @@ export interface SM24StatusFunnelFormData extends QueryFormData {
 // CHART PROPS
 // =============================================================================
 
-export interface SM24StatusFunnelChartProps extends ChartProps {
-  formData: SM24StatusFunnelFormData;
+export interface SM24StatusCardFlowChartProps extends ChartProps {
+  formData: SM24StatusCardFlowFormData;
 }
 
-export interface SM24StatusFunnelVizProps {
+export interface SM24StatusCardFlowVizProps {
   className?: string;
   width: number;
   height: number;
@@ -216,71 +247,105 @@ export interface SM24StatusFunnelVizProps {
 // =============================================================================
 
 /**
- * Format count with K/M suffix
+ * Format count with K/M suffix (locale-aware)
  */
-export function formatCountValue(value: number): string {
+export function formatCountValue(value: number, locale: string = 'ru-RU'): string {
+  const scaleLabels = DEFAULT_SCALE_LABELS[locale] || DEFAULT_SCALE_LABELS['ru-RU'];
+
   if (value >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1)}M`;
+    return `${(value / 1_000_000).toFixed(1)}${scaleLabels.millions}`;
   }
   if (value >= 1_000) {
-    return `${(value / 1_000).toFixed(1)}K`;
+    return `${(value / 1_000).toFixed(1)}${scaleLabels.thousands}`;
   }
-  return value.toLocaleString('ru-RU');
+  return value.toLocaleString(locale);
 }
 
 /**
- * Format amount with appropriate unit (тыс./млн./млрд.)
+ * Format amount with appropriate unit (locale and currency aware)
  */
 export function formatAmountValue(
   value: number,
   precision: number = 1,
   unit: 'auto' | 'thousands' | 'millions' | 'billions' = 'auto',
-): { value: string; unit: string } | null {
+  locale: string = 'ru-RU',
+  currency?: CurrencyConfig,
+): { value: string; unit: string; currency?: string } | null {
   if (value < 1000) {
     return null; // Don't show small amounts
   }
 
+  const scaleLabels = DEFAULT_SCALE_LABELS[locale] || DEFAULT_SCALE_LABELS['ru-RU'];
   let displayValue: number;
   let displayUnit: string;
+  let effectivePrecision = precision;
 
   if (unit === 'auto') {
     if (value >= 1_000_000_000) {
       displayValue = value / 1_000_000_000;
-      displayUnit = 'млрд.';
-      precision = 2;
+      displayUnit = scaleLabels.billions;
+      effectivePrecision = 2;
     } else if (value >= 1_000_000) {
       displayValue = value / 1_000_000;
-      displayUnit = 'млн.';
+      displayUnit = scaleLabels.millions;
     } else {
       displayValue = value / 1_000;
-      displayUnit = 'тыс.';
-      precision = 0;
+      displayUnit = scaleLabels.thousands;
+      effectivePrecision = 0;
     }
   } else {
     switch (unit) {
       case 'billions':
         displayValue = value / 1_000_000_000;
-        displayUnit = 'млрд.';
+        displayUnit = scaleLabels.billions;
         break;
       case 'millions':
         displayValue = value / 1_000_000;
-        displayUnit = 'млн.';
+        displayUnit = scaleLabels.millions;
         break;
       case 'thousands':
       default:
         displayValue = value / 1_000;
-        displayUnit = 'тыс.';
+        displayUnit = scaleLabels.thousands;
         break;
     }
   }
 
-  // Format with Russian locale (comma as decimal separator, space as thousand separator)
-  const formattedValue = displayValue.toLocaleString('ru-RU', {
-    minimumFractionDigits: precision,
-    maximumFractionDigits: precision,
+  // Format with specified locale
+  const formattedValue = displayValue.toLocaleString(locale, {
+    minimumFractionDigits: effectivePrecision,
+    maximumFractionDigits: effectivePrecision,
   });
 
-  return { value: formattedValue, unit: displayUnit };
+  return {
+    value: formattedValue,
+    unit: displayUnit,
+    currency: currency?.symbol,
+  };
+}
+
+/**
+ * Format full amount with currency (locale-aware)
+ */
+export function formatFullAmount(
+  value: number,
+  locale: string = 'ru-RU',
+  currency?: CurrencyConfig,
+  unit: 'auto' | 'thousands' | 'millions' | 'billions' = 'auto',
+): string {
+  const formatted = formatAmountValue(value, 1, unit, locale, currency);
+  if (!formatted) {
+    return value.toLocaleString(locale);
+  }
+
+  const currencySymbol = currency?.symbol || '';
+  const position = currency?.position || 'after';
+
+  if (position === 'before' && currencySymbol) {
+    return `${currencySymbol}${formatted.value} ${formatted.unit}`;
+  }
+
+  return `${formatted.value} ${formatted.unit}${currencySymbol ? ` ${currencySymbol}` : ''}`;
 }
 
 /**
@@ -341,10 +406,10 @@ export function getTintedBackground(color: string, opacity: number = 0.03): stri
 }
 
 /**
- * Get entity type label (genitive form for counts)
+ * Get entity type label (genitive form for counts, locale-aware)
  */
-export function getEntityLabel(entityType: EntityType, count: number): string {
-  const def = ENTITY_TYPE_DEFINITIONS[entityType];
+export function getEntityLabel(entityType: EntityType, count: number, locale: string = 'ru-RU'): string {
+  const def = getEntityTypeDefinition(entityType, locale);
   return def.labelGenitive;
 }
 
@@ -368,7 +433,7 @@ export function calculateTotals(statuses: StatusData[]): {
 // DEFAULT VALUES
 // =============================================================================
 
-export const DEFAULT_FORM_DATA: Partial<SM24StatusFunnelFormData> = {
+export const DEFAULT_FORM_DATA: Partial<SM24StatusCardFlowFormData> = {
   entityType: 'orders',
   showAmounts: true,
   showPercentages: true,
@@ -377,6 +442,8 @@ export const DEFAULT_FORM_DATA: Partial<SM24StatusFunnelFormData> = {
   maxCardsPerRow: 8,
   amountPrecision: 1,
   amountUnit: 'auto',
+  currencyCode: 'UZS',
+  currencyPosition: 'after',
   enableDrilldown: true,
   enableEntityTypeSwitch: true,
   cardBorderRadius: 12,

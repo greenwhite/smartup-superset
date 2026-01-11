@@ -17,7 +17,7 @@
  * under the License.
  */
 import { buildQueryContext, QueryFormData } from '@superset-ui/core';
-import { SM24ARRWaterfallFormData } from './types';
+import { SM24MetricWaterfallFormData } from './types';
 
 /**
  * Build query for SM24-ARRWaterfall chart
@@ -33,7 +33,7 @@ import { SM24ARRWaterfallFormData } from './types';
  * Optionally includes customer counts per category.
  */
 export default function buildQuery(formData: QueryFormData) {
-  const waterfallFormData = formData as SM24ARRWaterfallFormData;
+  const waterfallFormData = formData as SM24MetricWaterfallFormData;
 
   const {
     beginningArrMetric,

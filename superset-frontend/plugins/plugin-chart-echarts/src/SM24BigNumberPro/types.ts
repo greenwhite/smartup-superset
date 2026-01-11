@@ -174,7 +174,7 @@ export interface ActiveAlert {
 /**
  * Form data for SM24-BigNumber visualization
  */
-export type SM24BigNumberFormData = QueryFormData & {
+export type SM24BigNumberProFormData = QueryFormData & {
   metric?: QueryFormMetric;
 
   // Display options
@@ -249,23 +249,23 @@ export type SM24BigNumberFormData = QueryFormData & {
 /**
  * Data structure from query response
  */
-export interface SM24BigNumberDatum {
+export interface SM24BigNumberProDatum {
   [key: string]: number | string | null;
 }
 
 /**
  * Query response for SM24-BigNumber
  */
-export interface SM24BigNumberChartDataResponseResult extends ChartDataResponseResult {
-  data: SM24BigNumberDatum[];
+export interface SM24BigNumberProChartDataResponseResult extends ChartDataResponseResult {
+  data: SM24BigNumberProDatum[];
 }
 
 /**
  * Chart props passed to the plugin
  */
-export type SM24BigNumberChartProps = BaseChartProps<SM24BigNumberFormData> & {
-  formData: SM24BigNumberFormData;
-  queriesData: SM24BigNumberChartDataResponseResult[];
+export type SM24BigNumberProChartProps = BaseChartProps<SM24BigNumberProFormData> & {
+  formData: SM24BigNumberProFormData;
+  queriesData: SM24BigNumberProChartDataResponseResult[];
 };
 
 // =============================================================================
@@ -275,7 +275,7 @@ export type SM24BigNumberChartProps = BaseChartProps<SM24BigNumberFormData> & {
 /**
  * Props for the visualization component
  */
-export interface SM24BigNumberVizProps {
+export interface SM24BigNumberProVizProps {
   className?: string;
   width: number;
   height: number;

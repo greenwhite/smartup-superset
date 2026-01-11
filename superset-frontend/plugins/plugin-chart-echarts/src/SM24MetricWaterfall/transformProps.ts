@@ -18,8 +18,8 @@
  */
 import { ChartProps } from '@superset-ui/core';
 import {
-  SM24ARRWaterfallFormData,
-  SM24ARRWaterfallVizProps,
+  SM24MetricWaterfallFormData,
+  SM24MetricWaterfallVizProps,
   WaterfallDataPoint,
   WATERFALL_COLORS,
   formatARRValue,
@@ -34,7 +34,7 @@ import {
  */
 export default function transformProps(
   chartProps: ChartProps,
-): SM24ARRWaterfallVizProps {
+): SM24MetricWaterfallVizProps {
   const { width, height, formData, queriesData } = chartProps;
   const data = queriesData[0]?.data || [];
 
@@ -70,7 +70,7 @@ export default function transformProps(
 
     // Interactivity
     enableDrilldown = true,
-  } = formData as SM24ARRWaterfallFormData;
+  } = formData as SM24MetricWaterfallFormData;
 
   // Extract values from query data
   // The data could be in different formats depending on the query

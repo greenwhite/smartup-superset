@@ -123,7 +123,7 @@ export const DRILLDOWN_MAP: Record<string, DrilldownTarget> = {
 // FORM DATA
 // =============================================================================
 
-export interface SM24ARRWaterfallFormData extends QueryFormData {
+export interface SM24MetricWaterfallFormData extends QueryFormData {
   // Metrics
   beginningArrMetric?: string;
   newBusinessMetric?: string;
@@ -173,11 +173,11 @@ export interface SM24ARRWaterfallFormData extends QueryFormData {
 // CHART PROPS
 // =============================================================================
 
-export interface SM24ARRWaterfallChartProps extends ChartProps {
-  formData: SM24ARRWaterfallFormData;
+export interface SM24MetricWaterfallChartProps extends ChartProps {
+  formData: SM24MetricWaterfallFormData;
 }
 
-export interface SM24ARRWaterfallVizProps {
+export interface SM24MetricWaterfallVizProps {
   className?: string;
   width: number;
   height: number;
@@ -368,7 +368,7 @@ export function calculateWaterfallPositions(
  */
 export function getBarColor(
   type: WaterfallBarType,
-  colors: SM24ARRWaterfallVizProps['colors'],
+  colors: SM24MetricWaterfallVizProps['colors'],
 ): string | { type: string; colorStops: { offset: number; color: string }[] } {
   switch (type) {
     case 'total':
@@ -407,7 +407,7 @@ export const DEFAULT_BAR_ORDER = [
   'Ending ARR',
 ];
 
-export const DEFAULT_FORM_DATA: Partial<SM24ARRWaterfallFormData> = {
+export const DEFAULT_FORM_DATA: Partial<SM24MetricWaterfallFormData> = {
   showConnectorLines: true,
   showPercentLabels: true,
   showAbsoluteLabels: true,
