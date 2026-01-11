@@ -17,11 +17,8 @@
  * under the License.
  */
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import {
-  BinaryQueryObjectFilterClause,
-  styled,
-  useTheme,
-} from '@superset-ui/core';
+import { BinaryQueryObjectFilterClause } from '@superset-ui/core';
+import { styled, useTheme } from '@apache-superset/core/ui';
 import { init } from 'echarts';
 import type { ECharts, EChartsOption, SeriesOption } from 'echarts';
 import { SM24ARRTrendVizProps, ARRDataPoint, getGrowthColor } from './types';

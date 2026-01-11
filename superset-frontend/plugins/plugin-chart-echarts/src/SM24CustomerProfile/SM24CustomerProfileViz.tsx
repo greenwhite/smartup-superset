@@ -17,7 +17,8 @@
  * under the License.
  */
 import { useCallback, useState, MouseEvent } from 'react';
-import { styled, BinaryQueryObjectFilterClause } from '@superset-ui/core';
+import { BinaryQueryObjectFilterClause } from '@superset-ui/core';
+import { styled } from '@apache-superset/core/ui';
 import {
   SM24CustomerProfileVizProps,
   ProfileTab,

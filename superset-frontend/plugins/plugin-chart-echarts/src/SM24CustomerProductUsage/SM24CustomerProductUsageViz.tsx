@@ -17,12 +17,8 @@
  * under the License.
  */
 import { FC, useState, useMemo, useCallback } from 'react';
-import {
-  styled,
-  css,
-  BinaryQueryObjectFilterClause,
-  useTheme,
-} from '@superset-ui/core';
+import { BinaryQueryObjectFilterClause } from '@superset-ui/core';
+import { styled, css, useTheme } from '@apache-superset/core/ui';
 import Echart from '../components/Echart';
 import type { EChartsOption } from 'echarts';
 import {
