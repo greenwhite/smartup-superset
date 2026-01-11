@@ -16,14 +16,17 @@ superset-frontend/
 ├── plugins/
 │   └── plugin-chart-echarts/
 │       └── src/
-│           ├── SM24BigNumber/      # ECharts-based
-│           ├── SM24TopBigNumber/   # ECharts-based
-│           ├── SM24ARRTrend/       # ECharts-based
-│           ├── SM24ARRWaterfall/   # ECharts-based
-│           ├── SM24MonthlyARRBreakdown/  # ECharts-based
-│           ├── SM24TopCustomers/   # Custom React
-│           ├── SM24StatusFunnel/   # Custom React
-│           └── index.ts            # Экспорты плагинов
+│           ├── SM24ARRTrend/           # ECharts-based
+│           ├── SM24BigNumberPro/       # ECharts-based
+│           ├── SM24CustomerProductUsage/ # Custom React
+│           ├── SM24CustomerProfile/    # Custom React
+│           ├── SM24MetricWaterfall/    # ECharts-based
+│           ├── SM24MonthlyARRBreakdown/# ECharts-based
+│           ├── SM24StatusCardFlow/     # Custom React
+│           ├── SM24TopBigNumber/       # ECharts-based
+│           ├── SM24TopCustomers/       # Custom React
+│           ├── SM24Utils/              # Shared utilities
+│           └── index.ts                # Экспорты плагинов
 │
 └── src/
     └── visualizations/
@@ -332,13 +335,15 @@ export default SM24ComponentViz;
 
 export enum VizType {
   // ... existing types
-  SM24BigNumber = 'sm24_big_number',
-  SM24TopBigNumber = 'sm24_top_big_number',
   SM24ARRTrend = 'sm24_arr_trend',
-  SM24ARRWaterfall = 'sm24_arr_waterfall',
+  SM24BigNumberPro = 'sm24_big_number_pro',
+  SM24CustomerProductUsage = 'sm24_customer_product_usage',
+  SM24CustomerProfile = 'sm24_customer_profile',
+  SM24MetricWaterfall = 'sm24_metric_waterfall',
   SM24MonthlyARRBreakdown = 'sm24_monthly_arr_breakdown',
+  SM24StatusCardFlow = 'sm24_status_card_flow',
+  SM24TopBigNumber = 'sm24_top_big_number',
   SM24TopCustomers = 'sm24_top_customers',
-  SM24StatusFunnel = 'sm24_status_funnel',
 }
 ```
 
@@ -346,28 +351,45 @@ export enum VizType {
 
 ```typescript
 // Экспорт плагинов
-export { default as SM24BigNumberChartPlugin } from './SM24BigNumber';
+export { default as SM24ARRTrendChartPlugin } from './SM24ARRTrend';
+export { default as SM24BigNumberProChartPlugin } from './SM24BigNumberPro';
+export { default as SM24CustomerProductUsageChartPlugin } from './SM24CustomerProductUsage';
+export { default as SM24CustomerProfileChartPlugin } from './SM24CustomerProfile';
+export { default as SM24MetricWaterfallChartPlugin } from './SM24MetricWaterfall';
+export { default as SM24MonthlyARRBreakdownChartPlugin } from './SM24MonthlyARRBreakdown';
+export { default as SM24StatusCardFlowChartPlugin } from './SM24StatusCardFlow';
 export { default as SM24TopBigNumberChartPlugin } from './SM24TopBigNumber';
-// ... etc
+export { default as SM24TopCustomersChartPlugin } from './SM24TopCustomers';
 ```
 
 ### 3.3 MainPreset.js
 
 ```typescript
 import {
-  SM24BigNumberChartPlugin,
+  SM24ARRTrendChartPlugin,
+  SM24BigNumberProChartPlugin,
+  SM24CustomerProductUsageChartPlugin,
+  SM24CustomerProfileChartPlugin,
+  SM24MetricWaterfallChartPlugin,
+  SM24MonthlyARRBreakdownChartPlugin,
+  SM24StatusCardFlowChartPlugin,
   SM24TopBigNumberChartPlugin,
-  // ... etc
+  SM24TopCustomersChartPlugin,
 } from '@superset-ui/plugin-chart-echarts';
 
 export default class MainPreset extends Preset {
   constructor() {
     super({
       plugins: [
-        new SM24BigNumberChartPlugin().configure({
-          key: VizType.SM24BigNumber,
-        }),
-        // ... etc
+        new SM24ARRTrendChartPlugin().configure({ key: VizType.SM24ARRTrend }),
+        new SM24BigNumberProChartPlugin().configure({ key: VizType.SM24BigNumberPro }),
+        new SM24CustomerProductUsageChartPlugin().configure({ key: VizType.SM24CustomerProductUsage }),
+        new SM24CustomerProfileChartPlugin().configure({ key: VizType.SM24CustomerProfile }),
+        new SM24MetricWaterfallChartPlugin().configure({ key: VizType.SM24MetricWaterfall }),
+        new SM24MonthlyARRBreakdownChartPlugin().configure({ key: VizType.SM24MonthlyARRBreakdown }),
+        new SM24StatusCardFlowChartPlugin().configure({ key: VizType.SM24StatusCardFlow }),
+        new SM24TopBigNumberChartPlugin().configure({ key: VizType.SM24TopBigNumber }),
+        new SM24TopCustomersChartPlugin().configure({ key: VizType.SM24TopCustomers }),
       ],
     });
   }
@@ -397,11 +419,11 @@ export default class SM24ARRTrendChartPlugin extends EchartsChartPlugin<
 ```
 
 **SM24 ECharts компоненты**:
-- SM24BigNumber (sparkline)
-- SM24TopBigNumber (sparklines)
 - SM24ARRTrend (bar + line chart)
-- SM24ARRWaterfall (waterfall chart)
+- SM24BigNumberPro (sparkline + KPI)
+- SM24MetricWaterfall (waterfall chart)
 - SM24MonthlyARRBreakdown (stacked bar)
+- SM24TopBigNumber (multiple sparklines)
 
 ### 4.2 Когда использовать ChartPlugin
 
@@ -422,8 +444,10 @@ export default class SM24StatusFunnelChartPlugin extends ChartPlugin<
 ```
 
 **SM24 Custom компоненты**:
-- SM24TopCustomers (table)
-- SM24StatusFunnel (card flow)
+- SM24CustomerProductUsage (product usage summary)
+- SM24CustomerProfile (360° customer view)
+- SM24StatusCardFlow (entity status cards)
+- SM24TopCustomers (customer ranking table)
 
 ---
 
