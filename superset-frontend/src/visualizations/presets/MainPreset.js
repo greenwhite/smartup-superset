@@ -71,6 +71,8 @@ import {
   EchartsGanttChartPlugin,
   SM24ARRTrendChartPlugin,
   SM24BigNumberProChartPlugin,
+  SM24CustomerProfileChartPlugin,
+  SM24CustomerProductUsageChartPlugin,
   SM24MetricWaterfallChartPlugin,
   SM24MonthlyARRBreakdownChartPlugin,
   SM24StatusCardFlowChartPlugin,
@@ -119,6 +121,12 @@ export default class MainPreset extends Preset {
         }),
         new SM24BigNumberProChartPlugin().configure({
           key: VizType.SM24BigNumberPro,
+        }),
+        new SM24CustomerProfileChartPlugin().configure({
+          key: VizType.SM24CustomerProfile,
+        }),
+        new SM24CustomerProductUsageChartPlugin().configure({
+          key: VizType.SM24CustomerProductUsage,
         }),
         new SM24MetricWaterfallChartPlugin().configure({
           key: VizType.SM24MetricWaterfall,

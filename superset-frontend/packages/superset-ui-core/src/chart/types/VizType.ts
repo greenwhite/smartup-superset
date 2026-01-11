@@ -53,6 +53,8 @@ export enum VizType {
   Scatter = 'echarts_timeseries_scatter',
   SM24ARRTrend = 'sm24_arr_trend',
   SM24BigNumberPro = 'sm24_big_number_pro',
+  SM24CustomerProfile = 'sm24_customer_profile',
+  SM24CustomerProductUsage = 'sm24_customer_product_usage',
   SM24MetricWaterfall = 'sm24_metric_waterfall',
   SM24MonthlyARRBreakdown = 'sm24_monthly_arr_breakdown',
   SM24StatusCardFlow = 'sm24_status_card_flow',

@@ -42,6 +42,7 @@ export {
 export { default as SM24ARRTrendChartPlugin } from './SM24ARRTrend';
 export { default as SM24BigNumberProChartPlugin } from './SM24BigNumberPro';
 export { default as SM24CustomerProfileChartPlugin } from './SM24CustomerProfile';
+export { default as SM24CustomerProductUsageChartPlugin } from './SM24CustomerProductUsage';
 export { default as SM24MetricWaterfallChartPlugin } from './SM24MetricWaterfall';
 export { default as SM24MonthlyARRBreakdownChartPlugin } from './SM24MonthlyARRBreakdown';
 export { default as SM24StatusCardFlowChartPlugin } from './SM24StatusCardFlow';
