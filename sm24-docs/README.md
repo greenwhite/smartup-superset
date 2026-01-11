@@ -1,134 +1,145 @@
 # SM24 Visualization Components for Apache Superset
 
-> **Версия**: 1.1.0
-> **Автор**: Smartup24
-> **Совместимость**: Apache Superset 4.x+
+## Overview
 
-## Обзор
+SM24 - это набор бизнес-визуализаций для Apache Superset, разработанный для SaaS-компаний с фокусом на Customer Success, Revenue Analytics и Product Usage.
 
-SM24 — это набор из 7 специализированных визуализационных компонентов для Apache Superset, созданных для анализа бизнес-метрик SaaS-компаний и операционных данных.
+## Component Inventory
 
-## Компоненты
+| Component | Type | Description |
+|-----------|------|-------------|
+| [SM24-ARRTrend](./components/SM24-ARRTrend.md) | Evolution Chart | Mixed chart (line + bar) for ARR trends with MoM growth |
+| [SM24-BigNumberPro](./components/SM24-BigNumberPro.md) | KPI | Advanced big number with sparklines, comparisons, alerts |
+| [SM24-CustomerProfile](./components/SM24-CustomerProfile.md) | CRM Dashboard | 360° customer view with health, revenue, products |
+| [SM24-CustomerProductUsage](./components/SM24-CustomerProductUsage.md) | Analytics | Product usage summary with features and trends |
+| [SM24-MetricWaterfall](./components/SM24-MetricWaterfall.md) | Evolution Chart | Universal waterfall for metric breakdowns |
+| [SM24-MonthlyARRBreakdown](./components/SM24-MonthlyARRBreakdown.md) | Evolution Chart | ARR segmentation by product/customer segment |
+| [SM24-StatusCardFlow](./components/SM24-StatusCardFlow.md) | KPI Cards | Entity status flow (orders, visits, leads, tasks) |
+| [SM24-TopBigNumber](./components/SM24-TopBigNumber.md) | KPI Cards | Multiple metric cards with sparklines |
+| [SM24-TopCustomers](./components/SM24-TopCustomers.md) | Table | Sortable customer ranking with health indicators |
 
-| Компонент | Тип | Назначение | Статус |
-|-----------|-----|------------|--------|
-| [SM24-BigNumberPro](./components/SM24-BigNumberPro.md) | ECharts | Большое число с KPI, сравнениями и трендом | ✅ Production |
-| [SM24-TopBigNumber](./components/SM24-TopBigNumber.md) | ECharts | Мульти-KPI карточки (2-6 метрик) | ✅ Production |
-| [SM24-ARRTrend](./components/SM24-ARRTrend.md) | ECharts | Mixed Chart для ARR с YoY сравнением | ✅ Production |
-| [SM24-MetricWaterfall](./components/SM24-MetricWaterfall.md) | ECharts | Универсальный waterfall для метрик | ✅ Production |
-| [SM24-MonthlyARRBreakdown](./components/SM24-MonthlyARRBreakdown.md) | ECharts | Горизонтальные бары по продуктам/сегментам | ✅ Production |
-| [SM24-TopCustomers](./components/SM24-TopCustomers.md) | Custom | Таблица топ клиентов с health-индикаторами | ✅ Production |
-| [SM24-StatusCardFlow](./components/SM24-StatusCardFlow.md) | Custom | Универсальный поток статусов карточками | ✅ Production |
+## Quick Start
 
-## Shared Utilities — SM24Utils
-
-Общие утилиты для всех компонентов вынесены в модуль `SM24Utils/`:
-
-```typescript
-import {
-  formatFullAmount,    // Форматирование с валютой
-  formatPercent,       // Форматирование процентов
-  getTrendColor,       // Цвет тренда
-  calculateComparison, // Расчёт сравнения
-  DEFAULT_CURRENCY_CONFIGS, // UZS, USD, EUR, RUB
-} from '../SM24Utils';
-```
-
-Подробнее: [ARCHITECTURE.md](./ARCHITECTURE.md#11-sm24utils-module-reference)
-
-## Быстрый старт
-
-### Создание диаграммы
-
-1. Откройте Superset → Charts → Create Chart
-2. Выберите источник данных (Dataset)
-3. В списке визуализаций найдите компонент SM24-*
-4. Настройте метрики и фильтры
-5. Сохраните диаграмму
-
-### Пример: SM24-BigNumber
+### 1. Создание датасета
 
 ```sql
--- Пример SQL для Dataset
+-- Пример для SM24-ARRTrend
 SELECT
-  DATE_TRUNC('month', created_at) as __timestamp,
-  SUM(amount) as revenue,
-  COUNT(*) as order_count
-FROM orders
+    DATE_TRUNC('month', created_at) as month,
+    SUM(mrr * 12) as arr,
+    COUNT(DISTINCT customer_id) as customer_count
+FROM subscriptions
 WHERE created_at >= DATE_TRUNC('year', CURRENT_DATE)
 GROUP BY 1
+ORDER BY 1
 ```
 
-## Структура документации
+### 2. Настройка визуализации
+
+1. Откройте Superset Chart Builder
+2. Выберите визуализацию из категории **Smartup24**
+3. Настройте Column Mapping (маппинг колонок)
+4. Настройте Display Options (опции отображения)
+5. Настройте Thresholds (пороговые значения)
+
+### 3. Интеграция с Dashboard
+
+- Все компоненты поддерживают **Cross-Filter**
+- Все компоненты поддерживают **Drill to Detail**
+- Все компоненты поддерживают **Drill By**
+
+## Architecture
 
 ```
-sm24-docs/
-├── README.md                    # Этот файл
-├── AUDIT-REPORT.md              # Результаты аудита
-├── USAGE-GUIDE.md               # Руководство по использованию
-├── OPTIMIZATION-GUIDE.md        # Рекомендации по оптимизации
-├── ARCHITECTURE.md              # Техническая архитектура
-├── DATA-REQUIREMENTS.md         # Требования к данным
-├── components/                  # Документация по компонентам
-│   ├── SM24-BigNumber.md
-│   ├── SM24-TopBigNumber.md
-│   ├── SM24-ARRTrend.md
-│   ├── SM24-ARRWaterfall.md
-│   ├── SM24-MonthlyARRBreakdown.md
-│   ├── SM24-TopCustomers.md
-│   └── SM24-StatusFunnel.md
-└── examples/                    # Примеры SQL запросов
-    ├── arr-queries.sql
-    ├── customer-queries.sql
-    └── status-queries.sql
+superset-frontend/plugins/plugin-chart-echarts/src/
+├── SM24Utils/                    # Shared utilities module
+│   ├── types.ts                 # Common types
+│   ├── locales.ts               # Multi-locale configs
+│   ├── formatting.ts            # Number/currency formatters
+│   ├── colors.ts                # Color palettes
+│   └── comparison.ts            # Trend calculations
+│
+├── SM24ARRTrend/                # Component
+│   ├── types.ts                 # Component types
+│   ├── controlPanel.tsx         # Control panel config
+│   ├── transformProps.ts        # Data transformation
+│   ├── buildQuery.ts            # Query builder
+│   ├── SM24ARRTrendViz.tsx      # React component
+│   └── index.ts                 # Plugin registration
+│
+└── ... (other SM24 components follow same structure)
 ```
 
-## Соответствие стандартам
+## Feature Matrix
 
-| Требование | Статус |
-|------------|--------|
-| Apache License Headers | ✅ Pass |
-| TypeScript Only | ✅ Pass |
-| @superset-ui/core | ✅ Pass |
-| No `any` types | ✅ Fixed |
-| Shared Utilities | ✅ SM24Utils |
-| i18n Compliance | ✅ Configurable |
-| Test Coverage | ⚠️ Pending |
+| Feature | ARRTrend | BigNumberPro | CustomerProfile | CustomerProductUsage | MetricWaterfall | MonthlyARRBreakdown | StatusCardFlow | TopBigNumber | TopCustomers |
+|---------|:--------:|:------------:|:---------------:|:--------------------:|:---------------:|:-------------------:|:--------------:|:------------:|:------------:|
+| Drilldown | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| i18n (en/ru/uz) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Theme Support | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Sparkline | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Alerts | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Expandable Rows | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| YoY Comparison | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
 
-Подробнее: [AUDIT-REPORT.md](./AUDIT-REPORT.md)
+## Supported Locales
 
-## Ключевые особенности
+- **en-US** - English (default)
+- **ru-RU** - Russian
+- **uz-UZ** - Uzbek
 
-### 🌍 Мультиязычность
-- Русский (ru-RU) — основной
-- Английский (en-US) — поддержка
-- Узбекский (uz-UZ) — частичная поддержка
+### Currency Support
 
-### 📊 Форматирование чисел
-- Автоматическое масштабирование (K, M, B / тыс., млн., млрд.)
-- Локализованные разделители (1 234 567,89)
-- Поддержка валют (сум, $, €)
+| Currency | Symbol | Format Example |
+|----------|--------|----------------|
+| USD | $ | $1.5M |
+| EUR | € | €1.5M |
+| RUB | ₽ | 1.5млн ₽ |
+| UZS | сум | 1.5млрд сум |
 
-### 🎨 Темы и брендинг
-- Smartup24 Theme интеграция
-- Кастомизируемые цветовые схемы
-- Адаптивный дизайн
+### Scale Abbreviations
 
-### 🔗 Интерактивность
-- DrillToDetail — детализация данных
-- DrillBy — анализ по измерениям
-- Cross-filtering — перекрёстная фильтрация
+| Locale | Thousands | Millions | Billions |
+|--------|-----------|----------|----------|
+| en-US | K | M | B |
+| ru-RU | тыс. | млн. | млрд. |
+| uz-UZ | минг | млн | млрд |
 
-## Требования
+## SQL Examples
 
-- Apache Superset 4.0+
-- Node.js 18+
-- TypeScript 5.0+
+See [sql-examples/](./sql-examples/) for complete SQL templates:
 
-## Лицензия
+- [arr-trend.sql](./sql-examples/arr-trend.sql) - ARR trends with MoM growth
+- [customer-health.sql](./sql-examples/customer-health.sql) - Customer health scores
+- [product-usage.sql](./sql-examples/product-usage.sql) - Product usage analytics
+- [metric-waterfall.sql](./sql-examples/metric-waterfall.sql) - Waterfall breakdown
 
-Apache License 2.0
+## Guides
 
----
+- [Getting Started](./guides/getting-started.md)
+- [Data Requirements](./guides/data-requirements.md)
+- [Customization](./guides/customization.md)
+- [Optimization](./guides/optimization.md)
+- [Best Practices](./guides/best-practices.md)
 
-**Контакт**: dev@smartup24.com
+## Technical Compliance
+
+| Standard | Status | Details |
+|----------|--------|---------|
+| TypeScript | ✅ 100% | Zero `any` types |
+| @superset-ui/core | ✅ | All imports compliant |
+| Apache License | ✅ | All files have headers |
+| i18n | ✅ | Using t() function |
+| Theme Tokens | ✅ | Using useTheme() |
+| Drilldown | ✅ | ContextMenuFilters |
+| Error Handling | ✅ | Loading/error states |
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2025-01 | Initial release with 9 components |
+
+## License
+
+Licensed under Apache License 2.0

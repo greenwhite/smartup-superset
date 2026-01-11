@@ -537,7 +537,6 @@ function SM24MetricWaterfallViz({
 
         const point = data[params.dataIndex];
         if (point && DRILLDOWN_MAP[point.category]) {
-          console.log('Drilldown:', point.category, DRILLDOWN_MAP[point.category]);
           if (onDrilldown) {
             onDrilldown(point.category, '', '');
           }
