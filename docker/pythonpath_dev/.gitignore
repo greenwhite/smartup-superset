@@ -22,3 +22,8 @@
 !superset_config.py
 !superset_config_docker_light.py
 !superset_config_local.example
+# Smartup24 theme files
+!smartup24_theme.py
+!smartup24_custom_css.py
+!superset_config_docker.py.smartup24.example
+!superset_test_config_light.py

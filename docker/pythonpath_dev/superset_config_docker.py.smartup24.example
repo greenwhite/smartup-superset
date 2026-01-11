@@ -1,0 +1,211 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+"""
+Smartup24 Superset Configuration
+================================
+
+This file integrates the Smartup24 custom theme with Apache Superset.
+
+To use this configuration:
+1. Copy this file to: docker/pythonpath_dev/superset_config_docker.py
+2. Ensure smartup24_theme.py and smartup24_custom_css.py are in the same directory
+3. Add your logo files to the static assets directory
+4. Restart Superset
+
+This file will be automatically loaded by the main superset_config.py
+"""
+
+# =============================================================================
+# IMPORT SMARTUP24 THEME
+# =============================================================================
+
+from smartup24_theme import (
+    # Theme configurations
+    THEME_DEFAULT,
+    THEME_DARK,
+    # Color schemes
+    EXTRA_CATEGORICAL_COLOR_SCHEMES,
+    EXTRA_SEQUENTIAL_COLOR_SCHEMES,
+    # UI settings
+    ENABLE_UI_THEME_ADMINISTRATION,
+    # Branding
+    APP_NAME,
+    APP_ICON,
+    FAVICONS,
+    WELCOME_MESSAGE,
+)
+
+from smartup24_custom_css import CUSTOM_CSS
+
+# =============================================================================
+# ADDITIONAL SMARTUP24 CONFIGURATION
+# =============================================================================
+
+# Application Name (shown in browser tab and header)
+# APP_NAME is imported from smartup24_theme
+
+# Application Icon (logo in navigation)
+# APP_ICON is imported from smartup24_theme
+
+# Favicons configuration
+# FAVICONS is imported from smartup24_theme
+
+# Welcome message on home page
+# WELCOME_MESSAGE is imported from smartup24_theme
+
+# =============================================================================
+# FEATURE FLAGS FOR ENHANCED UX
+# =============================================================================
+
+# Update feature flags for better user experience
+FEATURE_FLAGS = {
+    # Already enabled in base config
+    "ALERT_REPORTS": True,
+
+    # Dashboard enhancements
+    "DASHBOARD_NATIVE_FILTERS": True,
+    "DASHBOARD_CROSS_FILTERS": True,
+    "DASHBOARD_RBAC": True,
+    "DASHBOARD_VIRTUALIZATION": True,
+
+    # Chart features
+    "DRILL_TO_DETAIL": True,
+    "DRILL_BY": True,
+
+    # UI improvements
+    "ENABLE_EXPLORE_DRAG_AND_DROP": True,
+    "HORIZONTAL_FILTER_BAR": True,
+
+    # Thumbnails (requires additional setup)
+    "THUMBNAILS": False,
+    "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": False,
+}
+
+# =============================================================================
+# SECURITY SETTINGS
+# =============================================================================
+
+# Row Level Security
+FEATURE_FLAGS["ROW_LEVEL_SECURITY"] = True
+
+# Enable content embedding (for iframe usage)
+# Set specific domains for production
+# HTTP_HEADERS = {
+#     'X-Frame-Options': 'ALLOWALL',  # Or SAMEORIGIN for same-domain only
+# }
+
+# CORS configuration (if needed for API access)
+# ENABLE_CORS = True
+# CORS_OPTIONS = {
+#     'supports_credentials': True,
+#     'allow_headers': ['*'],
+#     'resources': ['*'],
+#     'origins': ['https://www.smartup24.com', 'https://app.smartup24.com'],
+# }
+
+# =============================================================================
+# CACHING (Optional Performance Optimization)
+# =============================================================================
+
+# Uncomment and configure for production
+# CACHE_CONFIG = {
+#     'CACHE_TYPE': 'RedisCache',
+#     'CACHE_DEFAULT_TIMEOUT': 300,
+#     'CACHE_KEY_PREFIX': 'smartup24_superset_',
+#     'CACHE_REDIS_URL': 'redis://localhost:6379/0',
+# }
+#
+# DATA_CACHE_CONFIG = CACHE_CONFIG
+# FILTER_STATE_CACHE_CONFIG = CACHE_CONFIG
+# EXPLORE_FORM_DATA_CACHE_CONFIG = CACHE_CONFIG
+
+# =============================================================================
+# LOGGING
+# =============================================================================
+
+import logging
+
+# Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+LOG_LEVEL = logging.INFO
+
+# Custom log format
+LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+# =============================================================================
+# SQLALCHEMY SETTINGS
+# =============================================================================
+
+# Uncomment for production database optimizations
+# SQLALCHEMY_ENGINE_OPTIONS = {
+#     'pool_size': 10,
+#     'pool_recycle': 3600,
+#     'pool_pre_ping': True,
+# }
+
+# =============================================================================
+# EMAIL SETTINGS (for alerts and reports)
+# =============================================================================
+
+# Uncomment and configure for email functionality
+# SMTP_HOST = 'smtp.smartup24.com'
+# SMTP_PORT = 587
+# SMTP_STARTTLS = True
+# SMTP_SSL = False
+# SMTP_USER = 'alerts@smartup24.com'
+# SMTP_PASSWORD = 'your-smtp-password'
+# SMTP_MAIL_FROM = 'Smartup24 Analytics <alerts@smartup24.com>'
+
+# =============================================================================
+# WEBDRIVER SETTINGS (for reports and thumbnails)
+# =============================================================================
+
+# Uncomment for Selenium-based features
+# from selenium import webdriver
+# WEBDRIVER_TYPE = 'chrome'
+# WEBDRIVER_OPTION_ARGS = [
+#     '--headless',
+#     '--no-sandbox',
+#     '--disable-dev-shm-usage',
+#     '--disable-gpu',
+# ]
+
+# =============================================================================
+# CUSTOM MENU ITEMS (Optional)
+# =============================================================================
+
+# Add custom links to the navigation menu
+# MENU_ITEMS = [
+#     {
+#         'name': 'Smartup24 Help',
+#         'url': 'https://help.smartup24.com',
+#         'icon': 'fa-question-circle',
+#         'target': '_blank',
+#     },
+#     {
+#         'name': 'Smartup24 Website',
+#         'url': 'https://www.smartup24.com',
+#         'icon': 'fa-external-link',
+#         'target': '_blank',
+#     },
+# ]
+
+# =============================================================================
+# PUBLIC ROLE (for anonymous access)
+# =============================================================================
+
+# Uncomment to enable public dashboards without login
+# PUBLIC_ROLE_LIKE = 'Gamma'

@@ -39,6 +39,15 @@ export {
   BigNumberTotalChartPlugin,
   BigNumberPeriodOverPeriodChartPlugin,
 } from './BigNumber';
+export { default as SM24ARRTrendChartPlugin } from './SM24ARRTrend';
+export { default as SM24BigNumberProChartPlugin } from './SM24BigNumberPro';
+export { default as SM24CustomerProfileChartPlugin } from './SM24CustomerProfile';
+export { default as SM24CustomerProductUsageChartPlugin } from './SM24CustomerProductUsage';
+export { default as SM24MetricWaterfallChartPlugin } from './SM24MetricWaterfall';
+export { default as SM24MonthlyARRBreakdownChartPlugin } from './SM24MonthlyARRBreakdown';
+export { default as SM24StatusCardFlowChartPlugin } from './SM24StatusCardFlow';
+export { default as SM24TopBigNumberChartPlugin } from './SM24TopBigNumber';
+export { default as SM24TopCustomersChartPlugin } from './SM24TopCustomers';
 export { default as EchartsSunburstChartPlugin } from './Sunburst';
 export { default as EchartsBubbleChartPlugin } from './Bubble';
 export { default as EchartsSankeyChartPlugin } from './Sankey';
