@@ -19,7 +19,7 @@
 import { useMemo } from 'react';
 import { styled, useTheme } from '@apache-superset/core/ui';
 import {
-  SM24TopBlockVizProps,
+  SM24TopBigNumberVizProps,
   MetricCardData,
   getTrendColor,
 } from './types';
@@ -95,19 +95,19 @@ function MetricCard({
   }, [card.sparklineData, sparklineHeight]);
 
   return (
-    <div className="sm24-topblock__card">
+    <div className="sm24-topbignumber__card">
       {showMetricName && (
         <div
-          className="sm24-topblock__card-label"
+          className="sm24-topbignumber__card-label"
           style={{ color: headerColor }}
         >
           {card.label}
         </div>
       )}
 
-      <div className="sm24-topblock__card-value-row">
+      <div className="sm24-topbignumber__card-value-row">
         <div
-          className="sm24-topblock__card-value"
+          className="sm24-topbignumber__card-value"
           style={{ color: valueColor }}
         >
           {card.formattedValue}
@@ -115,18 +115,18 @@ function MetricCard({
 
         {showComparison && card.percentChange !== null && (
           <div
-            className="sm24-topblock__card-change"
+            className="sm24-topbignumber__card-change"
             style={{ color: trendColor }}
           >
-            <span className="sm24-topblock__card-trend-icon">{trendIcon}</span>
-            <span className="sm24-topblock__card-percent">{formatPercent(card.percentChange)}</span>
+            <span className="sm24-topbignumber__card-trend-icon">{trendIcon}</span>
+            <span className="sm24-topbignumber__card-percent">{formatPercent(card.percentChange)}</span>
           </div>
         )}
       </div>
 
       {showSparkline && (
         <div
-          className="sm24-topblock__card-sparkline"
+          className="sm24-topbignumber__card-sparkline"
           style={{ height: `${sparklineHeight}px` }}
         >
           <svg
@@ -154,7 +154,7 @@ function MetricCard({
 // MAIN COMPONENT
 // =============================================================================
 
-function SM24TopBlockViz({
+function SM24TopBigNumberViz({
   className = '',
   width,
   height,
@@ -176,7 +176,7 @@ function SM24TopBlockViz({
   comparisonColorScheme,
   sparklineConfig,
   formatValue,
-}: SM24TopBlockVizProps) {
+}: SM24TopBigNumberVizProps) {
   // Calculate grid columns based on width and settings
   const gridColumns = useMemo(() => {
     if (columnsCount > 0) return columnsCount;
@@ -192,7 +192,7 @@ function SM24TopBlockViz({
 
   return (
     <div
-      className={`sm24-topblock ${className}`}
+      className={`sm24-topbignumber ${className}`}
       style={{
         width,
         height,
@@ -203,7 +203,7 @@ function SM24TopBlockViz({
         '--card-bg': cardBackground,
       } as React.CSSProperties}
     >
-      <div className={`sm24-topblock__grid ${cardShadow ? 'sm24-topblock__grid--shadow' : ''}`}>
+      <div className={`sm24-topbignumber__grid ${cardShadow ? 'sm24-topbignumber__grid--shadow' : ''}`}>
         {metricCards.map(card => (
           <MetricCard
             key={card.id}
@@ -227,14 +227,14 @@ function SM24TopBlockViz({
 // STYLED COMPONENT
 // =============================================================================
 
-const StyledSM24TopBlockViz = styled(SM24TopBlockViz)`
+const StyledSM24TopBigNumberViz = styled(SM24TopBigNumberViz)`
   ${({ theme }) => `
     font-family: ${theme.fontFamily};
     position: relative;
     overflow: hidden;
     padding: ${theme.gridUnit * 2}px;
 
-    .sm24-topblock__grid {
+    .sm24-topbignumber__grid {
       display: grid;
       grid-template-columns: repeat(var(--grid-columns), 1fr);
       gap: var(--card-gap);
@@ -242,7 +242,7 @@ const StyledSM24TopBlockViz = styled(SM24TopBlockViz)`
       height: 100%;
     }
 
-    .sm24-topblock__card {
+    .sm24-topbignumber__card {
       background: var(--card-bg, ${theme.colors.grayscale.light5});
       border-radius: var(--card-radius);
       padding: var(--card-padding);
@@ -254,16 +254,16 @@ const StyledSM24TopBlockViz = styled(SM24TopBlockViz)`
       min-width: 0;
     }
 
-    .sm24-topblock__grid--shadow .sm24-topblock__card {
+    .sm24-topbignumber__grid--shadow .sm24-topbignumber__card {
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
-    .sm24-topblock__card:hover {
+    .sm24-topbignumber__card:hover {
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .sm24-topblock__card-label {
+    .sm24-topbignumber__card-label {
       font-size: ${theme.typography.sizes.s}px;
       font-weight: ${theme.typography.weights.normal};
       color: ${theme.colors.text.label};
@@ -273,14 +273,14 @@ const StyledSM24TopBlockViz = styled(SM24TopBlockViz)`
       line-height: 1.3;
     }
 
-    .sm24-topblock__card-value-row {
+    .sm24-topbignumber__card-value-row {
       display: flex;
       align-items: baseline;
       gap: ${theme.gridUnit * 2}px;
       flex-wrap: wrap;
     }
 
-    .sm24-topblock__card-value {
+    .sm24-topbignumber__card-value {
       font-size: ${theme.typography.sizes.xxl}px;
       font-weight: ${theme.typography.weights.bold};
       color: ${theme.colors.text.label};
@@ -288,7 +288,7 @@ const StyledSM24TopBlockViz = styled(SM24TopBlockViz)`
       white-space: nowrap;
     }
 
-    .sm24-topblock__card-change {
+    .sm24-topbignumber__card-change {
       display: flex;
       align-items: center;
       gap: 2px;
@@ -297,41 +297,41 @@ const StyledSM24TopBlockViz = styled(SM24TopBlockViz)`
       white-space: nowrap;
     }
 
-    .sm24-topblock__card-trend-icon {
+    .sm24-topbignumber__card-trend-icon {
       font-size: 1.1em;
     }
 
-    .sm24-topblock__card-percent {
+    .sm24-topbignumber__card-percent {
       font-weight: ${theme.typography.weights.medium};
     }
 
-    .sm24-topblock__card-sparkline {
+    .sm24-topbignumber__card-sparkline {
       width: 100%;
       margin-top: auto;
       opacity: 0.8;
     }
 
-    .sm24-topblock__card-sparkline svg {
+    .sm24-topbignumber__card-sparkline svg {
       display: block;
     }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
-      .sm24-topblock__grid {
+      .sm24-topbignumber__grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .sm24-topblock__card-value {
+      .sm24-topbignumber__card-value {
         font-size: ${theme.typography.sizes.xl}px;
       }
     }
 
     @media (max-width: 480px) {
-      .sm24-topblock__grid {
+      .sm24-topbignumber__grid {
         grid-template-columns: 1fr;
       }
     }
   `}
 `;
 
-export default StyledSM24TopBlockViz;
+export default StyledSM24TopBigNumberViz;

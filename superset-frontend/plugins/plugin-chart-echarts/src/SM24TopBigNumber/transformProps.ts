@@ -18,8 +18,8 @@
  */
 import { getMetricLabel } from '@superset-ui/core';
 import {
-  SM24TopBlockChartProps,
-  SM24TopBlockVizProps,
+  SM24TopBigNumberChartProps,
+  SM24TopBigNumberVizProps,
   MetricCardData,
   SM24NumberFormat,
   SM24_TOPBLOCK_LOCALES,
@@ -172,8 +172,8 @@ function calculatePercentChange(current: number | null, previous: number | null)
 // =============================================================================
 
 export default function transformProps(
-  chartProps: SM24TopBlockChartProps,
-): SM24TopBlockVizProps {
+  chartProps: SM24TopBigNumberChartProps,
+): SM24TopBigNumberVizProps {
   const { width, height, queriesData, formData } = chartProps;
 
   const {

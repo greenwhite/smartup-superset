@@ -80,7 +80,7 @@ export type SM24NumberFormat =
 /**
  * Form data for SM24-TopBlock visualization
  */
-export type SM24TopBlockFormData = QueryFormData & {
+export type SM24TopBigNumberFormData = QueryFormData & {
   // Metrics (multiple)
   metrics?: QueryFormMetric[];
 
@@ -132,23 +132,23 @@ export type SM24TopBlockFormData = QueryFormData & {
 /**
  * Data structure from query response
  */
-export interface SM24TopBlockDatum {
+export interface SM24TopBigNumberDatum {
   [key: string]: DataRecordValue;
 }
 
 /**
  * Query response for SM24-TopBlock
  */
-export interface SM24TopBlockChartDataResponseResult extends ChartDataResponseResult {
-  data: SM24TopBlockDatum[];
+export interface SM24TopBigNumberChartDataResponseResult extends ChartDataResponseResult {
+  data: SM24TopBigNumberDatum[];
 }
 
 /**
  * Chart props passed to the plugin
  */
-export type SM24TopBlockChartProps = BaseChartProps<SM24TopBlockFormData> & {
-  formData: SM24TopBlockFormData;
-  queriesData: SM24TopBlockChartDataResponseResult[];
+export type SM24TopBigNumberChartProps = BaseChartProps<SM24TopBigNumberFormData> & {
+  formData: SM24TopBigNumberFormData;
+  queriesData: SM24TopBigNumberChartDataResponseResult[];
 };
 
 // =============================================================================
@@ -158,7 +158,7 @@ export type SM24TopBlockChartProps = BaseChartProps<SM24TopBlockFormData> & {
 /**
  * Props for the visualization component
  */
-export interface SM24TopBlockVizProps {
+export interface SM24TopBigNumberVizProps {
   className?: string;
   width: number;
   height: number;
@@ -208,7 +208,7 @@ export interface SM24TopBlockVizProps {
 /**
  * Locale configuration for number formatting
  */
-export interface SM24TopBlockLocale {
+export interface SM24TopBigNumberLocale {
   decimal: string;
   thousands: string;
   shortScale: {
@@ -221,7 +221,7 @@ export interface SM24TopBlockLocale {
 /**
  * Predefined locales
  */
-export const SM24_TOPBLOCK_LOCALES: Record<string, SM24TopBlockLocale> = {
+export const SM24_TOPBLOCK_LOCALES: Record<string, SM24TopBigNumberLocale> = {
   en: {
     decimal: '.',
     thousands: ',',

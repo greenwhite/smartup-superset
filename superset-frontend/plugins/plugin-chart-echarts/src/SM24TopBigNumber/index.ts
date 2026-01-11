@@ -20,7 +20,7 @@ import { t, Behavior } from '@superset-ui/core';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import buildQuery from './buildQuery';
-import { SM24TopBlockChartProps, SM24TopBlockFormData } from './types';
+import { SM24TopBigNumberChartProps, SM24TopBigNumberFormData } from './types';
 import { EchartsChartPlugin } from '../types';
 
 // Placeholder thumbnails
@@ -47,13 +47,13 @@ const metadata = {
   behaviors: [Behavior.DrillToDetail],
 };
 
-export default class SM24TopBlockChartPlugin extends EchartsChartPlugin<
-  SM24TopBlockFormData,
-  SM24TopBlockChartProps
+export default class SM24TopBigNumberChartPlugin extends EchartsChartPlugin<
+  SM24TopBigNumberFormData,
+  SM24TopBigNumberChartProps
 > {
   constructor() {
     super({
-      loadChart: () => import('./SM24TopBlockViz'),
+      loadChart: () => import('./SM24TopBigNumberViz'),
       metadata,
       buildQuery,
       transformProps,
