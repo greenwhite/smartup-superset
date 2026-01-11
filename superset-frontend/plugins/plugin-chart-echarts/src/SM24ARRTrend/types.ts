@@ -18,13 +18,14 @@
  */
 
 import {
+  BinaryQueryObjectFilterClause,
   ChartDataResponseResult,
   DataRecordValue,
   QueryFormData,
   QueryFormMetric,
 } from '@superset-ui/core';
 import type { EChartsCoreOption } from 'echarts';
-import { BaseChartProps, Refs } from '../types';
+import { BaseChartProps, ContextMenuFilters, Refs } from '../types';
 
 // =============================================================================
 // ARR COMPONENT TYPES
@@ -49,6 +50,9 @@ export interface ARRDataPoint {
   netNewARR: number;
   growthRate: number | null;
   momChange: number | null;
+  // YoY comparison data
+  yoyTotalARR?: number | null;
+  yoyGrowthRate?: number | null;
 }
 
 /**
@@ -273,6 +277,16 @@ export interface SM24ARRTrendVizProps {
   enableDrilldown: boolean;
   enableYoYComparison: boolean;
   onDataPointClick?: (dataPoint: ARRDataPoint, component?: ARRComponent) => void;
+
+  // Drilldown support
+  onContextMenu?: (
+    clientX: number,
+    clientY: number,
+    filters?: ContextMenuFilters,
+  ) => void;
+
+  // Form data for building drill filters
+  formData: SM24ARRTrendFormData;
 
   // ECharts option (generated)
   echartOptions?: EChartsCoreOption;

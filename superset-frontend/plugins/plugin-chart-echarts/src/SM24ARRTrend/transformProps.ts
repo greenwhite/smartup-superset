@@ -80,7 +80,8 @@ function formatMonthLabel(dateStr: string): string {
 export default function transformProps(
   chartProps: SM24ARRTrendChartProps,
 ): SM24ARRTrendVizProps {
-  const { width, height, queriesData, formData } = chartProps;
+  const { width, height, queriesData, formData, hooks } = chartProps;
+  const { onContextMenu } = hooks || {};
 
   const {
     // Metrics
@@ -135,6 +136,8 @@ export default function transformProps(
 
   const refs: Refs = {};
   const { data = [] } = queriesData[0] || {};
+  // YoY comparison data (from second query if enabled)
+  const yoyData = enableYoYComparison && queriesData[1] ? queriesData[1].data || [] : [];
   const locale = SM24_ARR_LOCALES[numberLocale] || SM24_ARR_LOCALES.en;
 
   // Get metric labels
@@ -143,6 +146,21 @@ export default function transformProps(
   const expansionLabel = metricExpansion ? getMetricLabel(metricExpansion) : 'expansion';
   const contractionLabel = metricContraction ? getMetricLabel(metricContraction) : 'contraction';
   const churnedLabel = metricChurned ? getMetricLabel(metricChurned) : 'churned';
+
+  // Build YoY lookup map for quick access
+  const yoyLookup: Map<string, number> = new Map();
+  if (enableYoYComparison && yoyData.length > 0) {
+    yoyData.forEach(row => {
+      const timeKey = Object.keys(row).find(k =>
+        k.includes('month') || k.includes('date') || k === '__timestamp'
+      ) || Object.keys(row)[0];
+      const month = String(row[timeKey] || '');
+      const yoyTotalARR = parseNumericValue(row[totalARRLabel]);
+      // Store with month key (we need to match by month name, not exact date)
+      const monthKey = formatMonthLabel(month);
+      yoyLookup.set(monthKey, yoyTotalARR);
+    });
+  }
 
   // Transform data to ARRDataPoint array
   const arrData: ARRDataPoint[] = [];
@@ -165,9 +183,16 @@ export default function transformProps(
     const growthRate = calculateMoMGrowth(totalARR, previousARR);
     const momChange = previousARR !== null ? totalARR - previousARR : null;
 
+    // Get YoY data for this month
+    const monthLabel = formatMonthLabel(month);
+    const yoyTotalARR = yoyLookup.get(monthLabel) ?? null;
+    const yoyGrowthRate = yoyTotalARR !== null && yoyTotalARR !== 0
+      ? ((totalARR - yoyTotalARR) / yoyTotalARR) * 100
+      : null;
+
     arrData.push({
       month,
-      monthLabel: formatMonthLabel(month),
+      monthLabel,
       totalARR,
       newBusiness,
       expansion,
@@ -176,6 +201,8 @@ export default function transformProps(
       netNewARR,
       growthRate,
       momChange,
+      yoyTotalARR,
+      yoyGrowthRate,
     });
 
     previousARR = totalARR;
@@ -262,6 +289,8 @@ export default function transformProps(
     yAxisRightLabel,
     enableDrilldown,
     enableYoYComparison,
+    onContextMenu,
+    formData,
     refs,
   };
 }

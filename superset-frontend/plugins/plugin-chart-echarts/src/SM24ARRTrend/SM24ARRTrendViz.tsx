@@ -17,7 +17,7 @@
  * under the License.
  */
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { styled } from '@apache-superset/core/ui';
+import { BinaryQueryObjectFilterClause, styled } from '@superset-ui/core';
 import * as echarts from 'echarts';
 import type { EChartsOption, SeriesOption } from 'echarts';
 import {
@@ -55,6 +55,9 @@ function SM24ARRTrendViz({
   yAxisLeftLabel,
   yAxisRightLabel,
   enableDrilldown,
+  enableYoYComparison,
+  onContextMenu,
+  formData,
   refs,
 }: SM24ARRTrendVizProps) {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -250,6 +253,30 @@ function SM24ARRTrendViz({
       });
     }
 
+    // YoY Comparison Line (if enabled and data available)
+    if (enableYoYComparison && data.some(d => d.yoyTotalARR !== null)) {
+      series.push({
+        name: 'Last Year ARR',
+        type: 'line',
+        yAxisIndex: 0,
+        data: data.map(d => d.yoyTotalARR),
+        lineStyle: {
+          width: 2,
+          type: 'dashed',
+          color: '#95A5A6',
+        },
+        symbol: 'circle',
+        symbolSize: 5,
+        itemStyle: {
+          color: '#95A5A6',
+        },
+        emphasis: {
+          focus: 'series',
+        },
+        z: 7,
+      });
+    }
+
     return series;
   }, [
     data,
@@ -259,6 +286,7 @@ function SM24ARRTrendViz({
     showBars,
     showGrowthRate,
     showProjection,
+    enableYoYComparison,
     colors,
     growthThresholds,
   ]);
@@ -415,6 +443,25 @@ function SM24ARRTrendViz({
             </span>
           </div>`;
 
+          // YoY Comparison (if available)
+          if (dataPoint.yoyTotalARR !== null && dataPoint.yoyTotalARR !== undefined) {
+            html += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #eee;" />`;
+            html += `<div style="font-size: 11px; color: #666;">Year-over-Year:</div>`;
+            html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
+              <span style="color: #95A5A6;">Last Year ARR</span>
+              <span>${formatCurrency(dataPoint.yoyTotalARR)}</span>
+            </div>`;
+            if (dataPoint.yoyGrowthRate !== null) {
+              const yoyColor = dataPoint.yoyGrowthRate >= 0 ? colors.newBusiness : colors.churned;
+              html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
+                <span style="color: #666;">YoY Growth</span>
+                <span style="color: ${yoyColor}; font-weight: bold;">
+                  ${dataPoint.yoyGrowthRate >= 0 ? '+' : ''}${dataPoint.yoyGrowthRate.toFixed(1)}%
+                </span>
+              </div>`;
+            }
+          }
+
           return html;
         },
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -552,16 +599,66 @@ function SM24ARRTrendViz({
     // Set option
     chart.setOption(chartOption);
 
-    // Handle click events for drilldown
-    if (enableDrilldown) {
-      chart.on('click', (params: { dataIndex: number; seriesName: string }) => {
-        const dataPoint = data[params.dataIndex];
-        if (dataPoint) {
-          console.log('Drilldown:', dataPoint.month, params.seriesName);
-          // Drilldown logic would go here
+    // Handle click events for cross-filtering (optional)
+    chart.on('click', (params: { dataIndex: number; seriesName: string }) => {
+      const dataPoint = data[params.dataIndex];
+      if (dataPoint && enableDrilldown) {
+        // Cross-filter click behavior can be added here
+      }
+    });
+
+    // Handle right-click context menu for DrillToDetail and DrillBy
+    chart.on('contextmenu', (eventParams: {
+      dataIndex: number;
+      seriesName: string;
+      event: { event: MouseEvent; stop: () => void };
+    }) => {
+      if (onContextMenu) {
+        eventParams.event.stop();
+        const dataPoint = data[eventParams.dataIndex];
+        const pointerEvent = eventParams.event.event;
+
+        if (!dataPoint) return;
+
+        // Build drill-to-detail filters
+        const drillToDetailFilters: BinaryQueryObjectFilterClause[] = [];
+
+        // Add time filter for the selected month
+        if (formData.granularitySqla && dataPoint.month) {
+          drillToDetailFilters.push({
+            col: formData.granularitySqla,
+            grain: formData.timeGrainSqla,
+            op: '==',
+            val: dataPoint.month,
+            formattedVal: dataPoint.monthLabel,
+          });
         }
-      });
-    }
+
+        // Build drill-by filters (based on groupby if any)
+        const drillByFilters: BinaryQueryObjectFilterClause[] = [];
+        const groupby = formData.groupby || [];
+
+        // Add groupby dimensions to drill-by filters
+        groupby.forEach((dimension: string) => {
+          drillByFilters.push({
+            col: dimension,
+            op: '==',
+            val: dataPoint.month,
+            formattedVal: dataPoint.monthLabel,
+          });
+        });
+
+        // Call onContextMenu with drill filters
+        onContextMenu(pointerEvent.clientX, pointerEvent.clientY, {
+          drillToDetail: drillToDetailFilters,
+          drillBy: groupby.length > 0 ? {
+            filters: drillByFilters,
+            groupbyFieldName: 'groupby',
+            adhocFilterFieldName: 'adhoc_filters',
+          } : undefined,
+        });
+      }
+    });
 
     // Store refs
     if (refs) {
@@ -571,7 +668,7 @@ function SM24ARRTrendViz({
     return () => {
       chart.dispose();
     };
-  }, [chartOption, enableDrilldown, data, refs]);
+  }, [chartOption, enableDrilldown, onContextMenu, data, formData, refs]);
 
   // Handle resize
   useEffect(() => {
