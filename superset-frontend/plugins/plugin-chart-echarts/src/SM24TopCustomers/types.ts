@@ -20,8 +20,9 @@ import {
   QueryFormData,
   ChartProps,
   BinaryQueryObjectFilterClause,
+  ContextMenuFilters,
 } from '@superset-ui/core';
-import { ContextMenuFilters, Refs } from '../types';
+import { Refs } from '../types';
 
 // =============================================================================
 // CUSTOMER DATA TYPES

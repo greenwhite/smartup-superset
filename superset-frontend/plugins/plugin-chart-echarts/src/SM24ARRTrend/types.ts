@@ -20,12 +20,13 @@
 import {
   BinaryQueryObjectFilterClause,
   ChartDataResponseResult,
+  ContextMenuFilters,
   DataRecordValue,
   QueryFormData,
   QueryFormMetric,
 } from '@superset-ui/core';
 import type { EChartsCoreOption } from 'echarts';
-import { BaseChartProps, ContextMenuFilters, Refs } from '../types';
+import { BaseChartProps, Refs } from '../types';
 
 // =============================================================================
 // ARR COMPONENT TYPES
