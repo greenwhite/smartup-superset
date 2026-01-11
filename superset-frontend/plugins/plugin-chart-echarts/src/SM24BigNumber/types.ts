@@ -33,9 +33,9 @@ import { BaseChartProps, Refs } from '../types';
 // =============================================================================
 
 /**
- * Number format presets for Smartup24 KPI
+ * Number format presets for SM24-BigNumber
  */
-export type SmartupNumberFormatType =
+export type SM24NumberFormatType =
   | 'integer'           // 1,234,567
   | 'decimal_1'         // 1,234,567.8
   | 'decimal_2'         // 1,234,567.89
@@ -172,9 +172,9 @@ export interface ActiveAlert {
 // =============================================================================
 
 /**
- * Form data for SmartupKPI visualization
+ * Form data for SM24-BigNumber visualization
  */
-export type SmartupKPIFormData = QueryFormData & {
+export type SM24BigNumberFormData = QueryFormData & {
   metric?: QueryFormMetric;
 
   // Display options
@@ -185,7 +185,7 @@ export type SmartupKPIFormData = QueryFormData & {
   subtitle?: string;
 
   // Number formatting
-  numberFormatType?: SmartupNumberFormatType;
+  numberFormatType?: SM24NumberFormatType;
   customNumberFormat?: string;
   numberPrefix?: string;
   numberSuffix?: string;
@@ -249,23 +249,23 @@ export type SmartupKPIFormData = QueryFormData & {
 /**
  * Data structure from query response
  */
-export interface SmartupKPIDatum {
+export interface SM24BigNumberDatum {
   [key: string]: number | string | null;
 }
 
 /**
- * Query response for SmartupKPI
+ * Query response for SM24-BigNumber
  */
-export interface SmartupKPIChartDataResponseResult extends ChartDataResponseResult {
-  data: SmartupKPIDatum[];
+export interface SM24BigNumberChartDataResponseResult extends ChartDataResponseResult {
+  data: SM24BigNumberDatum[];
 }
 
 /**
  * Chart props passed to the plugin
  */
-export type SmartupKPIChartProps = BaseChartProps<SmartupKPIFormData> & {
-  formData: SmartupKPIFormData;
-  queriesData: SmartupKPIChartDataResponseResult[];
+export type SM24BigNumberChartProps = BaseChartProps<SM24BigNumberFormData> & {
+  formData: SM24BigNumberFormData;
+  queriesData: SM24BigNumberChartDataResponseResult[];
 };
 
 // =============================================================================
@@ -275,7 +275,7 @@ export type SmartupKPIChartProps = BaseChartProps<SmartupKPIFormData> & {
 /**
  * Props for the visualization component
  */
-export interface SmartupKPIVizProps {
+export interface SM24BigNumberVizProps {
   className?: string;
   width: number;
   height: number;
@@ -340,7 +340,7 @@ export interface SmartupKPIVizProps {
 /**
  * Locale configuration for number formatting
  */
-export interface SmartupNumberLocale {
+export interface SM24NumberLocale {
   decimal: string;
   thousands: string;
   grouping: number[];
@@ -354,9 +354,9 @@ export interface SmartupNumberLocale {
 }
 
 /**
- * Predefined locales
+ * Predefined locales for Smartup24
  */
-export const SMARTUP_LOCALES: Record<string, SmartupNumberLocale> = {
+export const SM24_LOCALES: Record<string, SM24NumberLocale> = {
   en: {
     decimal: '.',
     thousands: ',',

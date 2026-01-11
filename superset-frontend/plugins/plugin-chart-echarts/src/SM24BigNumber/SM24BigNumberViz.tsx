@@ -20,7 +20,7 @@ import { useState, useEffect, useRef, MouseEvent, useMemo } from 'react';
 import { t, computeMaxFontSize } from '@superset-ui/core';
 import { styled, useTheme } from '@apache-superset/core/ui';
 import {
-  SmartupKPIVizProps,
+  SM24BigNumberVizProps,
   ComparisonColorScheme,
   getTrendColor,
 } from './types';
@@ -45,7 +45,7 @@ const defaultFormatter = (value: number) => String(value);
 // =============================================================================
 
 interface ComparisonDisplayProps {
-  comparisonData: SmartupKPIVizProps['comparisonData'];
+  comparisonData: SM24BigNumberVizProps['comparisonData'];
   comparisonLabel?: string;
   showPreviousValue?: boolean;
   showAbsoluteDifference?: boolean;
@@ -102,21 +102,21 @@ function ComparisonDisplay({
 
   return (
     <div
-      className="smartup-kpi__comparison"
+      className="sm24-bignumber__comparison"
       style={{ fontSize: `${fontSize}px` }}
     >
       {showPercentDifference && percentDifference !== null && (
         <span
-          className="smartup-kpi__comparison-percent"
+          className="sm24-bignumber__comparison-percent"
           style={{ color: trendColor }}
         >
-          <span className="smartup-kpi__trend-icon">{trendIcon}</span>
+          <span className="sm24-bignumber__trend-icon">{trendIcon}</span>
           {formatPercent(percentDifference)}
         </span>
       )}
       {showAbsoluteDifference && absoluteDifference !== null && (
         <span
-          className="smartup-kpi__comparison-absolute"
+          className="sm24-bignumber__comparison-absolute"
           style={{ color: trendColor }}
         >
           {absoluteDifference >= 0 ? '+' : ''}
@@ -124,19 +124,19 @@ function ComparisonDisplay({
         </span>
       )}
       {showPreviousValue && previousValue !== null && (
-        <span className="smartup-kpi__comparison-previous">
+        <span className="sm24-bignumber__comparison-previous">
           # {formatter(previousValue)}
         </span>
       )}
       {comparisonLabel && (
-        <span className="smartup-kpi__comparison-label">{comparisonLabel}</span>
+        <span className="sm24-bignumber__comparison-label">{comparisonLabel}</span>
       )}
     </div>
   );
 }
 
 interface ProgressBarProps {
-  config: SmartupKPIVizProps['progressBarConfig'];
+  config: SM24BigNumberVizProps['progressBarConfig'];
   progress?: number;
   formatter: (value: number) => string;
   currentValue?: number | null;
@@ -151,13 +151,13 @@ function ProgressBar({ config, progress, formatter, currentValue }: ProgressBarP
   const barColor = isAboveTarget ? colorAboveTarget : colorBelowTarget;
 
   return (
-    <div className="smartup-kpi__progress-container">
+    <div className="sm24-bignumber__progress-container">
       <div
-        className="smartup-kpi__progress-bar"
+        className="sm24-bignumber__progress-bar"
         style={{ height: `${height || 8}px` }}
       >
         <div
-          className="smartup-kpi__progress-fill"
+          className="sm24-bignumber__progress-fill"
           style={{
             width: `${Math.min(clampedProgress, 100)}%`,
             backgroundColor: barColor,
@@ -165,19 +165,19 @@ function ProgressBar({ config, progress, formatter, currentValue }: ProgressBarP
         />
         {clampedProgress > 100 && (
           <div
-            className="smartup-kpi__progress-overflow"
+            className="sm24-bignumber__progress-overflow"
             style={{ backgroundColor: colorAboveTarget }}
           />
         )}
       </div>
-      <div className="smartup-kpi__progress-labels">
+      <div className="sm24-bignumber__progress-labels">
         {showPercentage && (
-          <span className="smartup-kpi__progress-percent">
+          <span className="sm24-bignumber__progress-percent">
             {clampedProgress.toFixed(1)}%
           </span>
         )}
         {showTarget && (
-          <span className="smartup-kpi__progress-target">
+          <span className="sm24-bignumber__progress-target">
             {t('Target')}: {formatter(targetValue)}
           </span>
         )}
@@ -190,7 +190,7 @@ function ProgressBar({ config, progress, formatter, currentValue }: ProgressBarP
 // MAIN COMPONENT
 // =============================================================================
 
-function SmartupKPIViz({
+function SM24BigNumberViz({
   className = '',
   width,
   height,
@@ -215,7 +215,7 @@ function SmartupKPIViz({
   currentProgress,
   animationEnabled = true,
   onContextMenu,
-}: SmartupKPIVizProps) {
+}: SM24BigNumberVizProps) {
   const theme = useTheme();
 
   // Animation state
@@ -265,7 +265,7 @@ function SmartupKPIViz({
   // Create temporary container for font size calculation
   const createTemporaryContainer = () => {
     const container = document.createElement('div');
-    container.className = `smartup-kpi ${className}`;
+    container.className = `sm24-bignumber ${className}`;
     container.style.position = 'absolute';
     container.style.opacity = '0';
     return container;
@@ -314,14 +314,14 @@ function SmartupKPIViz({
       text: metricName,
       maxWidth: width * 0.95,
       maxHeight: availableHeight.metricName,
-      className: 'smartup-kpi__metric-name',
+      className: 'sm24-bignumber__metric-name',
       container,
     });
     container.remove();
 
     return (
       <div
-        className="smartup-kpi__metric-name"
+        className="sm24-bignumber__metric-name"
         style={{ fontSize }}
       >
         {metricName}
@@ -343,7 +343,7 @@ function SmartupKPIViz({
       text,
       maxWidth: width * 0.95,
       maxHeight: availableHeight.header,
-      className: 'smartup-kpi__header',
+      className: 'sm24-bignumber__header',
       container,
     });
     container.remove();
@@ -357,7 +357,7 @@ function SmartupKPIViz({
 
     return (
       <div
-        className={`smartup-kpi__header ${isAnimating ? 'smartup-kpi__header--animating' : ''}`}
+        className={`sm24-bignumber__header ${isAnimating ? 'sm24-bignumber__header--animating' : ''}`}
         style={{
           fontSize,
           color: getNumberColor(),
@@ -379,14 +379,14 @@ function SmartupKPIViz({
       text: subtitle,
       maxWidth: width * 0.95,
       maxHeight: availableHeight.subtitle,
-      className: 'smartup-kpi__subtitle',
+      className: 'sm24-bignumber__subtitle',
       container,
     });
     container.remove();
 
     return (
       <div
-        className="smartup-kpi__subtitle"
+        className="sm24-bignumber__subtitle"
         style={{ fontSize }}
       >
         {subtitle}
@@ -430,10 +430,10 @@ function SmartupKPIViz({
 
   return (
     <div
-      className={`smartup-kpi ${className}`}
+      className={`sm24-bignumber ${className}`}
       style={{ height, width }}
     >
-      <div className="smartup-kpi__container">
+      <div className="sm24-bignumber__container">
         {renderMetricName()}
         {renderHeader()}
         {renderComparison()}
@@ -448,7 +448,7 @@ function SmartupKPIViz({
 // STYLED COMPONENT
 // =============================================================================
 
-const StyledSmartupKPIViz = styled(SmartupKPIViz)`
+const StyledSM24BigNumberViz = styled(SM24BigNumberViz)`
   ${({ theme }) => `
     font-family: ${theme.fontFamily};
     position: relative;
@@ -459,7 +459,7 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
     padding: ${theme.gridUnit * 2}px;
     overflow: hidden;
 
-    .smartup-kpi__container {
+    .sm24-bignumber__container {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -469,7 +469,7 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       gap: ${theme.gridUnit}px;
     }
 
-    .smartup-kpi__metric-name {
+    .sm24-bignumber__metric-name {
       color: ${theme.colors.text.label};
       font-weight: 400;
       line-height: 1.2;
@@ -481,25 +481,25 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       max-width: 100%;
     }
 
-    .smartup-kpi__header {
+    .sm24-bignumber__header {
       font-weight: 600;
       line-height: 1;
       white-space: nowrap;
       transition: color 0.2s ease;
     }
 
-    .smartup-kpi__header--animating {
+    .sm24-bignumber__header--animating {
       transition: none;
     }
 
-    .smartup-kpi__subtitle {
+    .sm24-bignumber__subtitle {
       color: ${theme.colors.text.label};
       font-weight: 400;
       line-height: 1.3;
     }
 
     /* Comparison styles */
-    .smartup-kpi__comparison {
+    .sm24-bignumber__comparison {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -509,40 +509,40 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       margin-top: ${theme.gridUnit}px;
     }
 
-    .smartup-kpi__comparison-percent {
+    .sm24-bignumber__comparison-percent {
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: ${theme.gridUnit / 2}px;
     }
 
-    .smartup-kpi__trend-icon {
+    .sm24-bignumber__trend-icon {
       font-size: 1.1em;
     }
 
-    .smartup-kpi__comparison-absolute {
+    .sm24-bignumber__comparison-absolute {
       font-weight: 500;
     }
 
-    .smartup-kpi__comparison-previous {
+    .sm24-bignumber__comparison-previous {
       color: ${theme.colors.text.label};
       opacity: 0.8;
     }
 
-    .smartup-kpi__comparison-label {
+    .sm24-bignumber__comparison-label {
       color: ${theme.colors.text.label};
       font-size: 0.85em;
       opacity: 0.7;
     }
 
     /* Progress bar styles */
-    .smartup-kpi__progress-container {
+    .sm24-bignumber__progress-container {
       width: 100%;
       max-width: 200px;
       margin-top: ${theme.gridUnit * 2}px;
     }
 
-    .smartup-kpi__progress-bar {
+    .sm24-bignumber__progress-bar {
       width: 100%;
       background: ${theme.colors.grayscale.light3};
       border-radius: 4px;
@@ -550,13 +550,13 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       position: relative;
     }
 
-    .smartup-kpi__progress-fill {
+    .sm24-bignumber__progress-fill {
       height: 100%;
       border-radius: 4px;
       transition: width 0.5s ease-out;
     }
 
-    .smartup-kpi__progress-overflow {
+    .sm24-bignumber__progress-overflow {
       position: absolute;
       right: 0;
       top: 0;
@@ -565,7 +565,7 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       animation: pulse 1s ease-in-out infinite;
     }
 
-    .smartup-kpi__progress-labels {
+    .sm24-bignumber__progress-labels {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -574,11 +574,11 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       color: ${theme.colors.text.label};
     }
 
-    .smartup-kpi__progress-percent {
+    .sm24-bignumber__progress-percent {
       font-weight: 600;
     }
 
-    .smartup-kpi__progress-target {
+    .sm24-bignumber__progress-target {
       opacity: 0.7;
     }
 
@@ -593,10 +593,10 @@ const StyledSmartupKPIViz = styled(SmartupKPIViz)`
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .smartup-kpi__header--updated {
+    .sm24-bignumber__header--updated {
       animation: countUp 0.3s ease-out;
     }
   `}
 `;
 
-export default StyledSmartupKPIViz;
+export default StyledSM24BigNumberViz;

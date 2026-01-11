@@ -18,22 +18,22 @@
  */
 import { buildQueryContext, QueryFormData } from '@superset-ui/core';
 import {
-  SmartupKPIFormData,
+  SM24BigNumberFormData,
   TIME_COMPARISON_SHIFTS,
   TimeComparisonPeriod,
 } from './types';
 
 /**
- * Build query for SmartupKPI visualization.
+ * Build query for SM24-BigNumber visualization.
  * Handles time comparison queries when enabled.
  */
 export default function buildQuery(formData: QueryFormData) {
-  const smartupFormData = formData as SmartupKPIFormData;
+  const sm24FormData = formData as SM24BigNumberFormData;
   const {
     timeComparisonEnabled,
     timeComparisonPeriod = 'none',
     customTimeOffset,
-  } = smartupFormData;
+  } = sm24FormData;
 
   return buildQueryContext(formData, baseQueryObject => {
     // If time comparison is not enabled, return simple query

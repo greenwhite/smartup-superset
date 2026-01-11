@@ -20,22 +20,21 @@ import { t, Behavior } from '@superset-ui/core';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import buildQuery from './buildQuery';
-import { SmartupKPIChartProps, SmartupKPIFormData } from './types';
+import { SM24BigNumberChartProps, SM24BigNumberFormData } from './types';
 import { EchartsChartPlugin } from '../types';
 
 // Placeholder thumbnails - will use BigNumber images temporarily
-// TODO: Create custom Smartup24 KPI thumbnails
 import thumbnail from '../BigNumber/BigNumberTotal/images/thumbnail.png';
 import thumbnailDark from '../BigNumber/BigNumberTotal/images/thumbnail-dark.png';
 
 const metadata = {
   category: t('KPI'),
   description: t(
-    'Smartup24 KPI component for displaying key metrics with advanced formatting options. ' +
+    'SM24-BigNumber: Smartup24 KPI component for displaying key metrics with advanced formatting options. ' +
     'Supports multiple number formats (millions, billions, percentages), ' +
-    'locale-aware formatting (EN/RU/UZ), and conditional color thresholds.',
+    'locale-aware formatting (EN/RU/UZ), time comparison, and conditional color thresholds.',
   ),
-  name: t('Smartup KPI'),
+  name: t('SM24-BigNumber'),
   tags: [
     t('Business'),
     t('KPI'),
@@ -48,13 +47,13 @@ const metadata = {
   behaviors: [Behavior.DrillToDetail],
 };
 
-export default class SmartupKPIChartPlugin extends EchartsChartPlugin<
-  SmartupKPIFormData,
-  SmartupKPIChartProps
+export default class SM24BigNumberChartPlugin extends EchartsChartPlugin<
+  SM24BigNumberFormData,
+  SM24BigNumberChartProps
 > {
   constructor() {
     super({
-      loadChart: () => import('./SmartupKPIViz'),
+      loadChart: () => import('./SM24BigNumberViz'),
       metadata,
       buildQuery,
       transformProps,

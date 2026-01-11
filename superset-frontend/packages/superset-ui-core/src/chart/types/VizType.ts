@@ -51,7 +51,7 @@ export enum VizType {
   Rose = 'rose',
   Sankey = 'sankey_v2',
   Scatter = 'echarts_timeseries_scatter',
-  SmartupKPI = 'smartup_kpi',
+  SM24BigNumber = 'sm24_big_number',
   SmoothLine = 'echarts_timeseries_smooth',
   Step = 'echarts_timeseries_step',
   Sunburst = 'sunburst_v2',

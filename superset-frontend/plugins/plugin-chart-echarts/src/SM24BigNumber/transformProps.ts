@@ -26,10 +26,10 @@ import {
   getNumberFormatter,
 } from '@superset-ui/core';
 import {
-  SmartupKPIChartProps,
-  SmartupKPIVizProps,
-  SmartupNumberFormatType,
-  SMARTUP_LOCALES,
+  SM24BigNumberChartProps,
+  SM24BigNumberVizProps,
+  SM24NumberFormatType,
+  SM24_LOCALES,
   ComparisonData,
   TIME_COMPARISON_SHIFTS,
   TIME_COMPARISON_LABELS,
@@ -84,16 +84,16 @@ function getOriginalLabel(
 }
 
 /**
- * Create a custom number formatter based on SmartupKPI settings
+ * Create a custom number formatter based on SM24-BigNumber settings
  */
-function createSmartupFormatter(
-  formatType: SmartupNumberFormatType,
+function createSM24Formatter(
+  formatType: SM24NumberFormatType,
   locale: string,
   customFormat?: string,
   prefix?: string,
   suffix?: string,
 ): (value: number) => string {
-  const localeConfig = SMARTUP_LOCALES[locale] || SMARTUP_LOCALES.ru;
+  const localeConfig = SM24_LOCALES[locale] || SM24_LOCALES.ru;
 
   // Helper to format with locale separators
   const formatWithLocale = (num: number, decimals: number = 0): string => {
@@ -296,8 +296,8 @@ function colorPickerToString(
  * Transform chart props to visualization props
  */
 export default function transformProps(
-  chartProps: SmartupKPIChartProps,
-): SmartupKPIVizProps {
+  chartProps: SM24BigNumberChartProps,
+): SM24BigNumberVizProps {
   const {
     width,
     height,
@@ -387,8 +387,8 @@ export default function transformProps(
   }
 
   // Create formatter
-  const headerFormatter = createSmartupFormatter(
-    numberFormatType as SmartupNumberFormatType,
+  const headerFormatter = createSM24Formatter(
+    numberFormatType as SM24NumberFormatType,
     numberLocale,
     customNumberFormat,
     numberPrefix,
