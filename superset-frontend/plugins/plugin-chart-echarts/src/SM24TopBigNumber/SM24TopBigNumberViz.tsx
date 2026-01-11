@@ -61,7 +61,8 @@ function MetricCard({
     });
   }, [card.trend, comparisonColorScheme, theme]);
 
-  const trendIcon = card.trend === 'up' ? '↗' : card.trend === 'down' ? '↘' : '→';
+  const trendIcon =
+    card.trend === 'up' ? '↗' : card.trend === 'down' ? '↘' : '→';
 
   const formatPercent = (val: number | null) => {
     if (val === null) return '-';
@@ -69,7 +70,11 @@ function MetricCard({
   };
 
   // Generate SVG sparkline path
-  const generateSparklinePath = (data: number[], width: number, height: number): string => {
+  const generateSparklinePath = (
+    data: number[],
+    width: number,
+    height: number,
+  ): string => {
     if (!data || data.length < 2) return '';
 
     const min = Math.min(...data);
@@ -118,8 +123,12 @@ function MetricCard({
             className="sm24-topbignumber__card-change"
             style={{ color: trendColor }}
           >
-            <span className="sm24-topbignumber__card-trend-icon">{trendIcon}</span>
-            <span className="sm24-topbignumber__card-percent">{formatPercent(card.percentChange)}</span>
+            <span className="sm24-topbignumber__card-trend-icon">
+              {trendIcon}
+            </span>
+            <span className="sm24-topbignumber__card-percent">
+              {formatPercent(card.percentChange)}
+            </span>
           </div>
         )}
       </div>
@@ -187,23 +196,38 @@ function SM24TopBigNumberViz({
     const minColumns = Math.floor(availableWidth / (cardMaxWidth + cardGap));
     const maxColumns = Math.floor(availableWidth / (cardMinWidth + cardGap));
 
-    return Math.min(Math.max(minColumns, 1), Math.min(maxColumns, metricCards.length));
-  }, [width, columnsCount, layout, metricCards.length, cardMinWidth, cardMaxWidth, cardGap]);
+    return Math.min(
+      Math.max(minColumns, 1),
+      Math.min(maxColumns, metricCards.length),
+    );
+  }, [
+    width,
+    columnsCount,
+    layout,
+    metricCards.length,
+    cardMinWidth,
+    cardMaxWidth,
+    cardGap,
+  ]);
 
   return (
     <div
       className={`sm24-topbignumber ${className}`}
-      style={{
-        width,
-        height,
-        '--card-gap': `${cardGap}px`,
-        '--card-radius': `${cardBorderRadius}px`,
-        '--card-padding': `${cardPadding}px`,
-        '--grid-columns': gridColumns,
-        '--card-bg': cardBackground,
-      } as React.CSSProperties}
+      style={
+        {
+          width,
+          height,
+          '--card-gap': `${cardGap}px`,
+          '--card-radius': `${cardBorderRadius}px`,
+          '--card-padding': `${cardPadding}px`,
+          '--grid-columns': gridColumns,
+          '--card-bg': cardBackground,
+        } as React.CSSProperties
+      }
     >
-      <div className={`sm24-topbignumber__grid ${cardShadow ? 'sm24-topbignumber__grid--shadow' : ''}`}>
+      <div
+        className={`sm24-topbignumber__grid ${cardShadow ? 'sm24-topbignumber__grid--shadow' : ''}`}
+      >
         {metricCards.map(card => (
           <MetricCard
             key={card.id}

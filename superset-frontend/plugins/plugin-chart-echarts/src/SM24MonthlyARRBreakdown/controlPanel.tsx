@@ -50,7 +50,9 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.groupby,
               label: t('Customer Segment'),
-              description: t('Column containing customer segment (Enterprise, Mid-Market, SMB, Starter)'),
+              description: t(
+                'Column containing customer segment (Enterprise, Mid-Market, SMB, Starter)',
+              ),
               multi: false,
             },
           },
@@ -103,7 +105,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Show as Percentage'),
-              description: t('Display values as percentage of total instead of absolute'),
+              description: t(
+                'Display values as percentage of total instead of absolute',
+              ),
               default: false,
               renderTrigger: true,
             },
@@ -115,7 +119,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Show Previous Month'),
-              description: t('Display previous month as ghost bars for comparison'),
+              description: t(
+                'Display previous month as ghost bars for comparison',
+              ),
               default: false,
               renderTrigger: true,
             },
@@ -175,7 +181,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Show Cross-Sell Opportunity'),
-              description: t('Display single-product customer expansion opportunity'),
+              description: t(
+                'Display single-product customer expansion opportunity',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -197,7 +205,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Single Product Alert (%)'),
-              description: t('Alert when a single product exceeds this % of total ARR'),
+              description: t(
+                'Alert when a single product exceeds this % of total ARR',
+              ),
               default: 70,
               isFloat: true,
               renderTrigger: true,
@@ -210,7 +220,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Top 2 Products Warning (%)'),
-              description: t('Warning when top 2 products exceed this % of total ARR'),
+              description: t(
+                'Warning when top 2 products exceed this % of total ARR',
+              ),
               default: 85,
               isFloat: true,
               renderTrigger: true,
@@ -246,7 +258,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Mid-Market Target (%)'),
-              description: t('Target % of ARR from Mid-Market segment ($10K-$50K)'),
+              description: t(
+                'Target % of ARR from Mid-Market segment ($10K-$50K)',
+              ),
               default: 35,
               isFloat: true,
               renderTrigger: true,
@@ -438,7 +452,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable Drilldown'),
-              description: t('Allow clicking to drill down to product/segment details'),
+              description: t(
+                'Allow clicking to drill down to product/segment details',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -450,7 +466,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable View Toggle'),
-              description: t('Allow switching between absolute and percentage view'),
+              description: t(
+                'Allow switching between absolute and percentage view',
+              ),
               default: true,
               renderTrigger: true,
             },

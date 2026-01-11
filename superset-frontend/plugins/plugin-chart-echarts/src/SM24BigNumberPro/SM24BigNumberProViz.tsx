@@ -71,12 +71,8 @@ function ComparisonDisplay({
 
   if (!comparisonData) return null;
 
-  const {
-    previousValue,
-    absoluteDifference,
-    percentDifference,
-    trend,
-  } = comparisonData;
+  const { previousValue, absoluteDifference, percentDifference, trend } =
+    comparisonData;
 
   const trendColor = comparisonColorEnabled
     ? getTrendColor(
@@ -129,7 +125,9 @@ function ComparisonDisplay({
         </span>
       )}
       {comparisonLabel && (
-        <span className="sm24-bignumber__comparison-label">{comparisonLabel}</span>
+        <span className="sm24-bignumber__comparison-label">
+          {comparisonLabel}
+        </span>
       )}
     </div>
   );
@@ -142,10 +140,22 @@ interface ProgressBarProps {
   currentValue?: number | null;
 }
 
-function ProgressBar({ config, progress, formatter, currentValue }: ProgressBarProps) {
+function ProgressBar({
+  config,
+  progress,
+  formatter,
+  currentValue,
+}: ProgressBarProps) {
   if (!config?.enabled) return null;
 
-  const { targetValue, showTarget, showPercentage, colorBelowTarget, colorAboveTarget, height } = config;
+  const {
+    targetValue,
+    showTarget,
+    showPercentage,
+    colorBelowTarget,
+    colorAboveTarget,
+    height,
+  } = config;
   const clampedProgress = Math.min(Math.max(progress || 0, 0), 100);
   const isAboveTarget = clampedProgress >= 100;
   const barColor = isAboveTarget ? colorAboveTarget : colorBelowTarget;
@@ -247,7 +257,8 @@ function SM24BigNumberProViz({
       const progress = Math.min(elapsed / duration, 1);
       // Easing function (ease-out)
       const easeProgress = 1 - Math.pow(1 - progress, 3);
-      const currentValue = startValue + (targetValue - startValue) * easeProgress;
+      const currentValue =
+        startValue + (targetValue - startValue) * easeProgress;
 
       setDisplayValue(currentValue);
 
@@ -292,7 +303,9 @@ function SM24BigNumberProViz({
   // Calculate available height for each section
   const availableHeight = useMemo(() => {
     let remaining = height;
-    const hasComparison = comparisonData && (showPreviousValue || showAbsoluteDifference || showPercentDifference);
+    const hasComparison =
+      comparisonData &&
+      (showPreviousValue || showAbsoluteDifference || showPercentDifference);
     const hasProgress = progressBarConfig?.enabled;
 
     return {
@@ -302,7 +315,16 @@ function SM24BigNumberProViz({
       comparison: hasComparison ? PROPORTION.COMPARISON * height : 0,
       progress: hasProgress ? PROPORTION.PROGRESS_BAR * height : 0,
     };
-  }, [height, showMetricName, metricNameFontSize, headerFontSize, subtitle, subtitleFontSize, comparisonData, progressBarConfig]);
+  }, [
+    height,
+    showMetricName,
+    metricNameFontSize,
+    headerFontSize,
+    subtitle,
+    subtitleFontSize,
+    comparisonData,
+    progressBarConfig,
+  ]);
 
   // Render metric name
   const renderMetricName = () => {
@@ -320,10 +342,7 @@ function SM24BigNumberProViz({
     container.remove();
 
     return (
-      <div
-        className="sm24-bignumber__metric-name"
-        style={{ fontSize }}
-      >
+      <div className="sm24-bignumber__metric-name" style={{ fontSize }}>
         {metricName}
       </div>
     );
@@ -333,9 +352,7 @@ function SM24BigNumberProViz({
   const renderHeader = () => {
     const value = displayValue ?? bigNumber;
     const text =
-      value === null
-        ? t('No data')
-        : headerFormatter(value as number);
+      value === null ? t('No data') : headerFormatter(value as number);
 
     const container = createTemporaryContainer();
     document.body.append(container);
@@ -385,10 +402,7 @@ function SM24BigNumberProViz({
     container.remove();
 
     return (
-      <div
-        className="sm24-bignumber__subtitle"
-        style={{ fontSize }}
-      >
+      <div className="sm24-bignumber__subtitle" style={{ fontSize }}>
         {subtitle}
       </div>
     );
@@ -397,7 +411,8 @@ function SM24BigNumberProViz({
   // Render comparison section
   const renderComparison = () => {
     if (!comparisonData) return null;
-    if (!showPreviousValue && !showAbsoluteDifference && !showPercentDifference) return null;
+    if (!showPreviousValue && !showAbsoluteDifference && !showPercentDifference)
+      return null;
 
     return (
       <ComparisonDisplay
@@ -429,10 +444,7 @@ function SM24BigNumberProViz({
   };
 
   return (
-    <div
-      className={`sm24-bignumber ${className}`}
-      style={{ height, width }}
-    >
+    <div className={`sm24-bignumber ${className}`} style={{ height, width }}>
       <div className="sm24-bignumber__container">
         {renderMetricName()}
         {renderHeader()}

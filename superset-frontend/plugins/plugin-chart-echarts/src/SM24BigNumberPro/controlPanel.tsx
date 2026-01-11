@@ -177,7 +177,8 @@ const customNumberFormat: CustomControlItem = {
     renderTrigger: true,
     default: ',.2f',
     description: `${t('D3 format string for custom formatting.')} ${D3_FORMAT_DOCS}`,
-    visibility: ({ controls }) => controls?.number_format_type?.value === 'custom',
+    visibility: ({ controls }) =>
+      controls?.number_format_type?.value === 'custom',
   },
 };
 
@@ -199,7 +200,9 @@ const numberSuffix: CustomControlItem = {
     label: t('Suffix'),
     renderTrigger: true,
     default: '',
-    description: t('Text to show after the number (e.g., " UZS", "%", " users")'),
+    description: t(
+      'Text to show after the number (e.g., " UZS", "%", " users")',
+    ),
   },
 };
 
@@ -212,7 +215,9 @@ const numberLocale: CustomControlItem = {
     clearable: false,
     default: 'ru',
     options: LOCALE_OPTIONS,
-    description: t('Locale for number formatting (affects decimal/thousands separators)'),
+    description: t(
+      'Locale for number formatting (affects decimal/thousands separators)',
+    ),
   },
 };
 
@@ -250,7 +255,8 @@ const timeComparisonPeriod: CustomControlItem = {
     default: 'MoM',
     options: TIME_COMPARISON_OPTIONS,
     description: t('Select the time period for comparison'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -276,7 +282,8 @@ const comparisonColorEnabled: CustomControlItem = {
     renderTrigger: true,
     default: true,
     description: t('Apply color to indicate positive/negative change'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -304,7 +311,8 @@ const showPreviousValue: CustomControlItem = {
     renderTrigger: true,
     default: true,
     description: t('Display the value from the comparison period'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -316,7 +324,8 @@ const showAbsoluteDifference: CustomControlItem = {
     renderTrigger: true,
     default: false,
     description: t('Display the absolute difference between periods'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -328,7 +337,8 @@ const showPercentDifference: CustomControlItem = {
     renderTrigger: true,
     default: true,
     description: t('Display the percentage change between periods'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -409,7 +419,8 @@ const progressBarTarget: CustomControlItem = {
     renderTrigger: true,
     default: '100',
     description: t('Target value for the progress bar'),
-    visibility: ({ controls }) => controls?.progress_bar_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.progress_bar_enabled?.value === true,
   },
 };
 
@@ -421,7 +432,8 @@ const progressBarShowTarget: CustomControlItem = {
     renderTrigger: true,
     default: true,
     description: t('Display the target value on the progress bar'),
-    visibility: ({ controls }) => controls?.progress_bar_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.progress_bar_enabled?.value === true,
   },
 };
 
@@ -433,7 +445,8 @@ const progressBarShowPercentage: CustomControlItem = {
     renderTrigger: true,
     default: true,
     description: t('Display progress as percentage'),
-    visibility: ({ controls }) => controls?.progress_bar_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.progress_bar_enabled?.value === true,
   },
 };
 
@@ -456,10 +469,7 @@ const animationEnabled: CustomControlItem = {
 const querySectionConfig: ControlPanelSectionConfig = {
   label: t('Query'),
   expanded: true,
-  controlSetRows: [
-    ['metric'],
-    ['adhoc_filters'],
-  ],
+  controlSetRows: [['metric'], ['adhoc_filters']],
 };
 
 const displaySectionConfig: ControlPanelSectionConfig = {
@@ -547,8 +557,7 @@ const colorsSectionConfig: ControlPanelSectionConfig = {
             )
               ? (explore?.datasource as Dataset)?.verbose_map
               : (explore?.datasource?.columns ?? {});
-            const { colnames, coltypes } =
-              chart?.queriesResponse?.[0] ?? {};
+            const { colnames, coltypes } = chart?.queriesResponse?.[0] ?? {};
             const numericColumns =
               Array.isArray(colnames) && Array.isArray(coltypes)
                 ? colnames

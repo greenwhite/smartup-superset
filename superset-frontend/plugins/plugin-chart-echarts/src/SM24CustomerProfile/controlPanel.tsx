@@ -382,10 +382,7 @@ const customerInfoSection: ControlPanelSectionConfig = {
 const csmSection: ControlPanelSectionConfig = {
   label: t('CSM Information'),
   expanded: false,
-  controlSetRows: [
-    [csmNameColumn],
-    [csmEmailColumn],
-  ],
+  controlSetRows: [[csmNameColumn], [csmEmailColumn]],
 };
 
 const metricsSection: ControlPanelSectionConfig = {
@@ -427,27 +424,19 @@ const thresholdsSection: ControlPanelSectionConfig = {
 const permissionsSection: ControlPanelSectionConfig = {
   label: t('Permissions'),
   expanded: false,
-  controlSetRows: [
-    [showFinancialData],
-    [showSensitiveData],
-    [allowEditing],
-  ],
+  controlSetRows: [[showFinancialData], [showSensitiveData], [allowEditing]],
 };
 
 const interactivitySection: ControlPanelSectionConfig = {
   label: t('Interactivity'),
   expanded: false,
-  controlSetRows: [
-    [enableDrilldown],
-  ],
+  controlSetRows: [[enableDrilldown]],
 };
 
 const formattingSection: ControlPanelSectionConfig = {
   label: t('Formatting'),
   expanded: false,
-  controlSetRows: [
-    [locale],
-  ],
+  controlSetRows: [[locale]],
 };
 
 // =============================================================================

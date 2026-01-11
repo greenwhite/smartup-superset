@@ -35,7 +35,8 @@ const Container = styled.div<{ height: number }>`
   flex-direction: column;
   height: ${({ height }) => height}px;
   font-family: ${({ theme }) =>
-    theme.typography?.families?.sansSerif || 'Inter, Helvetica, Arial, sans-serif'};
+    theme.typography?.families?.sansSerif ||
+    'Inter, Helvetica, Arial, sans-serif'};
   background: #fff;
   border-radius: 16px;
   padding: 20px 24px;
@@ -154,7 +155,9 @@ const StatusCard = styled.div<{
   &:hover {
     transform: ${({ clickable }) => (clickable ? 'translateY(-2px)' : 'none')};
     box-shadow: ${({ clickable }) =>
-      clickable ? '0 4px 12px rgba(0, 0, 0, 0.15)' : '0 2px 4px rgba(0, 0, 0, 0.08)'};
+      clickable
+        ? '0 4px 12px rgba(0, 0, 0, 0.15)'
+        : '0 2px 4px rgba(0, 0, 0, 0.08)'};
   }
 `;
 
@@ -285,14 +288,18 @@ function SM24StatusCardFlowViz({
         <EmptyState>
           <span style={{ fontSize: 32 }}>📊</span>
           <span>Нет данных за выбранный период</span>
-          <span style={{ fontSize: 12 }}>Измените фильтры для отображения данных</span>
+          <span style={{ fontSize: 12 }}>
+            Измените фильтры для отображения данных
+          </span>
         </EmptyState>
       );
     }
 
     return statuses.map((status, index) => {
       const bgTint = getTintedBackground(status.statusColor, 0.05);
-      const formattedAmount = showAmounts ? formatAmount(status.totalAmount) : null;
+      const formattedAmount = showAmounts
+        ? formatAmount(status.totalAmount)
+        : null;
 
       return (
         <CardWrapper key={status.statusId}>
@@ -324,10 +331,16 @@ function SM24StatusCardFlowViz({
             {formattedAmount && status.totalAmount >= 1000 && (
               <AmountRow>
                 <AmountValue>
-                  {formatAmount(status.totalAmount).split(' ').slice(0, 2).join(' ')}
+                  {formatAmount(status.totalAmount)
+                    .split(' ')
+                    .slice(0, 2)
+                    .join(' ')}
                 </AmountValue>
                 <AmountLabel>
-                  {formatAmount(status.totalAmount).split(' ').slice(2).join(' ') || 'сум'}
+                  {formatAmount(status.totalAmount)
+                    .split(' ')
+                    .slice(2)
+                    .join(' ') || 'сум'}
                 </AmountLabel>
               </AmountRow>
             )}
@@ -364,7 +377,10 @@ function SM24StatusCardFlowViz({
         <HeaderActions>
           {/* Entity type selector */}
           {enableEntityTypeSwitch && (
-            <EntityTypeSelect value={entityType} onChange={handleEntityTypeChange}>
+            <EntityTypeSelect
+              value={entityType}
+              onChange={handleEntityTypeChange}
+            >
               {Object.values(ENTITY_TYPE_DEFINITIONS).map(def => (
                 <option key={def.id} value={def.id}>
                   {def.icon} {def.labelPlural}
@@ -377,12 +393,8 @@ function SM24StatusCardFlowViz({
           <IconButton onClick={onRefresh} title="Обновить">
             ⟳
           </IconButton>
-          <IconButton title="Информация">
-            ⓘ
-          </IconButton>
-          <IconButton title="Закрыть">
-            ✕
-          </IconButton>
+          <IconButton title="Информация">ⓘ</IconButton>
+          <IconButton title="Закрыть">✕</IconButton>
         </HeaderActions>
       </Header>
 

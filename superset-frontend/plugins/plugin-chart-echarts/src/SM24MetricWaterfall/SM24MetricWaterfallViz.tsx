@@ -215,9 +215,9 @@ function SM24MetricWaterfallViz({
         if (current.type === 'total') {
           connectorY = current.value;
         } else if (current.type === 'increase') {
-          connectorY = (current.end || 0);
+          connectorY = current.end || 0;
         } else {
-          connectorY = (current.end || 0);
+          connectorY = current.end || 0;
         }
 
         lines.push([
@@ -253,14 +253,34 @@ function SM24MetricWaterfallViz({
     const legendConfig = {
       show: showLegend,
       data: [
-        { name: 'Total', icon: 'roundRect', itemStyle: { color: colors.total } },
-        { name: 'Increase', icon: 'roundRect', itemStyle: { color: colors.increase } },
-        { name: 'Decrease', icon: 'roundRect', itemStyle: { color: colors.decrease } },
+        {
+          name: 'Total',
+          icon: 'roundRect',
+          itemStyle: { color: colors.total },
+        },
+        {
+          name: 'Increase',
+          icon: 'roundRect',
+          itemStyle: { color: colors.increase },
+        },
+        {
+          name: 'Decrease',
+          icon: 'roundRect',
+          itemStyle: { color: colors.decrease },
+        },
       ],
       ...(legendPosition === 'bottom' && { bottom: 10, left: 'center' }),
       ...(legendPosition === 'top' && { top: 10, left: 'center' }),
-      ...(legendPosition === 'left' && { left: 10, top: 'middle', orient: 'vertical' }),
-      ...(legendPosition === 'right' && { right: 10, top: 'middle', orient: 'vertical' }),
+      ...(legendPosition === 'left' && {
+        left: 10,
+        top: 'middle',
+        orient: 'vertical',
+      }),
+      ...(legendPosition === 'right' && {
+        right: 10,
+        top: 'middle',
+        orient: 'vertical',
+      }),
     };
 
     // Calculate max value for y-axis
@@ -300,7 +320,10 @@ function SM24MetricWaterfallViz({
           {
             type: 'text',
             style: {
-              text: quickRatio.value === Infinity ? '∞' : quickRatio.value.toFixed(2),
+              text:
+                quickRatio.value === Infinity
+                  ? '∞'
+                  : quickRatio.value.toFixed(2),
               x: 60,
               y: 34,
               textAlign: 'center',
@@ -323,27 +346,35 @@ function SM24MetricWaterfallViz({
         right: 20,
         top: annotationY,
         children: [
-          ...(showNetChange ? [{
-            type: 'text',
-            style: {
-              text: `Net: ${formatCurrency(netChange)}`,
-              x: 0,
-              y: 0,
-              fill: changeColor,
-              fontSize: 14,
-              fontWeight: 'bold',
-            },
-          }] : []),
-          ...(showGrowthRate ? [{
-            type: 'text',
-            style: {
-              text: `Growth: ${formatPercent(growthRate)}`,
-              x: 0,
-              y: showNetChange ? 20 : 0,
-              fill: changeColor,
-              fontSize: 12,
-            },
-          }] : []),
+          ...(showNetChange
+            ? [
+                {
+                  type: 'text',
+                  style: {
+                    text: `Net: ${formatCurrency(netChange)}`,
+                    x: 0,
+                    y: 0,
+                    fill: changeColor,
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                  },
+                },
+              ]
+            : []),
+          ...(showGrowthRate
+            ? [
+                {
+                  type: 'text',
+                  style: {
+                    text: `Growth: ${formatPercent(growthRate)}`,
+                    x: 0,
+                    y: showNetChange ? 20 : 0,
+                    fill: changeColor,
+                    fontSize: 12,
+                  },
+                },
+              ]
+            : []),
         ],
       });
     }

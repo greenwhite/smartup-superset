@@ -169,7 +169,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Show Quick Ratio'),
-              description: t('Display Quick Ratio badge (New + Expansion) / (Contraction + Churn)'),
+              description: t(
+                'Display Quick Ratio badge (New + Expansion) / (Contraction + Churn)',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -298,7 +300,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Target Quick Ratio'),
-              description: t('Target Quick Ratio for best-in-class SaaS (default: 4)'),
+              description: t(
+                'Target Quick Ratio for best-in-class SaaS (default: 4)',
+              ),
               default: 4,
               isFloat: true,
               renderTrigger: true,
@@ -311,7 +315,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Churn Alert Threshold (%)'),
-              description: t('Alert when Churn exceeds this percentage of Beginning ARR'),
+              description: t(
+                'Alert when Churn exceeds this percentage of Beginning ARR',
+              ),
               default: 5,
               isFloat: true,
               renderTrigger: true,
@@ -431,7 +437,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable Drilldown'),
-              description: t('Allow clicking on bars to drill down to customer lists'),
+              description: t(
+                'Allow clicking on bars to drill down to customer lists',
+              ),
               default: true,
               renderTrigger: true,
             },

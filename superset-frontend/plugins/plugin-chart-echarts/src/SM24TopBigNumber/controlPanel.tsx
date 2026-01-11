@@ -243,7 +243,8 @@ const timeComparisonPeriod: CustomControlItem = {
     default: 'MoM',
     options: TIME_COMPARISON_OPTIONS,
     description: t('Time period for comparison'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -271,7 +272,8 @@ const comparisonColorScheme: CustomControlItem = {
     default: 'green_up',
     options: COMPARISON_COLOR_SCHEMES,
     description: t('Color scheme for positive/negative changes'),
-    visibility: ({ controls }) => controls?.time_comparison_enabled?.value === true,
+    visibility: ({ controls }) =>
+      controls?.time_comparison_enabled?.value === true,
   },
 };
 
@@ -339,11 +341,7 @@ const valueColor: CustomControlItem = {
 const querySectionConfig: ControlPanelSectionConfig = {
   label: t('Query'),
   expanded: true,
-  controlSetRows: [
-    ['metrics'],
-    ['adhoc_filters'],
-    ['row_limit'],
-  ],
+  controlSetRows: [['metrics'], ['adhoc_filters'], ['row_limit']],
 };
 
 const layoutSectionConfig: ControlPanelSectionConfig = {
@@ -361,21 +359,13 @@ const layoutSectionConfig: ControlPanelSectionConfig = {
 const displaySectionConfig: ControlPanelSectionConfig = {
   label: t('Display'),
   expanded: true,
-  controlSetRows: [
-    [showMetricName],
-    [showComparison],
-    [showSparkline],
-  ],
+  controlSetRows: [[showMetricName], [showComparison], [showSparkline]],
 };
 
 const formattingSectionConfig: ControlPanelSectionConfig = {
   label: t('Number Formatting'),
   expanded: false,
-  controlSetRows: [
-    [numberFormat],
-    [customNumberFormat],
-    [numberLocale],
-  ],
+  controlSetRows: [[numberFormat], [customNumberFormat], [numberLocale]],
 };
 
 const comparisonSectionConfig: ControlPanelSectionConfig = {
@@ -392,19 +382,13 @@ const comparisonSectionConfig: ControlPanelSectionConfig = {
 const sparklineSectionConfig: ControlPanelSectionConfig = {
   label: t('Sparkline'),
   expanded: false,
-  controlSetRows: [
-    [sparklineHeight],
-    [sparklinePeriods],
-  ],
+  controlSetRows: [[sparklineHeight], [sparklinePeriods]],
 };
 
 const colorsSectionConfig: ControlPanelSectionConfig = {
   label: t('Colors'),
   expanded: false,
-  controlSetRows: [
-    [headerColor],
-    [valueColor],
-  ],
+  controlSetRows: [[headerColor], [valueColor]],
 };
 
 // =============================================================================

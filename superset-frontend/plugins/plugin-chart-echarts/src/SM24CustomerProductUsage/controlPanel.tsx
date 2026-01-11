@@ -382,26 +382,19 @@ const thresholdsSection: ControlPanelSectionConfig = {
 const chartSection: ControlPanelSectionConfig = {
   label: t('Chart Options'),
   expanded: false,
-  controlSetRows: [
-    [showDauLine, showSessionsBars],
-    [showAnnotations],
-  ],
+  controlSetRows: [[showDauLine, showSessionsBars], [showAnnotations]],
 };
 
 const interactivitySection: ControlPanelSectionConfig = {
   label: t('Interactivity'),
   expanded: false,
-  controlSetRows: [
-    [enableDrilldown, enableExport],
-  ],
+  controlSetRows: [[enableDrilldown, enableExport]],
 };
 
 const formattingSection: ControlPanelSectionConfig = {
   label: t('Formatting'),
   expanded: false,
-  controlSetRows: [
-    [locale],
-  ],
+  controlSetRows: [[locale]],
 };
 
 // =============================================================================

@@ -40,7 +40,8 @@ const Container = styled.div<{ height: number }>`
   flex-direction: column;
   height: ${({ height }) => height}px;
   font-family: ${({ theme }) =>
-    theme.typography?.families?.sansSerif || 'Inter, Helvetica, Arial, sans-serif'};
+    theme.typography?.families?.sansSerif ||
+    'Inter, Helvetica, Arial, sans-serif'};
   background: ${PROFILE_COLORS.background};
   border-radius: 8px;
   overflow: hidden;
@@ -89,21 +90,30 @@ const Badge = styled.span<{ color: string }>`
   font-weight: 600;
 `;
 
-const ActionButton = styled.button<{ variant?: 'primary' | 'secondary' | 'danger' }>`
+const ActionButton = styled.button<{
+  variant?: 'primary' | 'secondary' | 'danger';
+}>`
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  border: 1px solid ${({ variant }) =>
+  border: 1px solid
+    ${({ variant }) =>
+      variant === 'primary'
+        ? PROFILE_COLORS.primary
+        : variant === 'danger'
+          ? PROFILE_COLORS.danger
+          : PROFILE_COLORS.borderColor};
+  background: ${({ variant }) =>
     variant === 'primary'
       ? PROFILE_COLORS.primary
-      : variant === 'danger'
-      ? PROFILE_COLORS.danger
-      : PROFILE_COLORS.borderColor};
-  background: ${({ variant }) =>
-    variant === 'primary' ? PROFILE_COLORS.primary : PROFILE_COLORS.cardBackground};
+      : PROFILE_COLORS.cardBackground};
   color: ${({ variant }) =>
-    variant === 'primary' ? '#fff' : variant === 'danger' ? PROFILE_COLORS.danger : '#2c3e50'};
+    variant === 'primary'
+      ? '#fff'
+      : variant === 'danger'
+        ? PROFILE_COLORS.danger
+        : '#2c3e50'};
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -116,8 +126,8 @@ const ActionButton = styled.button<{ variant?: 'primary' | 'secondary' | 'danger
       variant === 'primary'
         ? PROFILE_COLORS.primaryDark
         : variant === 'danger'
-        ? PROFILE_COLORS.danger + '10'
-        : PROFILE_COLORS.background};
+          ? PROFILE_COLORS.danger + '10'
+          : PROFILE_COLORS.background};
   }
 `;
 
@@ -182,7 +192,9 @@ const CSMRole = styled.span`
   color: ${PROFILE_COLORS.neutral};
 `;
 
-const AlertBanner = styled.div<{ type: 'danger' | 'warning' | 'info' | 'success' }>`
+const AlertBanner = styled.div<{
+  type: 'danger' | 'warning' | 'info' | 'success';
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -191,19 +203,19 @@ const AlertBanner = styled.div<{ type: 'danger' | 'warning' | 'info' | 'success'
     type === 'danger'
       ? PROFILE_COLORS.danger + '15'
       : type === 'warning'
-      ? PROFILE_COLORS.warning + '15'
-      : type === 'success'
-      ? PROFILE_COLORS.success + '15'
-      : PROFILE_COLORS.info + '15'};
+        ? PROFILE_COLORS.warning + '15'
+        : type === 'success'
+          ? PROFILE_COLORS.success + '15'
+          : PROFILE_COLORS.info + '15'};
   border-left: 4px solid
     ${({ type }) =>
       type === 'danger'
         ? PROFILE_COLORS.danger
         : type === 'warning'
-        ? PROFILE_COLORS.warning
-        : type === 'success'
-        ? PROFILE_COLORS.success
-        : PROFILE_COLORS.info};
+          ? PROFILE_COLORS.warning
+          : type === 'success'
+            ? PROFILE_COLORS.success
+            : PROFILE_COLORS.info};
 `;
 
 const AlertContent = styled.div`
@@ -241,7 +253,8 @@ const TabButton = styled.button<{ active: boolean }>`
   font-size: 13px;
   font-weight: ${({ active }) => (active ? '600' : '500')};
   cursor: pointer;
-  border-bottom: 2px solid ${({ active }) => (active ? PROFILE_COLORS.primary : 'transparent')};
+  border-bottom: 2px solid
+    ${({ active }) => (active ? PROFILE_COLORS.primary : 'transparent')};
   transition: all 0.2s;
 
   &:hover {
@@ -542,7 +555,17 @@ function SM24CustomerProfileViz({
     );
   }
 
-  const { customer, csm, revenue, products, health, renewal, activity, alerts, segment } = profile;
+  const {
+    customer,
+    csm,
+    revenue,
+    products,
+    health,
+    renewal,
+    activity,
+    alerts,
+    segment,
+  } = profile;
 
   // Get CSM initials for avatar
   const csmInitials = csm.csmName
@@ -586,19 +609,24 @@ function SM24CustomerProfileViz({
       <Grid columns={4}>
         <MetricCard>
           <MetricLabel>Current ARR</MetricLabel>
-          <MetricValue>{showFinancialData ? formatCurrency(revenue.currentArr) : '***'}</MetricValue>
+          <MetricValue>
+            {showFinancialData ? formatCurrency(revenue.currentArr) : '***'}
+          </MetricValue>
           <MetricSubtext
             color={
               revenue.arrGrowthMom !== null && revenue.arrGrowthMom > 0
                 ? PROFILE_COLORS.success
                 : revenue.arrGrowthMom !== null && revenue.arrGrowthMom < 0
-                ? PROFILE_COLORS.danger
-                : undefined
+                  ? PROFILE_COLORS.danger
+                  : undefined
             }
           >
             {revenue.arrGrowthMom !== null && revenue.arrGrowthMom > 0 && '↑'}
             {revenue.arrGrowthMom !== null && revenue.arrGrowthMom < 0 && '↓'}
-            {showFinancialData ? formatPercent(revenue.arrGrowthMom) : '***'} MoM
+            {showFinancialData
+              ? formatPercent(revenue.arrGrowthMom)
+              : '***'}{' '}
+            MoM
           </MetricSubtext>
         </MetricCard>
 
@@ -638,13 +666,15 @@ function SM24CustomerProfileViz({
                 renewal.daysToRenewal < 30
                   ? PROFILE_COLORS.danger
                   : renewal.daysToRenewal < 60
-                  ? PROFILE_COLORS.warning
-                  : undefined,
+                    ? PROFILE_COLORS.warning
+                    : undefined,
             }}
           >
             {renewal.daysToRenewal}
           </MetricValue>
-          <MetricSubtext>{renewal.renewalDate ? formatDate(renewal.renewalDate) : '—'}</MetricSubtext>
+          <MetricSubtext>
+            {renewal.renewalDate ? formatDate(renewal.renewalDate) : '—'}
+          </MetricSubtext>
         </MetricCard>
       </Grid>
 
@@ -668,14 +698,20 @@ function SM24CustomerProfileViz({
             <InfoItem>
               <InfoLabel>Employees</InfoLabel>
               <InfoValue>
-                {customer.employeeCount ? customer.employeeCount.toLocaleString() : '—'}
+                {customer.employeeCount
+                  ? customer.employeeCount.toLocaleString()
+                  : '—'}
               </InfoValue>
             </InfoItem>
             <InfoItem>
               <InfoLabel>Website</InfoLabel>
               <InfoValue clickable={!!customer.website}>
                 {customer.website ? (
-                  <a href={customer.website} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={customer.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     🔗 {customer.website}
                   </a>
                 ) : (
@@ -746,8 +782,8 @@ function SM24CustomerProfileViz({
                     revenue.avgPaymentDelay > 7
                       ? PROFILE_COLORS.danger
                       : revenue.avgPaymentDelay > 3
-                      ? PROFILE_COLORS.warning
-                      : undefined,
+                        ? PROFILE_COLORS.warning
+                        : undefined,
                 }}
               >
                 {revenue.avgPaymentDelay.toFixed(1)} days
@@ -785,13 +821,17 @@ function SM24CustomerProfileViz({
             <InfoItem>
               <InfoLabel>CSAT Score</InfoLabel>
               <InfoValue>
-                {health.csatScore !== null ? `${health.csatScore.toFixed(1)}/5.0 ⭐` : '—'}
+                {health.csatScore !== null
+                  ? `${health.csatScore.toFixed(1)}/5.0 ⭐`
+                  : '—'}
               </InfoValue>
             </InfoItem>
             <InfoItem>
               <InfoLabel>Churn Risk</InfoLabel>
               <InfoValue>
-                <Badge color={CHURN_RISK_CONFIG[health.churnRiskCategory].color}>
+                <Badge
+                  color={CHURN_RISK_CONFIG[health.churnRiskCategory].color}
+                >
                   {CHURN_RISK_CONFIG[health.churnRiskCategory].label}
                 </Badge>
               </InfoValue>
@@ -808,10 +848,14 @@ function SM24CustomerProfileViz({
           {profile.recentActivities.length > 0 ? (
             profile.recentActivities.slice(0, 5).map((activityItem, idx) => (
               <ActivityItem key={idx}>
-                <ActivityIcon>{ACTIVITY_TYPE_CONFIG[activityItem.type].icon}</ActivityIcon>
+                <ActivityIcon>
+                  {ACTIVITY_TYPE_CONFIG[activityItem.type].icon}
+                </ActivityIcon>
                 <ActivityContent>
                   <ActivityTitle>{activityItem.title}</ActivityTitle>
-                  <ActivityDate>{formatRelativeDate(activityItem.date)}</ActivityDate>
+                  <ActivityDate>
+                    {formatRelativeDate(activityItem.date)}
+                  </ActivityDate>
                 </ActivityContent>
               </ActivityItem>
             ))
@@ -859,14 +903,18 @@ function SM24CustomerProfileViz({
         <HeaderRow>
           <HeaderLeft>
             <CustomerName>{customer.customerName}</CustomerName>
-            <Badge color={SEGMENT_CONFIG[segment].color}>{SEGMENT_CONFIG[segment].label}</Badge>
+            <Badge color={SEGMENT_CONFIG[segment].color}>
+              {SEGMENT_CONFIG[segment].label}
+            </Badge>
             <Badge color={PROFILE_COLORS.neutral}>{customer.industry}</Badge>
             <Badge color={PROFILE_COLORS.neutral}>{customer.region}</Badge>
           </HeaderLeft>
           <HeaderRight>
             {showQuickActions && (
               <>
-                <ActionButton onClick={() => onQuickAction?.('scheduleMeeting')}>
+                <ActionButton
+                  onClick={() => onQuickAction?.('scheduleMeeting')}
+                >
                   📅 Schedule Meeting
                 </ActionButton>
                 <ActionButton onClick={() => onQuickAction?.('sendEmail')}>
@@ -877,9 +925,7 @@ function SM24CustomerProfileViz({
                 </ActionButton>
               </>
             )}
-            {onClose && (
-              <ActionButton onClick={onClose}>✕</ActionButton>
-            )}
+            {onClose && <ActionButton onClick={onClose}>✕</ActionButton>}
           </HeaderRight>
         </HeaderRow>
         <HeaderRow>
@@ -891,7 +937,11 @@ function SM24CustomerProfileViz({
               <QuickStatLabel>Current ARR</QuickStatLabel>
             </QuickStat>
             <QuickStat>
-              <QuickStatValue style={{ color: HEALTH_STATUS_CONFIG[health.healthStatus].color }}>
+              <QuickStatValue
+                style={{
+                  color: HEALTH_STATUS_CONFIG[health.healthStatus].color,
+                }}
+              >
                 {health.healthScore}
               </QuickStatValue>
               <QuickStatLabel>Health Score</QuickStatLabel>
@@ -903,7 +953,10 @@ function SM24CustomerProfileViz({
             <QuickStat>
               <QuickStatValue
                 style={{
-                  color: renewal.daysToRenewal < 30 ? PROFILE_COLORS.danger : undefined,
+                  color:
+                    renewal.daysToRenewal < 30
+                      ? PROFILE_COLORS.danger
+                      : undefined,
                 }}
               >
                 {renewal.daysToRenewal}d

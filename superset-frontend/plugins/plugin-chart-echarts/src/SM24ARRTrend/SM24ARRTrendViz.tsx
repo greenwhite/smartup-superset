@@ -20,11 +20,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { BinaryQueryObjectFilterClause, styled } from '@superset-ui/core';
 import * as echarts from 'echarts';
 import type { EChartsOption, SeriesOption } from 'echarts';
-import {
-  SM24ARRTrendVizProps,
-  ARRDataPoint,
-  getGrowthColor,
-} from './types';
+import { SM24ARRTrendVizProps, ARRDataPoint, getGrowthColor } from './types';
 
 // =============================================================================
 // ECHARTS VISUALIZATION COMPONENT
@@ -310,7 +306,11 @@ function SM24ARRTrendViz({
     }
 
     // Build annotations as mark points
-    const markPoints: { coord: [string, number]; name: string; symbol: string }[] = [];
+    const markPoints: {
+      coord: [string, number];
+      name: string;
+      symbol: string;
+    }[] = [];
     if (showAnnotations && annotations.length > 0) {
       annotations.forEach(ann => {
         const dataPoint = data.find(d => d.month === ann.date);
@@ -326,7 +326,9 @@ function SM24ARRTrendViz({
 
     // Add markLine to the first line series if it exists
     if (markLines.length > 0 && series.length > 0) {
-      const lineSeries = series.find(s => s.type === 'line' && s.name === 'Total ARR');
+      const lineSeries = series.find(
+        s => s.type === 'line' && s.name === 'Total ARR',
+      );
       if (lineSeries) {
         (lineSeries as { markLine?: object }).markLine = {
           silent: true,
@@ -351,9 +353,10 @@ function SM24ARRTrendViz({
     const legendConfig = {
       show: true,
       type: 'scroll' as const,
-      orient: legendPosition === 'bottom' || legendPosition === 'top'
-        ? ('horizontal' as const)
-        : ('vertical' as const),
+      orient:
+        legendPosition === 'bottom' || legendPosition === 'top'
+          ? ('horizontal' as const)
+          : ('vertical' as const),
       ...(legendPosition === 'bottom' && { bottom: 0, left: 'center' }),
       ...(legendPosition === 'top' && { top: 0, left: 'center' }),
       ...(legendPosition === 'left' && { left: 0, top: 'middle' }),
@@ -376,7 +379,14 @@ function SM24ARRTrendViz({
             color: '#999',
           },
         },
-        formatter: (params: { dataIndex: number; data: number | null; seriesName: string; color: string }[]) => {
+        formatter: (
+          params: {
+            dataIndex: number;
+            data: number | null;
+            seriesName: string;
+            color: string;
+          }[],
+        ) => {
           if (!Array.isArray(params) || params.length === 0) return '';
 
           const dataIndex = params[0].dataIndex;
@@ -405,7 +415,10 @@ function SM24ARRTrendViz({
 
           // Growth Rate
           if (dataPoint.growthRate !== null) {
-            const growthColor = getGrowthColor(dataPoint.growthRate, growthThresholds);
+            const growthColor = getGrowthColor(
+              dataPoint.growthRate,
+              growthThresholds,
+            );
             html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
               <span style="color: #6C757D;">Growth Rate</span>
               <span style="color: ${growthColor}; font-weight: bold;">
@@ -444,7 +457,10 @@ function SM24ARRTrendViz({
           </div>`;
 
           // YoY Comparison (if available)
-          if (dataPoint.yoyTotalARR !== null && dataPoint.yoyTotalARR !== undefined) {
+          if (
+            dataPoint.yoyTotalARR !== null &&
+            dataPoint.yoyTotalARR !== undefined
+          ) {
             html += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #eee;" />`;
             html += `<div style="font-size: 11px; color: #666;">Year-over-Year:</div>`;
             html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
@@ -452,7 +468,10 @@ function SM24ARRTrendViz({
               <span>${formatCurrency(dataPoint.yoyTotalARR)}</span>
             </div>`;
             if (dataPoint.yoyGrowthRate !== null) {
-              const yoyColor = dataPoint.yoyGrowthRate >= 0 ? colors.newBusiness : colors.churned;
+              const yoyColor =
+                dataPoint.yoyGrowthRate >= 0
+                  ? colors.newBusiness
+                  : colors.churned;
               html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
                 <span style="color: #666;">YoY Growth</span>
                 <span style="color: ${yoyColor}; font-weight: bold;">
@@ -608,57 +627,63 @@ function SM24ARRTrendViz({
     });
 
     // Handle right-click context menu for DrillToDetail and DrillBy
-    chart.on('contextmenu', (eventParams: {
-      dataIndex: number;
-      seriesName: string;
-      event: { event: MouseEvent; stop: () => void };
-    }) => {
-      if (onContextMenu) {
-        eventParams.event.stop();
-        const dataPoint = data[eventParams.dataIndex];
-        const pointerEvent = eventParams.event.event;
+    chart.on(
+      'contextmenu',
+      (eventParams: {
+        dataIndex: number;
+        seriesName: string;
+        event: { event: MouseEvent; stop: () => void };
+      }) => {
+        if (onContextMenu) {
+          eventParams.event.stop();
+          const dataPoint = data[eventParams.dataIndex];
+          const pointerEvent = eventParams.event.event;
 
-        if (!dataPoint) return;
+          if (!dataPoint) return;
 
-        // Build drill-to-detail filters
-        const drillToDetailFilters: BinaryQueryObjectFilterClause[] = [];
+          // Build drill-to-detail filters
+          const drillToDetailFilters: BinaryQueryObjectFilterClause[] = [];
 
-        // Add time filter for the selected month
-        if (formData.granularitySqla && dataPoint.month) {
-          drillToDetailFilters.push({
-            col: formData.granularitySqla,
-            grain: formData.timeGrainSqla,
-            op: '==',
-            val: dataPoint.month,
-            formattedVal: dataPoint.monthLabel,
+          // Add time filter for the selected month
+          if (formData.granularitySqla && dataPoint.month) {
+            drillToDetailFilters.push({
+              col: formData.granularitySqla,
+              grain: formData.timeGrainSqla,
+              op: '==',
+              val: dataPoint.month,
+              formattedVal: dataPoint.monthLabel,
+            });
+          }
+
+          // Build drill-by filters (based on groupby if any)
+          const drillByFilters: BinaryQueryObjectFilterClause[] = [];
+          const groupby = formData.groupby || [];
+
+          // Add groupby dimensions to drill-by filters
+          groupby.forEach((dimension: string) => {
+            drillByFilters.push({
+              col: dimension,
+              op: '==',
+              val: dataPoint.month,
+              formattedVal: dataPoint.monthLabel,
+            });
+          });
+
+          // Call onContextMenu with drill filters
+          onContextMenu(pointerEvent.clientX, pointerEvent.clientY, {
+            drillToDetail: drillToDetailFilters,
+            drillBy:
+              groupby.length > 0
+                ? {
+                    filters: drillByFilters,
+                    groupbyFieldName: 'groupby',
+                    adhocFilterFieldName: 'adhoc_filters',
+                  }
+                : undefined,
           });
         }
-
-        // Build drill-by filters (based on groupby if any)
-        const drillByFilters: BinaryQueryObjectFilterClause[] = [];
-        const groupby = formData.groupby || [];
-
-        // Add groupby dimensions to drill-by filters
-        groupby.forEach((dimension: string) => {
-          drillByFilters.push({
-            col: dimension,
-            op: '==',
-            val: dataPoint.month,
-            formattedVal: dataPoint.monthLabel,
-          });
-        });
-
-        // Call onContextMenu with drill filters
-        onContextMenu(pointerEvent.clientX, pointerEvent.clientY, {
-          drillToDetail: drillToDetailFilters,
-          drillBy: groupby.length > 0 ? {
-            filters: drillByFilters,
-            groupbyFieldName: 'groupby',
-            adhocFilterFieldName: 'adhoc_filters',
-          } : undefined,
-        });
-      }
-    });
+      },
+    );
 
     // Store refs
     if (refs) {

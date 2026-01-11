@@ -446,20 +446,13 @@ const displaySectionConfig: ControlPanelSectionConfig = {
 const targetSectionConfig: ControlPanelSectionConfig = {
   label: t('Targets & Goals'),
   expanded: false,
-  controlSetRows: [
-    [currentARR],
-    [targetARR],
-    [annualGrowthTarget],
-  ],
+  controlSetRows: [[currentARR], [targetARR], [annualGrowthTarget]],
 };
 
 const thresholdSectionConfig: ControlPanelSectionConfig = {
   label: t('Growth Thresholds'),
   expanded: false,
-  controlSetRows: [
-    [criticalGrowthThreshold],
-    [warningGrowthThreshold],
-  ],
+  controlSetRows: [[criticalGrowthThreshold], [warningGrowthThreshold]],
 };
 
 const colorsSectionConfig: ControlPanelSectionConfig = {
@@ -477,29 +470,19 @@ const colorsSectionConfig: ControlPanelSectionConfig = {
 const formattingSectionConfig: ControlPanelSectionConfig = {
   label: t('Formatting'),
   expanded: false,
-  controlSetRows: [
-    [numberLocale],
-    [yAxisLeftLabel],
-    [yAxisRightLabel],
-  ],
+  controlSetRows: [[numberLocale], [yAxisLeftLabel], [yAxisRightLabel]],
 };
 
 const legendSectionConfig: ControlPanelSectionConfig = {
   label: t('Legend'),
   expanded: false,
-  controlSetRows: [
-    [legendPosition],
-    [showLegendCheckboxes],
-  ],
+  controlSetRows: [[legendPosition], [showLegendCheckboxes]],
 };
 
 const interactivitySectionConfig: ControlPanelSectionConfig = {
   label: t('Interactivity'),
   expanded: false,
-  controlSetRows: [
-    [enableDrilldown],
-    [enableYoYComparison],
-  ],
+  controlSetRows: [[enableDrilldown], [enableYoYComparison]],
 };
 
 // =============================================================================

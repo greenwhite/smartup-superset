@@ -38,7 +38,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'SelectControl',
               label: t('Entity Type'),
-              description: t('Select the type of entity to display status funnel for'),
+              description: t(
+                'Select the type of entity to display status funnel for',
+              ),
               default: 'orders',
               choices: [
                 ['orders', 'Заказы (Orders)'],
@@ -191,7 +193,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Max Cards Per Row'),
-              description: t('Maximum number of status cards to show without scrolling'),
+              description: t(
+                'Maximum number of status cards to show without scrolling',
+              ),
               default: 8,
               isInt: true,
               renderTrigger: true,
@@ -356,7 +360,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable Drilldown'),
-              description: t('Allow clicking on cards to drill down to entity list'),
+              description: t(
+                'Allow clicking on cards to drill down to entity list',
+              ),
               default: true,
               renderTrigger: true,
             },

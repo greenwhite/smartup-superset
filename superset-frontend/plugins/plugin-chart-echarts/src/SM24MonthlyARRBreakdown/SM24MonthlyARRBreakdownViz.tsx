@@ -31,7 +31,12 @@ import {
 // SEGMENT ORDER FOR CONSISTENT STACKING
 // =============================================================================
 
-const SEGMENT_ORDER: CustomerSegment[] = ['enterprise', 'mid_market', 'smb', 'starter'];
+const SEGMENT_ORDER: CustomerSegment[] = [
+  'enterprise',
+  'mid_market',
+  'smb',
+  'starter',
+];
 const SEGMENT_NAMES: Record<CustomerSegment, string> = {
   enterprise: 'Enterprise',
   mid_market: 'Mid-Market',
@@ -128,7 +133,9 @@ function SM24MonthlyARRBreakdownViz({
             if (isPercentageView) {
               return params.value > 10 ? `${params.value.toFixed(0)}%` : '';
             }
-            return params.value > totalARR * 0.05 ? formatCurrency(params.value) : '';
+            return params.value > totalARR * 0.05
+              ? formatCurrency(params.value)
+              : '';
           },
           color: '#fff',
           fontSize: 11,
@@ -156,10 +163,26 @@ function SM24MonthlyARRBreakdownViz({
     const legendConfig = {
       show: showLegend,
       data: legendData,
-      ...(legendPosition === 'bottom' && { bottom: 10, left: 'center', orient: 'horizontal' as const }),
-      ...(legendPosition === 'top' && { top: 10, left: 'center', orient: 'horizontal' as const }),
-      ...(legendPosition === 'left' && { left: 10, top: 'middle', orient: 'vertical' as const }),
-      ...(legendPosition === 'right' && { right: 10, top: 'middle', orient: 'vertical' as const }),
+      ...(legendPosition === 'bottom' && {
+        bottom: 10,
+        left: 'center',
+        orient: 'horizontal' as const,
+      }),
+      ...(legendPosition === 'top' && {
+        top: 10,
+        left: 'center',
+        orient: 'horizontal' as const,
+      }),
+      ...(legendPosition === 'left' && {
+        left: 10,
+        top: 'middle',
+        orient: 'vertical' as const,
+      }),
+      ...(legendPosition === 'right' && {
+        right: 10,
+        top: 'middle',
+        orient: 'vertical' as const,
+      }),
       textStyle: {
         fontSize: 12,
       },
@@ -207,7 +230,10 @@ function SM24MonthlyARRBreakdownViz({
     if (showConcentrationAlerts && concentrationRisks.length > 0) {
       const alertY = enableToggle ? 45 : 10;
       concentrationRisks.forEach((risk, index) => {
-        const alertColor = risk.level === 'critical' ? STATUS_COLORS.critical : STATUS_COLORS.warning;
+        const alertColor =
+          risk.level === 'critical'
+            ? STATUS_COLORS.critical
+            : STATUS_COLORS.warning;
         graphicElements.push({
           type: 'text',
           right: legendPosition === 'right' ? 120 : 20,
@@ -225,7 +251,9 @@ function SM24MonthlyARRBreakdownViz({
     // Cross-sell opportunity badge
     if (showCrossSellOpportunity && crossSellOpportunity) {
       const badgeY = enableToggle ? 45 : 10;
-      const alertOffset = showConcentrationAlerts ? concentrationRisks.length * 18 + 10 : 0;
+      const alertOffset = showConcentrationAlerts
+        ? concentrationRisks.length * 18 + 10
+        : 0;
 
       graphicElements.push({
         type: 'group',
@@ -300,7 +328,14 @@ function SM24MonthlyARRBreakdownViz({
         axisPointer: {
           type: 'shadow',
         },
-        formatter: (params: { seriesName: string; value: number; dataIndex: number; color: string }[]) => {
+        formatter: (
+          params: {
+            seriesName: string;
+            value: number;
+            dataIndex: number;
+            color: string;
+          }[],
+        ) => {
           if (!Array.isArray(params) || params.length === 0) return '';
 
           const dataIndex = params[0].dataIndex;

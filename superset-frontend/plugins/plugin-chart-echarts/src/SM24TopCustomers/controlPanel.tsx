@@ -70,7 +70,9 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.metric,
               label: t('MoM Growth'),
-              description: t('Metric for month-over-month ARR growth percentage'),
+              description: t(
+                'Metric for month-over-month ARR growth percentage',
+              ),
             },
           },
         ],
@@ -133,7 +135,9 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.groupby,
               label: t('Products'),
-              description: t('Column containing products used (comma-separated or array)'),
+              description: t(
+                'Column containing products used (comma-separated or array)',
+              ),
               multi: false,
             },
           },
@@ -177,7 +181,9 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.groupby,
               label: t('Last Activity Date'),
-              description: t('Column containing last customer activity/engagement date'),
+              description: t(
+                'Column containing last customer activity/engagement date',
+              ),
               multi: false,
             },
           },
@@ -188,7 +194,9 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.groupby,
               label: t('NPS Score'),
-              description: t('Column containing Net Promoter Score (-100 to 100)'),
+              description: t(
+                'Column containing Net Promoter Score (-100 to 100)',
+              ),
               multi: false,
             },
           },
@@ -258,7 +266,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable Virtual Scrolling'),
-              description: t('Use virtual scrolling for better performance with many rows'),
+              description: t(
+                'Use virtual scrolling for better performance with many rows',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -292,7 +302,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Health Risk Threshold'),
-              description: t('Health score below this value is considered at-risk'),
+              description: t(
+                'Health score below this value is considered at-risk',
+              ),
               default: 60,
               isInt: true,
               renderTrigger: true,
@@ -331,7 +343,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Inactivity Alert Days'),
-              description: t('Days of inactivity to flag customer as disengaged'),
+              description: t(
+                'Days of inactivity to flag customer as disengaged',
+              ),
               default: 30,
               isInt: true,
               renderTrigger: true,
@@ -344,7 +358,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Concentration Alert (%)'),
-              description: t('Alert if top 10 customers exceed this % of total ARR'),
+              description: t(
+                'Alert if top 10 customers exceed this % of total ARR',
+              ),
               default: 50,
               isFloat: true,
               renderTrigger: true,
@@ -367,7 +383,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Highlight At-Risk Customers'),
-              description: t('Bold customer names with health score below threshold'),
+              description: t(
+                'Bold customer names with health score below threshold',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -391,7 +409,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Highlight Urgent Renewals'),
-              description: t('Yellow background for customers with renewal < 90 days'),
+              description: t(
+                'Yellow background for customers with renewal < 90 days',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -403,7 +423,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Show Concentration Alert'),
-              description: t('Display warning if top customers represent high ARR concentration'),
+              description: t(
+                'Display warning if top customers represent high ARR concentration',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -470,7 +492,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable Drilldown'),
-              description: t('Allow clicking to drill down to customer details'),
+              description: t(
+                'Allow clicking to drill down to customer details',
+              ),
               default: true,
               renderTrigger: true,
             },
@@ -482,7 +506,9 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('Enable Quick Actions'),
-              description: t('Show quick action buttons (schedule check-in, export, etc.)'),
+              description: t(
+                'Show quick action buttons (schedule check-in, export, etc.)',
+              ),
               default: true,
               renderTrigger: true,
             },
