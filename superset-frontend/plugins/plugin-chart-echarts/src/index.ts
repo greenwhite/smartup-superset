@@ -40,6 +40,7 @@ export {
   BigNumberPeriodOverPeriodChartPlugin,
 } from './BigNumber';
 export { default as SM24ARRTrendChartPlugin } from './SM24ARRTrend';
+export { default as SM24ARRWaterfallChartPlugin } from './SM24ARRWaterfall';
 export { default as SM24BigNumberChartPlugin } from './SM24BigNumber';
 export { default as SM24TopBigNumberChartPlugin } from './SM24TopBigNumber';
 export { default as EchartsSunburstChartPlugin } from './Sunburst';
