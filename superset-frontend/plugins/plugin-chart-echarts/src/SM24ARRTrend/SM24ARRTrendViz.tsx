@@ -17,9 +17,13 @@
  * under the License.
  */
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { BinaryQueryObjectFilterClause, styled } from '@superset-ui/core';
-import * as echarts from 'echarts';
-import type { EChartsOption, SeriesOption } from 'echarts';
+import {
+  BinaryQueryObjectFilterClause,
+  styled,
+  useTheme,
+} from '@superset-ui/core';
+import { init } from 'echarts';
+import type { ECharts, EChartsOption, SeriesOption } from 'echarts';
 import { SM24ARRTrendVizProps, ARRDataPoint, getGrowthColor } from './types';
 
 // =============================================================================
@@ -56,8 +60,9 @@ function SM24ARRTrendViz({
   formData,
   refs,
 }: SM24ARRTrendVizProps) {
+  const theme = useTheme();
   const chartRef = useRef<HTMLDivElement>(null);
-  const chartInstance = useRef<echarts.ECharts | null>(null);
+  const chartInstance = useRef<ECharts | null>(null);
 
   // Combine actual data with projection data
   const allData = useMemo(() => {
@@ -259,12 +264,12 @@ function SM24ARRTrendViz({
         lineStyle: {
           width: 2,
           type: 'dashed',
-          color: '#95A5A6',
+          color: theme.colors.grayscale.base,
         },
         symbol: 'circle',
         symbolSize: 5,
         itemStyle: {
-          color: '#95A5A6',
+          color: theme.colors.grayscale.base,
         },
         emphasis: {
           focus: 'series',
@@ -285,6 +290,7 @@ function SM24ARRTrendViz({
     enableYoYComparison,
     colors,
     growthThresholds,
+    theme,
   ]);
 
   // Build ECharts option
@@ -376,7 +382,7 @@ function SM24ARRTrendViz({
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: '#999',
+            color: theme.colors.grayscale.light1,
           },
         },
         formatter: (
@@ -389,7 +395,7 @@ function SM24ARRTrendViz({
         ) => {
           if (!Array.isArray(params) || params.length === 0) return '';
 
-          const dataIndex = params[0].dataIndex;
+          const { dataIndex } = params[0];
           const dataPoint = data[dataIndex];
 
           if (!dataPoint) return '';
@@ -406,7 +412,7 @@ function SM24ARRTrendViz({
           if (dataPoint.momChange !== null) {
             const changeSign = dataPoint.momChange >= 0 ? '+' : '';
             html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
-              <span style="color: #6C757D;">MoM Change</span>
+              <span style="color: ${theme.colors.grayscale.base};">MoM Change</span>
               <span style="color: ${dataPoint.momChange >= 0 ? colors.newBusiness : colors.churned};">
                 ${changeSign}${formatCurrency(dataPoint.momChange)}
               </span>
@@ -473,7 +479,7 @@ function SM24ARRTrendViz({
                   ? colors.newBusiness
                   : colors.churned;
               html += `<div style="display: flex; justify-content: space-between; gap: 24px;">
-                <span style="color: #666;">YoY Growth</span>
+                <span style="color: ${theme.colors.grayscale.base};">YoY Growth</span>
                 <span style="color: ${yoyColor}; font-weight: bold;">
                   ${dataPoint.yoyGrowthRate >= 0 ? '+' : ''}${dataPoint.yoyGrowthRate.toFixed(1)}%
                 </span>
@@ -483,12 +489,12 @@ function SM24ARRTrendViz({
 
           return html;
         },
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#ccc',
+        backgroundColor: theme.colors.grayscale.light5,
+        borderColor: theme.colors.grayscale.light2,
         borderWidth: 1,
         padding: 12,
         textStyle: {
-          color: '#333',
+          color: theme.colors.grayscale.dark2,
         },
       },
       legend: legendConfig,
@@ -504,14 +510,14 @@ function SM24ARRTrendViz({
         data: xAxisLabels,
         axisLine: {
           lineStyle: {
-            color: '#ccc',
+            color: theme.colors.grayscale.light2,
           },
         },
         axisTick: {
           alignWithLabel: true,
         },
         axisLabel: {
-          color: '#666',
+          color: theme.colors.grayscale.base,
           fontSize: 11,
           rotate: xAxisLabels.length > 12 ? 45 : 0,
         },
@@ -523,7 +529,7 @@ function SM24ARRTrendViz({
           nameLocation: 'middle',
           nameGap: 60,
           nameTextStyle: {
-            color: '#666',
+            color: theme.colors.grayscale.base,
             fontWeight: 'bold',
           },
           min: yAxisRanges.arr.min,
@@ -537,11 +543,11 @@ function SM24ARRTrendViz({
           splitLine: {
             lineStyle: {
               type: 'dashed',
-              color: '#eee',
+              color: theme.colors.grayscale.light3,
             },
           },
           axisLabel: {
-            color: '#666',
+            color: theme.colors.grayscale.base,
             formatter: (value: number) => formatCurrency(value),
           },
         },
@@ -551,7 +557,7 @@ function SM24ARRTrendViz({
           nameLocation: 'middle',
           nameGap: 50,
           nameTextStyle: {
-            color: '#666',
+            color: theme.colors.grayscale.base,
             fontWeight: 'bold',
           },
           min: yAxisRanges.growth.min,
@@ -560,14 +566,14 @@ function SM24ARRTrendViz({
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#6C757D',
+              color: theme.colors.grayscale.base,
             },
           },
           splitLine: {
             show: false,
           },
           axisLabel: {
-            color: '#666',
+            color: theme.colors.grayscale.base,
             formatter: (value: number) => `${value}%`,
           },
         },
@@ -600,6 +606,7 @@ function SM24ARRTrendViz({
     showLegendCheckboxes,
     yAxisLeftLabel,
     yAxisRightLabel,
+    theme,
   ]);
 
   // Initialize chart
@@ -612,7 +619,7 @@ function SM24ARRTrendViz({
     }
 
     // Create new chart
-    const chart = echarts.init(chartRef.current);
+    const chart = init(chartRef.current);
     chartInstance.current = chart;
 
     // Set option
@@ -685,9 +692,9 @@ function SM24ARRTrendViz({
       },
     );
 
-    // Store refs
-    if (refs) {
-      refs.echartRef = { current: chart };
+    // Store refs for external access (intentional mutation for ref forwarding)
+    if (refs && typeof refs === 'object') {
+      Object.assign(refs, { echartRef: { current: chart } });
     }
 
     return () => {

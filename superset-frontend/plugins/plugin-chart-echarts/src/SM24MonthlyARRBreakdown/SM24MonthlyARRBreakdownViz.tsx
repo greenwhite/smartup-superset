@@ -17,9 +17,9 @@
  * under the License.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { styled } from '@superset-ui/core';
-import * as echarts from 'echarts';
-import type { EChartsOption, SeriesOption } from 'echarts';
+import { styled, useTheme } from '@superset-ui/core';
+import { init } from 'echarts';
+import type { ECharts, EChartsOption, SeriesOption } from 'echarts';
 import {
   SM24MonthlyARRBreakdownVizProps,
   CustomerSegment,
@@ -75,8 +75,9 @@ function SM24MonthlyARRBreakdownViz({
   onToggleView,
   refs,
 }: SM24MonthlyARRBreakdownVizProps) {
+  const theme = useTheme();
   const chartRef = useRef<HTMLDivElement>(null);
-  const chartInstance = useRef<echarts.ECharts | null>(null);
+  const chartInstance = useRef<ECharts | null>(null);
   const [isPercentageView, setIsPercentageView] = useState(showAsPercentage);
 
   // Toggle view handler
@@ -120,7 +121,7 @@ function SM24MonthlyARRBreakdownViz({
           focus: 'series',
           itemStyle: {
             shadowBlur: 10,
-            shadowColor: 'rgba(0,0,0,0.2)',
+            shadowColor: theme.colors.grayscale.light2,
           },
         },
         label: {
@@ -137,13 +138,20 @@ function SM24MonthlyARRBreakdownViz({
               ? formatCurrency(params.value)
               : '';
           },
-          color: '#fff',
+          color: theme.colors.grayscale.light5,
           fontSize: 11,
           fontWeight: 'bold',
         },
       };
     });
-  }, [products, segmentColors, isPercentageView, totalARR, formatCurrency]);
+  }, [
+    products,
+    segmentColors,
+    isPercentageView,
+    totalARR,
+    formatCurrency,
+    theme,
+  ]);
 
   // Build chart option
   const chartOption = useMemo((): EChartsOption => {
@@ -204,8 +212,8 @@ function SM24MonthlyARRBreakdownViz({
             type: 'rect',
             shape: { width: 80, height: 24, r: 4 },
             style: {
-              fill: '#f0f0f0',
-              stroke: '#ccc',
+              fill: theme.colors.grayscale.light4,
+              stroke: theme.colors.grayscale.light2,
               cursor: 'pointer',
             },
           },
@@ -217,7 +225,7 @@ function SM24MonthlyARRBreakdownViz({
               y: 12,
               textAlign: 'center',
               textVerticalAlign: 'middle',
-              fill: '#333',
+              fill: theme.colors.grayscale.dark2,
               fontSize: 11,
               cursor: 'pointer',
             },
@@ -264,8 +272,8 @@ function SM24MonthlyARRBreakdownViz({
             type: 'rect',
             shape: { width: 180, height: 50, r: 6 },
             style: {
-              fill: '#E8F8F5',
-              stroke: '#27AE60',
+              fill: theme.colors.success.light2,
+              stroke: theme.colors.success.base,
             },
           },
           {
@@ -274,7 +282,7 @@ function SM24MonthlyARRBreakdownViz({
               text: 'Cross-Sell Opportunity',
               x: 10,
               y: 14,
-              fill: '#27AE60',
+              fill: theme.colors.success.base,
               fontSize: 10,
               fontWeight: 'bold',
             },
@@ -285,7 +293,7 @@ function SM24MonthlyARRBreakdownViz({
               text: `${crossSellOpportunity.percentSingleProduct}% single-product`,
               x: 10,
               y: 30,
-              fill: '#333',
+              fill: theme.colors.grayscale.dark2,
               fontSize: 11,
             },
           },
@@ -295,7 +303,7 @@ function SM24MonthlyARRBreakdownViz({
               text: `Potential: ${formatCurrency(crossSellOpportunity.potentialARR)}`,
               x: 10,
               y: 44,
-              fill: '#27AE60',
+              fill: theme.colors.success.base,
               fontSize: 11,
               fontWeight: 'bold',
             },
@@ -338,7 +346,7 @@ function SM24MonthlyARRBreakdownViz({
         ) => {
           if (!Array.isArray(params) || params.length === 0) return '';
 
-          const dataIndex = params[0].dataIndex;
+          const { dataIndex } = params[0];
           const product = products[dataIndex];
 
           if (!product) return '';
@@ -353,8 +361,8 @@ function SM24MonthlyARRBreakdownViz({
             <span style="float: right;">${formatPercent(product.percentOfTotal)}</span>
           </div>`;
 
-          html += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #eee;" />`;
-          html += `<div style="font-size: 11px; color: #666; margin-bottom: 4px;">Segment Breakdown:</div>`;
+          html += `<hr style="margin: 8px 0; border: none; border-top: 1px solid ${theme.colors.grayscale.light3};" />`;
+          html += `<div style="font-size: 11px; color: ${theme.colors.grayscale.base}; margin-bottom: 4px;">Segment Breakdown:</div>`;
 
           params.forEach(param => {
             const segment = product.segments.find(
@@ -370,7 +378,7 @@ function SM24MonthlyARRBreakdownViz({
                   ${formatCurrency(segment.arrAmount)} (${formatPercent(segment.percentOfProduct)})
                 </span>
               </div>`;
-              html += `<div style="font-size: 10px; color: #999; margin-left: 16px;">
+              html += `<div style="font-size: 10px; color: ${theme.colors.grayscale.light1}; margin-left: 16px;">
                 ${formatNumber(segment.customerCount)} customers · Avg ${formatCurrency(segment.avgArrPerCustomer)}
               </div>`;
             }
@@ -378,19 +386,19 @@ function SM24MonthlyARRBreakdownViz({
 
           // Drilldown hint
           if (enableDrilldown) {
-            html += `<div style="margin-top: 8px; color: #999; font-size: 11px;">
+            html += `<div style="margin-top: 8px; color: ${theme.colors.grayscale.light1}; font-size: 11px;">
               Click to drill down
             </div>`;
           }
 
           return html;
         },
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#ccc',
+        backgroundColor: theme.colors.grayscale.light5,
+        borderColor: theme.colors.grayscale.light2,
         borderWidth: 1,
         padding: 12,
         textStyle: {
-          color: '#333',
+          color: theme.colors.grayscale.dark2,
         },
       },
       legend: legendConfig,
@@ -407,22 +415,22 @@ function SM24MonthlyARRBreakdownViz({
         nameLocation: 'middle',
         nameGap: 30,
         nameTextStyle: {
-          color: '#666',
+          color: theme.colors.grayscale.base,
           fontWeight: 'bold',
         },
         min: 0,
         max: maxValue,
         axisLine: {
-          lineStyle: { color: '#ccc' },
+          lineStyle: { color: theme.colors.grayscale.light2 },
         },
         splitLine: {
           lineStyle: {
             type: 'dashed',
-            color: '#eee',
+            color: theme.colors.grayscale.light3,
           },
         },
         axisLabel: {
-          color: '#666',
+          color: theme.colors.grayscale.base,
           formatter: (value: number) => {
             if (isPercentageView) {
               return `${value}%`;
@@ -435,13 +443,13 @@ function SM24MonthlyARRBreakdownViz({
         type: 'category',
         data: yAxisLabels,
         axisLine: {
-          lineStyle: { color: '#ccc' },
+          lineStyle: { color: theme.colors.grayscale.light2 },
         },
         axisTick: {
           alignWithLabel: true,
         },
         axisLabel: {
-          color: '#333',
+          color: theme.colors.grayscale.dark2,
           fontSize: 12,
           fontWeight: 'bold',
           width: 140,
@@ -471,6 +479,7 @@ function SM24MonthlyARRBreakdownViz({
     formatNumber,
     handleToggleView,
     totalARR,
+    theme,
   ]);
 
   // Initialize chart
@@ -483,7 +492,7 @@ function SM24MonthlyARRBreakdownViz({
     }
 
     // Create new chart
-    const chart = echarts.init(chartRef.current);
+    const chart = init(chartRef.current);
     chartInstance.current = chart;
 
     // Set option
@@ -502,9 +511,9 @@ function SM24MonthlyARRBreakdownViz({
       });
     }
 
-    // Store refs
-    if (refs) {
-      refs.echartRef = { current: chart };
+    // Store refs for external access (intentional mutation for ref forwarding)
+    if (refs && typeof refs === 'object') {
+      Object.assign(refs, { echartRef: { current: chart } });
     }
 
     return () => {

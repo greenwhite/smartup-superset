@@ -17,9 +17,9 @@
  * under the License.
  */
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { styled } from '@superset-ui/core';
-import * as echarts from 'echarts';
-import type { EChartsOption, SeriesOption } from 'echarts';
+import { styled, useTheme } from '@superset-ui/core';
+import { init } from 'echarts';
+import type { ECharts, EChartsOption, SeriesOption } from 'echarts';
 import {
   SM24MetricWaterfallVizProps,
   WaterfallDataPoint,
@@ -58,8 +58,9 @@ function SM24MetricWaterfallViz({
   legendPosition,
   refs,
 }: SM24MetricWaterfallVizProps) {
+  const theme = useTheme();
   const chartRef = useRef<HTMLDivElement>(null);
-  const chartInstance = useRef<echarts.ECharts | null>(null);
+  const chartInstance = useRef<ECharts | null>(null);
 
   // Get x-axis categories
   const categories = useMemo(() => data.map(d => d.category), [data]);
@@ -158,7 +159,7 @@ function SM24MetricWaterfallViz({
         focus: 'series',
         itemStyle: {
           shadowBlur: 10,
-          shadowColor: 'rgba(0,0,0,0.2)',
+          shadowColor: theme.colors.grayscale.light2,
         },
       },
     });
@@ -197,7 +198,14 @@ function SM24MetricWaterfallViz({
     }
 
     return series;
-  }, [data, colors, showAbsoluteLabels, showPercentLabels, formatCurrency]);
+  }, [
+    data,
+    colors,
+    showAbsoluteLabels,
+    showPercentLabels,
+    formatCurrency,
+    theme,
+  ]);
 
   // Build connector lines (mark lines between bars)
   const buildConnectorLines = useCallback(() => {
@@ -303,7 +311,7 @@ function SM24MetricWaterfallViz({
             style: {
               fill: qrColor,
               shadowBlur: 4,
-              shadowColor: 'rgba(0,0,0,0.2)',
+              shadowColor: theme.colors.grayscale.light2,
             },
           },
           {
@@ -313,7 +321,7 @@ function SM24MetricWaterfallViz({
               x: 60,
               y: 14,
               textAlign: 'center',
-              fill: '#fff',
+              fill: theme.colors.grayscale.light5,
               fontSize: 10,
             },
           },
@@ -327,7 +335,7 @@ function SM24MetricWaterfallViz({
               x: 60,
               y: 34,
               textAlign: 'center',
-              fill: '#fff',
+              fill: theme.colors.grayscale.light5,
               fontSize: 18,
               fontWeight: 'bold',
             },
@@ -419,7 +427,7 @@ function SM24MetricWaterfallViz({
         formatter: (params: { dataIndex: number }[]) => {
           if (!Array.isArray(params) || params.length === 0) return '';
 
-          const dataIndex = params[0].dataIndex;
+          const { dataIndex } = params[0];
           const point = data[dataIndex];
 
           if (!point) return '';
@@ -456,19 +464,19 @@ function SM24MetricWaterfallViz({
 
           // Drilldown hint
           if (enableDrilldown && DRILLDOWN_MAP[point.category]) {
-            html += `<div style="margin-top: 8px; color: #999; font-size: 11px;">
+            html += `<div style="margin-top: 8px; color: ${theme.colors.grayscale.light1}; font-size: 11px;">
               Click to drill down
             </div>`;
           }
 
           return html;
         },
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#ccc',
+        backgroundColor: theme.colors.grayscale.light5,
+        borderColor: theme.colors.grayscale.light2,
         borderWidth: 1,
         padding: 12,
         textStyle: {
-          color: '#333',
+          color: theme.colors.grayscale.dark2,
         },
       },
       legend: legendConfig,
@@ -483,13 +491,13 @@ function SM24MetricWaterfallViz({
         type: 'category',
         data: categories,
         axisLine: {
-          lineStyle: { color: '#ccc' },
+          lineStyle: { color: theme.colors.grayscale.light2 },
         },
         axisTick: {
           alignWithLabel: true,
         },
         axisLabel: {
-          color: WATERFALL_COLORS.textPrimary,
+          color: theme.colors.grayscale.dark2,
           fontSize: 12,
           fontWeight: 'bold',
         },
@@ -500,23 +508,23 @@ function SM24MetricWaterfallViz({
         nameLocation: 'middle',
         nameGap: 60,
         nameTextStyle: {
-          color: WATERFALL_COLORS.textSecondary,
+          color: theme.colors.grayscale.base,
           fontWeight: 'bold',
         },
         min: 0,
         max: maxValue,
         axisLine: {
           show: true,
-          lineStyle: { color: '#ccc' },
+          lineStyle: { color: theme.colors.grayscale.light2 },
         },
         splitLine: {
           lineStyle: {
             type: 'dashed',
-            color: '#eee',
+            color: theme.colors.grayscale.light3,
           },
         },
         axisLabel: {
-          color: WATERFALL_COLORS.textSecondary,
+          color: theme.colors.grayscale.base,
           formatter: (value: number) => formatCurrency(value),
         },
       },
@@ -543,6 +551,7 @@ function SM24MetricWaterfallViz({
     formatCurrency,
     formatPercent,
     enableDrilldown,
+    theme,
   ]);
 
   // Initialize chart
@@ -555,7 +564,7 @@ function SM24MetricWaterfallViz({
     }
 
     // Create new chart
-    const chart = echarts.init(chartRef.current);
+    const chart = init(chartRef.current);
     chartInstance.current = chart;
 
     // Set option
@@ -575,9 +584,9 @@ function SM24MetricWaterfallViz({
       });
     }
 
-    // Store refs
-    if (refs) {
-      refs.echartRef = { current: chart };
+    // Store refs for external access (intentional mutation for ref forwarding)
+    if (refs && typeof refs === 'object') {
+      Object.assign(refs, { echartRef: { current: chart } });
     }
 
     return () => {

@@ -75,8 +75,8 @@ const HeaderRight = styled.div`
 const CustomerName = styled.h1`
   margin: 0;
   font-size: 28px;
-  font-weight: 700;
-  color: #2c3e50;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
 `;
 
 const Badge = styled.span<{ color: string }>`
@@ -108,12 +108,12 @@ const ActionButton = styled.button<{
     variant === 'primary'
       ? PROFILE_COLORS.primary
       : PROFILE_COLORS.cardBackground};
-  color: ${({ variant }) =>
+  color: ${({ variant, theme }) =>
     variant === 'primary'
-      ? '#fff'
+      ? theme.colors.grayscale.light5
       : variant === 'danger'
         ? PROFILE_COLORS.danger
-        : '#2c3e50'};
+        : theme.colors.grayscale.dark2};
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -144,8 +144,8 @@ const QuickStat = styled.div`
 
 const QuickStatValue = styled.span`
   font-size: 20px;
-  font-weight: 700;
-  color: #2c3e50;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
 `;
 
 const QuickStatLabel = styled.span`
@@ -168,12 +168,12 @@ const CSMAvatar = styled.div`
   height: 36px;
   border-radius: 50%;
   background: ${PROFILE_COLORS.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.grayscale.light5};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  font-size: ${({ theme }) => theme.typography.sizes.m}px;
 `;
 
 const CSMInfo = styled.div`
@@ -182,9 +182,9 @@ const CSMInfo = styled.div`
 `;
 
 const CSMName = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  color: #2c3e50;
+  font-size: ${({ theme }) => theme.typography.sizes.s}px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
 `;
 
 const CSMRole = styled.span`
@@ -225,13 +225,13 @@ const AlertContent = styled.div`
 `;
 
 const AlertTitle = styled.span`
-  font-weight: 600;
-  color: #2c3e50;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
 `;
 
 const AlertMessage = styled.span`
-  color: #666;
-  font-size: 13px;
+  color: ${({ theme }) => theme.colors.grayscale.base};
+  font-size: ${({ theme }) => theme.typography.sizes.s}px;
 `;
 
 const TabNavigation = styled.div`
@@ -277,17 +277,17 @@ const Grid = styled.div<{ columns?: number }>`
 
 const Card = styled.div<{ span?: number }>`
   background: ${PROFILE_COLORS.cardBackground};
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: ${({ theme }) => theme.borderRadius}px;
+  padding: ${({ theme }) => theme.gridUnit * 5}px;
+  box-shadow: 0 1px 3px ${({ theme }) => theme.colors.grayscale.light2};
   grid-column: span ${({ span }) => span || 1};
 `;
 
 const CardTitle = styled.h3`
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: #2c3e50;
+  margin: 0 0 ${({ theme }) => theme.gridUnit * 4}px 0;
+  font-size: ${({ theme }) => theme.typography.sizes.m}px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -301,9 +301,9 @@ const MetricCard = styled(Card)`
 
 const MetricValue = styled.div`
   font-size: 32px;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 4px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
+  margin-bottom: ${({ theme }) => theme.gridUnit}px;
 `;
 
 const MetricLabel = styled.div`
@@ -322,7 +322,7 @@ const HealthCircle = styled.div<{ score: number; color: string }>`
   position: relative;
   width: 80px;
   height: 80px;
-  margin-bottom: 8px;
+  margin-bottom: ${({ theme }) => theme.gridUnit * 2}px;
 
   &::before {
     content: '';
@@ -334,7 +334,8 @@ const HealthCircle = styled.div<{ score: number; color: string }>`
     border-radius: 50%;
     background: conic-gradient(
       ${({ color }) => color} ${({ score }) => score * 3.6}deg,
-      #e9ecef ${({ score }) => score * 3.6}deg
+      ${({ theme }) => theme.colors.grayscale.light3}
+        ${({ score }) => score * 3.6}deg
     );
   }
 
@@ -346,13 +347,13 @@ const HealthCircle = styled.div<{ score: number; color: string }>`
     transform: translate(-50%, -50%);
     width: 60px;
     height: 60px;
-    background: #fff;
+    background: ${({ theme }) => theme.colors.grayscale.light5};
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: ${({ theme }) => theme.typography.weights.bold};
     color: ${({ color }) => color};
   }
 `;
@@ -418,9 +419,9 @@ const ActivityContent = styled.div`
 `;
 
 const ActivityTitle = styled.div`
-  font-size: 13px;
-  font-weight: 500;
-  color: #2c3e50;
+  font-size: ${({ theme }) => theme.typography.sizes.s}px;
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
 `;
 
 const ActivityDate = styled.div`

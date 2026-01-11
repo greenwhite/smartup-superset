@@ -279,12 +279,12 @@ const StyledSM24TopBigNumberViz = styled(SM24TopBigNumberViz)`
     }
 
     .sm24-topbignumber__grid--shadow .sm24-topbignumber__card {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 8px ${theme.colors.grayscale.light2};
     }
 
     .sm24-topbignumber__card:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px ${theme.colors.grayscale.light1};
     }
 
     .sm24-topbignumber__card-label {

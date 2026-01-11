@@ -302,7 +302,6 @@ function SM24BigNumberProViz({
 
   // Calculate available height for each section
   const availableHeight = useMemo(() => {
-    let remaining = height;
     const hasComparison =
       comparisonData &&
       (showPreviousValue || showAbsoluteDifference || showPercentDifference);

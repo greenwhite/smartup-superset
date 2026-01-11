@@ -34,13 +34,12 @@ const Container = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
   height: ${({ height }) => height}px;
-  font-family: ${({ theme }) =>
-    theme.typography?.families?.sansSerif ||
-    'Inter, Helvetica, Arial, sans-serif'};
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-family: ${({ theme }) => theme.typography.families.sansSerif};
+  background: ${({ theme }) => theme.colors.grayscale.light5};
+  border-radius: ${({ theme }) => theme.borderRadius}px;
+  padding: ${({ theme }) => theme.gridUnit * 5}px
+    ${({ theme }) => theme.gridUnit * 6}px;
+  box-shadow: 0 2px 8px ${({ theme }) => theme.colors.grayscale.light2};
   overflow: hidden;
 `;
 
@@ -52,9 +51,9 @@ const Header = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  color: #2c3e50;
+  font-size: ${({ theme }) => theme.typography.sizes.xl}px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
   margin: 0;
 `;
 
@@ -67,56 +66,57 @@ const HeaderActions = styled.div`
 const IconButton = styled.button`
   width: 32px;
   height: 32px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${({ theme }) => theme.colors.grayscale.light3};
   border-radius: 50%;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.grayscale.light5};
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  color: #666;
+  font-size: ${({ theme }) => theme.typography.sizes.m}px;
+  color: ${({ theme }) => theme.colors.grayscale.base};
   transition: all 0.2s ease;
 
   &:hover {
-    background: #f5f5f5;
-    border-color: #ccc;
+    background: ${({ theme }) => theme.colors.grayscale.light4};
+    border-color: ${({ theme }) => theme.colors.grayscale.light2};
   }
 `;
 
 const EntityTypeSelect = styled.select`
-  padding: 6px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #333;
-  background: #fff;
+  padding: ${({ theme }) => theme.gridUnit * 1.5}px
+    ${({ theme }) => theme.gridUnit * 3}px;
+  border: 1px solid ${({ theme }) => theme.colors.grayscale.light2};
+  border-radius: ${({ theme }) => theme.borderRadius}px;
+  font-size: ${({ theme }) => theme.typography.sizes.s}px;
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
+  background: ${({ theme }) => theme.colors.grayscale.light5};
   cursor: pointer;
   outline: none;
 
   &:focus {
-    border-color: #3498db;
+    border-color: ${({ theme }) => theme.colors.primary.base};
   }
 `;
 
 const CardsContainer = styled.div<{ maxCards: number }>`
   display: flex;
-  gap: 16px;
+  gap: ${({ theme }) => theme.gridUnit * 4}px;
   flex: 1;
   overflow-x: auto;
-  padding: 4px;
+  padding: ${({ theme }) => theme.gridUnit}px;
 
   &::-webkit-scrollbar {
     height: 6px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #f0f0f0;
+    background: ${({ theme }) => theme.colors.grayscale.light4};
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #ccc;
+    background: ${({ theme }) => theme.colors.grayscale.light2};
     border-radius: 3px;
   }
 `;
@@ -129,8 +129,8 @@ const CardWrapper = styled.div`
 `;
 
 const Arrow = styled.div`
-  color: #bdc3c7;
-  font-size: 20px;
+  color: ${({ theme }) => theme.colors.grayscale.light2};
+  font-size: ${({ theme }) => theme.typography.sizes.xl}px;
   margin: 0 -4px;
   flex-shrink: 0;
 `;
@@ -146,57 +146,58 @@ const StatusCard = styled.div<{
   background: ${({ bgTint }) => bgTint};
   border: 2px solid ${({ borderColor }) => borderColor};
   border-radius: ${({ borderRadius }) => borderRadius}px;
-  padding: 16px;
+  padding: ${({ theme }) => theme.gridUnit * 4}px;
   position: relative;
   cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 4px ${({ theme }) => theme.colors.grayscale.light2};
 
   &:hover {
     transform: ${({ clickable }) => (clickable ? 'translateY(-2px)' : 'none')};
-    box-shadow: ${({ clickable }) =>
+    box-shadow: ${({ clickable, theme }) =>
       clickable
-        ? '0 4px 12px rgba(0, 0, 0, 0.15)'
-        : '0 2px 4px rgba(0, 0, 0, 0.08)'};
+        ? `0 4px 12px ${theme.colors.grayscale.light1}`
+        : `0 2px 4px ${theme.colors.grayscale.light2}`};
   }
 `;
 
 const StatusBadge = styled.div<{ bgColor: string }>`
   display: inline-block;
-  padding: 4px 12px;
+  padding: ${({ theme }) => theme.gridUnit}px
+    ${({ theme }) => theme.gridUnit * 3}px;
   background: ${({ bgColor }) => bgColor};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.grayscale.light5};
   border-radius: 16px;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 12px;
+  font-size: ${({ theme }) => theme.typography.sizes.s}px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
 `;
 
 const PercentageBadge = styled.div<{ borderColor: string }>`
   position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.9);
+  top: ${({ theme }) => theme.gridUnit * 3}px;
+  right: ${({ theme }) => theme.gridUnit * 3}px;
+  padding: 2px ${({ theme }) => theme.gridUnit * 2}px;
+  background: ${({ theme }) => theme.colors.grayscale.light5};
   border: 1px solid ${({ borderColor }) => borderColor};
   border-radius: 10px;
-  font-size: 11px;
-  font-weight: 500;
-  color: #666;
+  font-size: ${({ theme }) => theme.typography.sizes.xs}px;
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  color: ${({ theme }) => theme.colors.grayscale.base};
 `;
 
 const MainMetric = styled.div`
   font-size: 36px;
-  font-weight: 700;
-  color: #2c3e50;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark2};
   line-height: 1.1;
-  margin-bottom: 4px;
+  margin-bottom: ${({ theme }) => theme.gridUnit}px;
 `;
 
 const MetricLabel = styled.div`
-  font-size: 14px;
-  color: #7f8c8d;
-  margin-bottom: 12px;
+  font-size: ${({ theme }) => theme.typography.sizes.m}px;
+  color: ${({ theme }) => theme.colors.grayscale.base};
+  margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
 `;
 
 const AmountRow = styled.div`
@@ -206,15 +207,15 @@ const AmountRow = styled.div`
 `;
 
 const AmountValue = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  color: #34495e;
+  font-size: ${({ theme }) => theme.typography.sizes.xl}px;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.grayscale.dark1};
   line-height: 1.2;
 `;
 
 const AmountLabel = styled.div`
-  font-size: 12px;
-  color: #95a5a6;
+  font-size: ${({ theme }) => theme.typography.sizes.s}px;
+  color: ${({ theme }) => theme.colors.grayscale.light1};
 `;
 
 const EmptyState = styled.div`
@@ -223,10 +224,10 @@ const EmptyState = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #95a5a6;
-  font-size: 14px;
+  color: ${({ theme }) => theme.colors.grayscale.light1};
+  font-size: ${({ theme }) => theme.typography.sizes.m}px;
   text-align: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.gridUnit * 2}px;
 `;
 
 // =============================================================================
